@@ -2,7 +2,9 @@
 title: "Bewertung Regenwassereinleitung"
 author: "Wolfgang Seis"
 date: "22 11 2020"
-output: html_document
+output:
+  html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
