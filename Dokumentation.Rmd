@@ -55,6 +55,10 @@ A~E0~ = oberirdisches Gewässereinzugsgebiet
 
 \
 
+> **Anmerkung Andi**\
+> *Könnten wir evt anpassen, um zu begründen, dass wir unseren Ansatz für kleine Gewässer entwickelt haben. Hier könnten
+> wir evt alternativ die Größeneinordnung der WRRL nehmen oder in Bezug setzen*
+
 #### 2.2 Stofflicher Nachweis nach DWA-A 102-3 (vereinfacht)
 
 Für jeden Nachweis Ort müssen Grnzwerte für Ammoniak, Sauerstoff und AFS(fein) eingehalten werden. Auf eine vereinfachte
@@ -89,7 +93,8 @@ Annahmen Regenabflusskonzentrationen:
 
 > **Anmerkung**\
 > *Die von KWB vorschlagene Methodik erweitert das vorgeschlagene Spekturm an Zielparameter durch nach WRRL relvante Stoffe, 
-> beispielsweise Pestizide aus Bitumendächern, oder Schwermetalle wie Zink aus Metalldächern.*
+> beispielsweise Pestizide aus Bitumendächern, oder Schwermetalle wie Zink aus Metalldächern.
+> Kommentar Andi: Wir sollten auch dieskutieren, ob wir O2 und NH3 weglassen, da die ja für MW-Überläufe stehen.*
 
 \
 
@@ -98,6 +103,9 @@ Annahmen Regenabflusskonzentrationen:
 Für die Gewässervorbelastung wird die Vorbelastungskonzentration bei Niedrigwasserababfluss angesetzt.
 
 \
+
+> **Anmerkung Andi**\
+> *Hier würde ich ergänzen Konzentrationen aus dem Oberlauf...*
 
 #### 2.3 Hydraulischer Nachweis
 
@@ -142,6 +150,11 @@ Der hydraulische Nachweis ist erbracht wenn die Summe der Einleitescheitel Q~E1~
 
 > Der Faktor Hq~1pnat~ kan aus den Hüllkurven im Anhang des Dokuments ermitelt werden.
 >
+
+\
+
+> **Anmerkung Andi **\
+> *Der erste Term entspricht dem natürlichen Gebietsabfluss aus Ab,a , der zweite Term ist die zuläßige Überschreitung.*
 
 \
 
