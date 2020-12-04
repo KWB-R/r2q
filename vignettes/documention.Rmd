@@ -1,8 +1,9 @@
 ---
-title: "Dokumention"
+title: "Bewertung Regenwassereinleitung"
+author: "Wolfgang Seis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Dokumention}
+  %\VignetteIndexEntry{Bewertung Regenwassereinleitung}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
