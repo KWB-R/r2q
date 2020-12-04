@@ -9,7 +9,7 @@ Authors@R:
              comment = c(ORCID = "0000-0002-7436-8575")),
       person(given = "Andreas",
              family = "Matzinger",
-             role = c("aut"),
+             role = "aut",
              email = "andreas.matzinger@kompetenz-wasser.de",
              comment = c(ORCID = "0000-0001-5483-4594")),
       person(given = "R2Q",
@@ -21,12 +21,16 @@ Description: R Package with Functions and Exchange for Project
 License: MIT + file LICENSE
 URL: https://github.com/KWB-R/r2q
 BugReports: https://github.com/KWB-R/r2q/issues
+Imports: 
+    magrittr
+Suggests: 
+    covr,
+    tidyverse,
+    knitr,
+    rmarkdown
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Suggests: 
-    covr,
-    knitr,
-    rmarkdown
-VignetteBuilder: knitr

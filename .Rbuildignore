@@ -9,3 +9,5 @@
 ^index\.md$
 ^README\.md$
 ^\.github$
+^.*\.Rproj$
+^\.Rproj\.user$
