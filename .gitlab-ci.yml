@@ -1,0 +1,25 @@
+################################################################################
+### generated-with:
+###   type: R-package
+###   name: kwb.pkgbuild
+###   version: 0.1.6
+###   installed-from: local
+###   installed-on: '2020-11-24'
+### generated-by:
+###   user: mrustl
+###   function-call: kwb.pkgbuild::create_empty_branch_ghpages("r2q")
+### generated-on: 2020-12-04 10:21:26
+################################################################################
+
+
+pages:
+  stage: deploy
+  script:
+  - mkdir .public
+  - cp -r * .public
+  - mv .public public
+  artifacts:
+    paths:
+    - public
+  only:
+  - gh-pages
