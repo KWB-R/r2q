@@ -41,6 +41,17 @@ get_q_zulaessig <- function(Hq1_pnat= get_Hq1_pnat(), x = get_x(), A_ba, A_E0){
 
 
 
+# Calculate relevant discharge to surface water (rainwater only)
+
+
+get_q_area_partial <- function(A_ba, f_DA, R_spende=10){
+  A_ba*f_DA*R_spende
+}
+
+
+
+
+
 
 
 # Checks whether hydrologic criteria are fullfilled

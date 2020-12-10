@@ -189,7 +189,7 @@ df <- data.frame(A_befestigt = A_befestigt,
 ggplot(df, aes( x = A_befestigt, y = QE1_zul, col = EZG)) + geom_line(lwd = 1.5)+
   ggtitle("Befestigte Fläche gegen QE1, zulässig", 
           subtitle = "Wert für Hq1_pnat aus Hüllkurven mit 25 l/(s*km²) geschätzt") +
-  scale_color_viridis_d()+ xlab("angeschlossene befestigte Fläche [ha]") + 
+  scale_color_manual(values = c("50"="blue", "100"="red"))+ xlab("angeschlossene befestigte Fläche [ha]") + 
   ylab("zulässiger jährlicher Einleitabfluss [L/s]")
 
 
