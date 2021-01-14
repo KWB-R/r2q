@@ -25,6 +25,7 @@ Imports:
     magrittr
 Suggests: 
     covr,
+    flexdashboard,
     tidyverse,
     knitr,
     rmarkdown

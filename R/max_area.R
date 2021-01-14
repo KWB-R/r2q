@@ -13,8 +13,6 @@
 #' 
 #' @return maximal connected impervious area in km2
 #'
-#' @examples
-#'
 max_area <- function (
   Q_river,
   C_river,
