@@ -1,0 +1,165 @@
+---
+title: "Zulässiger Einleitabfluss"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+<style>                     
+.navbar {
+  background-color: #007c9f;
+  border-color:black;
+}
+.navbar-brand {
+color:white !important;
+}
+</style>   
+
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(data.table)
+library(plotly)
+library(DT)
+
+
+
+source("hydrology_dev.R")
+
+# Emample plot:
+
+grid <- expand_grid(A_E0 = 0:200, A_ba = seq(0, 10, .1))
+
+grid$q_zul <- 1
+
+for (i in 1:nrow(grid)){
+  grid$q_zul[i] <- get_q_zulaessig(A_ba = grid$A_ba[i], A_E0 = grid$A_E0[i])
+}
+
+
+
+
+```
+Overview
+========================================
+
+Column {data-width=200 .sidebar}
+--------------------------------------------------------------------------
+
+
+```{r}
+
+ 
+
+shiny::sliderInput("river_slider",
+            "River catchment [km²]",
+            min = 0,
+            max = 300,
+            value = c(30,50),
+            step = .1)
+
+shiny::sliderInput("planning_slider",
+                   "Planning area [km²]",
+                   min = 0,
+                   max = 10,
+                   value = c(3,5),
+                   step = .1)
+
+#shiny::selectInput("grouping_choice",
+ #                  "Gruppierung nach Spalte",
+  #                 choices = c("status", "streamed", "downloaded"))
+
+show_threshold_df <- shiny::reactive({ grid %>%
+ filter(A_E0 <= input$river_slider[2]&
+          A_E0 >= input$river_slider[1])%>%
+ filter(A_ba < input$planning_slider[2]&
+        A_ba > input$planning_slider[1]  ) 
+
+})
+
+#jobs_all <- shiny::reactive({jobs %>%
+# filter(date>=Sys.Date()-input$time_slider[2]&
+ #         date <=Sys.Date()-input$time_slider[1])})
+
+```
+
+
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Tolerable discharge as a function of catchment and planning area
+
+```{r}
+
+
+plot <- grid %>% ggplot(mapping= aes(x = A_ba, y = A_E0,  fill = q_zul))+ 
+  geom_tile()+ scale_color_viridis_c() + scale_fill_viridis_c() + 
+  ggtitle("Zulässige Einleitmenge")
+  
+ggplotly(plot)
+  
+```
+
+Column{data-width=300}
+------------------------------------------------
+
+### Annahme Gefälle
+
+
+```{r}
+renderValueBox(valueBox(prettyNum(0.1, big.mark = ','), color = "#007c9f",
+                     caption = "Gefälle des Einzugsgebiets in %", 
+                     icon = "ion-navigate"))
+
+```
+
+
+### Annahme Faktor x
+
+
+```{r}
+renderValueBox(valueBox(prettyNum(0.1, big.mark = ','), color = "#007c9f",
+                     caption = "Annahme für Faktor x (Verhältnis Hq1,pnat, Hq2,pnat)", 
+                     icon = "ion-ios-partlysunny"))
+#<i class="fas fa-cloud-rain"></i>
+```
+
+
+### Interactiver Überblick
+
+```{r}
+
+renderPlot(show_threshold_df() %>% ggplot(mapping= aes(x = A_ba, y = A_E0, col = q_zul, fill = q_zul))+ 
+  geom_tile()+ scale_color_viridis_c() + scale_fill_viridis_c() +
+  xlab("befestigte Fläche [km²]") + 
+  ylab("Einzugsgebietsfläche bis Einleitstelle [km²]") +
+  ggtitle(bquote("Zulässige Einleitmenge" ~Q[E1][','][zul]))) 
+```
+
+
+
+Data
+====================================
+
+Column
+
+--------------------------------------
+
+
+```{r}
+datatable(
+  grid, rownames = FALSE,
+  extensions = 'Buttons', options = list(
+    dom = 'Bfrtip',
+    buttons = c('copy', 'csv', 'excel', 'pdf', 'print')
+  )
+)
+```
+
+
+
+
