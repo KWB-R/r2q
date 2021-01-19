@@ -51,7 +51,7 @@ max_area <- function (
     
     #maximal connected area in entire catchment [km2]
     
-    area_con_max <- Q_rain_max / coeff_runoff / rain_year *
+    area_con_max <- Q_rain_max / coeff_runoff / rain *
       1000 / #L -> m3
       1e6 #m2 -> km2 
   }
