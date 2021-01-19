@@ -95,7 +95,7 @@ area_con_max_PO4 <- r2q::max_area(Q_river = Q_mean *3600 *24 *365.25,
                             C_threshold = threshold_PO4, 
                             C_storm = PO4_storm, 
                             coeff_runoff = coeff_runoff, 
-                            rain = rain_year)
+                            rain                                                              = rain_year)
 
 #maximal connected area in planning area in km2
 

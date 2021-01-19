@@ -12,7 +12,8 @@
 #' @param rain rain amount in mm/time (time must represent impact duration)
 #' 
 #' @return maximal connected impervious area in km2
-#'
+#' @export
+#' 
 max_area <- function (
   Q_river,
   C_river,
