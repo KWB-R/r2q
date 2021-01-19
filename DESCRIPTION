@@ -27,9 +27,10 @@ Suggests:
     covr,
     flexdashboard,
     ggplot2,
+    knitr,
+    shiny,
     tidyr,
     tidyverse,
-    knitr,
     rmarkdown
 VignetteBuilder: 
     knitr

@@ -1,0 +1,34 @@
+---
+title: "Interactive Dashboard"
+author: "Wolfgang Seis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Dashboard}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+### Install R package r2q
+
+```{r eval = FALSE}
+### Optionally: specify GitHub Personal Access Token (GITHUB_PAT)
+### See here why this might be important for you:
+### https://kwb-r.github.io/kwb.pkgbuild/articles/install.html#set-your-github_pat
+
+# Sys.setenv(GITHUB_PAT = "mysecret_access_token")
+
+# Install package "remotes" from CRAN
+if (! require("remotes")) {
+  install.packages("remotes", repos = "https://cloud.r-project.org")
+}
+
+# Install KWB package 'r2q' from GitHub
+remotes::install_github("KWB-R/r2q")
+```
+### Run dashboard locally
+
+```{r eval = FALSE}
+rmarkdown::run(file = system.file("dashboard/flexdashboard.Rmd", 
+                                   package = "r2q"))
+```
+
