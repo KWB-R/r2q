@@ -26,6 +26,8 @@ Imports:
 Suggests: 
     covr,
     flexdashboard,
+    ggplot2,
+    tidyr,
     tidyverse,
     knitr,
     rmarkdown
