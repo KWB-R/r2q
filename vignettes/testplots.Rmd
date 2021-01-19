@@ -42,11 +42,4 @@ ggplot(grid, aes(x = A_ba, y = A_E0, col = q_zul, fill = q_zul))+
 
 
 
-
-get_q_area_total <- function(dataframe=data, R_Spende=10){
-  
-  mean(dataframe$f_DA)*sum(dataframe$A_ba)*R_Spende
-  
-}
-
 ```
