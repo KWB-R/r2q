@@ -1,0 +1,10 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  dashboard: dashboard.html
+  documention: documention.html
+  p_annual: p_annual.html
+  testplots: testplots.html
+last_built: 2021-01-19T13:21Z
+
