@@ -12,6 +12,11 @@ Authors@R:
              role = "aut",
              email = "andreas.matzinger@kompetenz-wasser.de",
              comment = c(ORCID = "0000-0001-5483-4594")),
+      person(given = "Michael",
+             family = "Rustler",
+             role = c("ctb", "rev"),
+             email = "michael.rustler@kompetenz-wasser.de",
+             comment = c(ORCID = "0000-0003-0647-7726"))
       person(given = "R2Q",
              role = "fnd"),
       person(given = "Kompetenzzentrum Wasser Berlin gGmbH (KWB)",
