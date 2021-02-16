@@ -27,34 +27,44 @@ library(DT)
 
 # Example plot:
 
-grid <- tidyr::expand_grid(A_E0 = 0:200, A_ba = seq(0, 10, .1))
+grid <- tidyr::expand_grid(A_E0 = 1:200, A_ba = seq(.1, 10, .1))
 
 grid$q_zul <- 1
+grid$allowed_Aba <- 1
+grid$allowed_fDA <- 1
+
 
 for (i in 1:nrow(grid)){
+
   grid$q_zul[i] <- r2q::get_q_zulaessig(A_ba = grid$A_ba[i], A_E0 = grid$A_E0[i])
+  grid$allowed_Aba[i] <- r2q::get_allowed_area(q_zul = grid$q_zul[i])
+  grid$allowed_fDA[i] <- r2q::get_average_runoff_coef(A_ba = grid$A_ba[i], 
+                                                 q_zul = grid$q_zul[i],
+                                                 R_Spende = 150)
+
 }
 
 ```
 Overview
 ========================================
 
-Column {data-width=200 .sidebar}
+Column {data-width=300 .sidebar}
 --------------------------------------------------------------------------
 
+### Sliders
 
 ```{r}
 
 shiny::sliderInput("river_slider",
             "River catchment [km²]",
-            min = 0,
+            min = 1,
             max = 300,
             value = c(30,50),
             step = .1)
 
 shiny::sliderInput("planning_slider",
                    "Planning area [km²]",
-                   min = 0,
+                   min = 0.1,
                    max = 10,
                    value = c(3,5),
                    step = .1)
@@ -75,11 +85,12 @@ show_threshold_df <- shiny::reactive({ grid %>%
 # filter(date>=Sys.Date()-input$time_slider[2]&
  #         date <=Sys.Date()-input$time_slider[1])})
 
+
 ```
 
 
 
-Column {data-width=500}
+Column {data-width=350}
 -----------------------------------------------------------------------
 
 ### Tolerable discharge as a function of catchment and planning area
@@ -97,8 +108,6 @@ plotly::ggplotly(plot)
   
 ```
 
-Column{data-width=300}
-------------------------------------------------
 
 ### Annahme Gefälle
 
@@ -127,8 +136,32 @@ flexdashboard::renderValueBox(
 #<i class="fas fa-cloud-rain"></i>
 ```
 
+### Regensprende: 150l/s*ha
 
-### Interactiver Überblick
+```{r}
+renderValueBox(valueBox(prettyNum(150, big.mark = ','), color = "#007c9f",
+                     caption = "Annahme für Regenspende rf", 
+                     icon = "ion-ios-partlysunny"))
+#<i class="fas fa-cloud-rain"></i>
+```
+
+
+
+### fd: 0.7
+
+```{r}
+renderValueBox(valueBox(prettyNum(0.7, big.mark = ','), color = "#007c9f",
+                     caption = "Annahme für durchläsige befestigte Fläche", 
+                     icon = "ion-ios-partlysunny"))
+#<i class="fas fa-cloud-rain"></i>
+```
+
+
+Column{data-width=350}
+------------------------------------------------
+
+
+### Tolerierbare angeschlossene Fläche
 
 ```{r}
 
@@ -140,8 +173,36 @@ scale_fill_viridis_c() +
 xlab("befestigte Fläche [km²]") + 
 ylab("Einzugsgebietsfläche bis Einleitstelle [km²]") +
 ggtitle(bquote("Zulässige Einleitmenge" ~Q[E1][','][zul]))) 
+
+
+plot <- grid %>% 
+ggplot(mapping= aes(x = A_ba, y = A_E0,  fill = allowed_Aba)) + 
+geom_tile()+ scale_color_viridis_c() + scale_fill_viridis_c() + 
+ggtitle("Zulässige befestigte Fläche für fD = 0.7")
+  
+ggplotly(plot)
+
 ```
 
+### Abminderungswerte in Abhängikeit der Fläche
+
+
+```{r}
+
+#renderPlot(show_threshold_df() %>% ggplot(mapping= aes(x = A_ba, y = A_E0, col = q_zul, fill = q_zul))+ 
+ # geom_tile()+ scale_color_viridis_c() + scale_fill_viridis_c() +
+#  xlab("befestigte Fläche [km²]") + 
+#  ylab("Einzugsgebietsfläche bis Einleitstelle [km²]") +
+#  ggtitle(bquote("Zulässige Einleitmenge" ~Q[E1][','][zul]))) 
+
+plot <- grid %>% ggplot(mapping= aes(x = A_ba, y = A_E0,  fill = allowed_fDA))+ 
+  geom_tile() + 
+  ggtitle("Zulässiger durchschnittlicher Abminderungswert")
+  
+ggplotly(plot)
+
+
+```
 
 
 Data
