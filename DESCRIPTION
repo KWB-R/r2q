@@ -27,14 +27,18 @@ License: MIT + file LICENSE
 URL: https://github.com/KWB-R/r2q
 BugReports: https://github.com/KWB-R/r2q/issues
 Imports: 
-    magrittr
+    dplyr,
+    magrittr,
+    rlang,
+    sf,
+    tidyr
 Suggests: 
     covr,
     flexdashboard,
     ggplot2,
+    ggplotly,
     knitr,
     shiny,
-    tidyr,
     tidyverse,
     rmarkdown
 VignetteBuilder: 
