@@ -14,16 +14,30 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-```{r  message=FALSE}
+
+## Herne
+
+```{r example_herne, message=FALSE}
 link_to_coord_help <- "https://epsg.io/transform#s_srs=4326&t_srs=3034"
 
  
 # Example default values Herne
-r2q::get_KOSTRA()
- 
+herne <- r2q::get_KOSTRA()
+
+plotly::ggplotly(herne$plot)
+herne$data
+```
+
+## Berlin
+
+```{r example_berlin, message=FALSE}
 # Example 10 min for Berlin
-r2q::get_KOSTRA(coord_vector = c(4217676.98, 2862423.69),
+berlin <- r2q::get_KOSTRA(coord_vector = c(4217676.98, 2862423.69),
                 duration_string = "0010",
                 location_name = "Berlin", 
                 plot = TRUE)
+
+plotly::ggplotly(berlin$plot)
+
+berlin$data
 ```

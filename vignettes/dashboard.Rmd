@@ -3,7 +3,7 @@ title: "Interactive Dashboard"
 author: "Wolfgang Seis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Dashboard}
+  %\VignetteIndexEntry{Interactive Dashboard}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -8,7 +8,8 @@
 #' @param duration_string default: "0060"
 #' @param plot boolean (TRUE for plotting or FALSE if plotting is not required) 
 #'
-#' @return Return numeric results (and also plot if parameter plot = TRUE)
+#' @return Return list with elements "plot" and "data" (numeric results) 
+#' and also produce a ggplot2 plot if parameter plot = TRUE)
 #' @export
 #' @importFrom sf st_read st_sfc st_crs st_as_sf st_contains st_set_geometry 
 #' st_point
@@ -17,17 +18,19 @@
 #' @importFrom rlang .data
 #' @importFrom tidyr gather
 #' @examples 
-#'   \dontrun{
-#'   link_to_coord_help <- "https://epsg.io/transform#s_srs=4326&t_srs=3034"
+#' link_to_coord_help <- "https://epsg.io/transform#s_srs=4326&t_srs=3034"
 #'   
-#'   # Example default values Herne
-#'   get_KOSTRA()
+#' # Example default values Herne
+#' herne <- get_KOSTRA()
+#' herne$plot
+#' herne$data
 #'   
-#'   # Example 10 min for Berlin
-#'   get_KOSTRA(coord_vector = c(4217676.98, 2862423.69),
-#'   duration_string = "0010",
-#'   location_name = "Berlin", plot = TRUE)
-#'   }
+#' # Example 10 min for Berlin
+#' berlin <- get_KOSTRA(coord_vector = c(4217676.98, 2862423.69),
+#' duration_string = "0010", location_name = "Berlin", plot = TRUE)
+#' berlin$plot
+#' berlin$data
+#' 
 get_KOSTRA <- function(path = system.file("extdata/KOSTRA", package = "r2q"), # path to shapefile
                        coord_vector = c(3813634.44, 2753912.50), # 
                        location_name = "Herne",
@@ -84,7 +87,9 @@ get_KOSTRA <- function(path = system.file("extdata/KOSTRA", package = "r2q"), # 
     }
 
   # Return numeric results  
-  return(df)
+  return(list(plot = p, 
+              data = df)
+         )
 }
 
 
