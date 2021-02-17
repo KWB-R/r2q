@@ -12,6 +12,7 @@
 #' @export
 #' @importFrom sf st_read st_sfc st_crs st_as_sf st_contains st_set_geometry 
 #' st_point
+#' @import ggplot2
 #' @importFrom dplyr select mutate
 #' @importFrom rlang .data
 #' @importFrom tidyr gather
@@ -52,10 +53,10 @@ get_KOSTRA <- function(path = system.file("extdata/KOSTRA", package = "r2q"), # 
     # Clean, summarize and calculate rain intensity
     df <- d_herne %>% 
       sf::st_set_geometry(NULL) %>% 
-      dplyr::select(- .data$INDEX_RC) %>% 
-      tidyr::gather(.data$Jaehrlichkeit, .data$Bemessungsniederschlag) %>%  
-      dplyr::mutate(Regenspende = .data$Bemessungsniederschlag*10000 / (as.numeric(duration_string)*60)) %>% 
-      tidyr::gather( .data$Kategorie, .data$Wert, - .data$Jaehrlichkeit)
+      dplyr::select(- "INDEX_RC") %>% 
+      tidyr::gather("Jaehrlichkeit", "Bemessungsniederschlag") %>%  
+      dplyr::mutate(Regenspende = Bemessungsniederschlag * 10000 / (as.numeric(duration_string)*60)) %>% 
+      tidyr::gather( "Kategorie", "Wert", - "Jaehrlichkeit")
     
     # converting to factor for automated labelling in ggplot
     df$Kategorie <- factor(df$Kategorie, 
@@ -78,7 +79,7 @@ get_KOSTRA <- function(path = system.file("extdata/KOSTRA", package = "r2q"), # 
         ggplot2::coord_flip() +
         ggplot2::theme_grey(base_size = 13) +
         ggplot2::theme(legend.position = "bottom") +
-        ylab("") 
+        ggplot2::ylab("") 
     print(p)
     }
 
