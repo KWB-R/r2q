@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 ## Herne
 
-```{r example_herne, message=FALSE}
+```{r example_herne}
 link_to_coord_help <- "https://epsg.io/transform#s_srs=4326&t_srs=3034"
 
  
@@ -30,7 +30,7 @@ knitr::kable(herne$data)
 
 ## Berlin
 
-```{r example_berlin, message=FALSE}
+```{r example_berlin}
 # Example 10 min for Berlin
 berlin <- r2q::get_KOSTRA(coord_vector = c(4217676.98, 2862423.69),
                 duration_string = "0010",
