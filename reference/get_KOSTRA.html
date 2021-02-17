@@ -184,20 +184,69 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Return numeric results (and also plot if parameter plot = TRUE)</p>
+    <p>Return list with elements "plot" and "data" (numeric results)
+and also produce a ggplot2 plot if parameter plot = TRUE)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>  <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>link_to_coord_help</span> <span class='op'>&lt;-</span> <span class='st'>"https://epsg.io/transform#s_srs=4326&amp;t_srs=3034"</span>
+    <pre class="examples"><div class='input'><span class='va'>link_to_coord_help</span> <span class='op'>&lt;-</span> <span class='st'>"https://epsg.io/transform#s_srs=4326&amp;t_srs=3034"</span>
   
-  <span class='co'># Example default values Herne</span>
-  <span class='fu'>get_KOSTRA</span><span class='op'>(</span><span class='op'>)</span>
-  
-  <span class='co'># Example 10 min for Berlin</span>
-  <span class='fu'>get_KOSTRA</span><span class='op'>(</span>coord_vector <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4217676.98</span>, <span class='fl'>2862423.69</span><span class='op'>)</span>,
-  duration_string <span class='op'>=</span> <span class='st'>"0010"</span>,
-  location_name <span class='op'>=</span> <span class='st'>"Berlin"</span>, plot <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='op'>}</span>
+<span class='co'># Example default values Herne</span>
+<span class='va'>herne</span> <span class='op'>&lt;-</span> <span class='fu'>get_KOSTRA</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Reading layer `StatRR_KOSTRA-DWD-2010R_D0060' from data source `/Users/runner/work/_temp/Library/r2q/extdata/KOSTRA/GIS_KOSTRA-DWD-2010R_D0060' using driver `ESRI Shapefile'
+#&gt; Simple feature collection with 8453 features and 10 fields
+#&gt; geometry type:  POLYGON
+#&gt; dimension:      XY
+#&gt; bbox:           xmin: 3710675 ymin: 2271848 xmax: 4354525 ymax: 3149248
+#&gt; projected CRS:  ETRS89_LCC_Europe</div><div class='img'><img src='get_KOSTRA-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>herne</span><span class='op'>$</span><span class='va'>plot</span>
+</div><div class='img'><img src='get_KOSTRA-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>herne</span><span class='op'>$</span><span class='va'>data</span>
+</div><div class='output co'>#&gt;    Jaehrlichkeit                  Kategorie      Wert
+#&gt; 1            1 a Bemessungniederschlag [mm]  15.90000
+#&gt; 2            2 a Bemessungniederschlag [mm]  21.20000
+#&gt; 3            3 a Bemessungniederschlag [mm]  24.40000
+#&gt; 4            5 a Bemessungniederschlag [mm]  28.30000
+#&gt; 5           10 a Bemessungniederschlag [mm]  33.60000
+#&gt; 6           20 a Bemessungniederschlag [mm]  39.00000
+#&gt; 7           30 a Bemessungniederschlag [mm]  42.10000
+#&gt; 8           50 a Bemessungniederschlag [mm]  46.10000
+#&gt; 9          100 a Bemessungniederschlag [mm]  51.40000
+#&gt; 10           1 a   Regenspende [ l/(s*ha) ]  44.16667
+#&gt; 11           2 a   Regenspende [ l/(s*ha) ]  58.88889
+#&gt; 12           3 a   Regenspende [ l/(s*ha) ]  67.77778
+#&gt; 13           5 a   Regenspende [ l/(s*ha) ]  78.61111
+#&gt; 14          10 a   Regenspende [ l/(s*ha) ]  93.33333
+#&gt; 15          20 a   Regenspende [ l/(s*ha) ] 108.33333
+#&gt; 16          30 a   Regenspende [ l/(s*ha) ] 116.94444
+#&gt; 17          50 a   Regenspende [ l/(s*ha) ] 128.05556
+#&gt; 18         100 a   Regenspende [ l/(s*ha) ] 142.77778</div><div class='input'>  
+<span class='co'># Example 10 min for Berlin</span>
+<span class='va'>berlin</span> <span class='op'>&lt;-</span> <span class='fu'>get_KOSTRA</span><span class='op'>(</span>coord_vector <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4217676.98</span>, <span class='fl'>2862423.69</span><span class='op'>)</span>,
+duration_string <span class='op'>=</span> <span class='st'>"0010"</span>, location_name <span class='op'>=</span> <span class='st'>"Berlin"</span>, plot <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Reading layer `StatRR_KOSTRA-DWD-2010R_D0010' from data source `/Users/runner/work/_temp/Library/r2q/extdata/KOSTRA/GIS_KOSTRA-DWD-2010R_D0010' using driver `ESRI Shapefile'
+#&gt; Simple feature collection with 8453 features and 10 fields
+#&gt; geometry type:  POLYGON
+#&gt; dimension:      XY
+#&gt; bbox:           xmin: 3710675 ymin: 2271848 xmax: 4354525 ymax: 3149248
+#&gt; projected CRS:  ETRS89_LCC_Europe</div><div class='img'><img src='get_KOSTRA-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>berlin</span><span class='op'>$</span><span class='va'>plot</span>
+</div><div class='img'><img src='get_KOSTRA-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>berlin</span><span class='op'>$</span><span class='va'>data</span>
+</div><div class='output co'>#&gt;    Jaehrlichkeit                  Kategorie     Wert
+#&gt; 1            1 a Bemessungniederschlag [mm]   8.7000
+#&gt; 2            2 a Bemessungniederschlag [mm]  10.9000
+#&gt; 3            3 a Bemessungniederschlag [mm]  12.2000
+#&gt; 4            5 a Bemessungniederschlag [mm]  13.9000
+#&gt; 5           10 a Bemessungniederschlag [mm]  16.2000
+#&gt; 6           20 a Bemessungniederschlag [mm]  18.4000
+#&gt; 7           30 a Bemessungniederschlag [mm]  19.7000
+#&gt; 8           50 a Bemessungniederschlag [mm]  21.4000
+#&gt; 9          100 a Bemessungniederschlag [mm]  23.6000
+#&gt; 10           1 a   Regenspende [ l/(s*ha) ] 145.0000
+#&gt; 11           2 a   Regenspende [ l/(s*ha) ] 181.6667
+#&gt; 12           3 a   Regenspende [ l/(s*ha) ] 203.3333
+#&gt; 13           5 a   Regenspende [ l/(s*ha) ] 231.6667
+#&gt; 14          10 a   Regenspende [ l/(s*ha) ] 270.0000
+#&gt; 15          20 a   Regenspende [ l/(s*ha) ] 306.6667
+#&gt; 16          30 a   Regenspende [ l/(s*ha) ] 328.3333
+#&gt; 17          50 a   Regenspende [ l/(s*ha) ] 356.6667
+#&gt; 18         100 a   Regenspende [ l/(s*ha) ] 393.3333</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
