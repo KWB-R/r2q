@@ -167,7 +167,6 @@ Der hydraulische Nachweis ist erbracht wenn die Summe der Einleitescheitel Q~E1~
 
 ```{r  message=FALSE}
 
-library(tidyverse)
 
 A_befestigt <- 0:200 #ha
 A_EZG1 <- 50 # km²
@@ -191,6 +190,7 @@ df <- data.frame(A_befestigt = A_befestigt,
                  EZG = as.factor(rep(c(A_EZG1, A_EZG2), each = 201)),
                  QE1_zul = c(QE1_zul, QE1_zul2))
 
+library(ggplot2)
 ggplot(df, aes( x = A_befestigt, y = QE1_zul, col = EZG)) + geom_line(lwd = 1.5)+
   ggtitle("Befestigte Fläche gegen QE1, zulässig", 
           subtitle = "Wert für Hq1_pnat aus Hüllkurven mit 25 l/(s*km²) geschätzt") +

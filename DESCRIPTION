@@ -36,10 +36,9 @@ Suggests:
     covr,
     flexdashboard,
     ggplot2,
-    ggplotly,
     knitr,
+    plotly,
     shiny,
-    tidyverse,
     rmarkdown
 VignetteBuilder: 
     knitr
