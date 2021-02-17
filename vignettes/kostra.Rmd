@@ -25,7 +25,7 @@ link_to_coord_help <- "https://epsg.io/transform#s_srs=4326&t_srs=3034"
 herne <- r2q::get_KOSTRA()
 
 plotly::ggplotly(herne$plot)
-herne$data
+knitr::kable(herne$data)
 ```
 
 ## Berlin
@@ -39,5 +39,5 @@ berlin <- r2q::get_KOSTRA(coord_vector = c(4217676.98, 2862423.69),
 
 plotly::ggplotly(berlin$plot)
 
-berlin$data
+knitr::kable(berlin$data)
 ```
