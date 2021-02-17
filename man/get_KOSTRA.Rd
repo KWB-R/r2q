@@ -10,7 +10,7 @@ get_KOSTRA(
   location_name = "Herne",
   base_name = "GIS_KOSTRA-DWD-2010R_D",
   duration_string = "0060",
-  plot = T
+  plot = TRUE
 )
 }
 \arguments{
@@ -42,6 +42,6 @@ Get KOSTRA
   # Example 10 min for Berlin
   get_KOSTRA(coord_vector = c(4217676.98, 2862423.69),
   duration_string = "0010",
-  location_name = "Berlin", plot = T)
+  location_name = "Berlin", plot = TRUE)
   }
 }

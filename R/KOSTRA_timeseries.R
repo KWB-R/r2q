@@ -26,14 +26,14 @@
 #'   # Example 10 min for Berlin
 #'   get_KOSTRA(coord_vector = c(4217676.98, 2862423.69),
 #'   duration_string = "0010",
-#'   location_name = "Berlin", plot = T)
+#'   location_name = "Berlin", plot = TRUE)
 #'   }
 get_KOSTRA <- function(path = system.file("extdata/KOSTRA", package = "r2q"), # path to shapefile
                        coord_vector = c(3813634.44, 2753912.50), # 
                        location_name = "Herne",
                        base_name =  "GIS_KOSTRA-DWD-2010R_D", 
                        duration_string = "0060",
-                       plot = T) {
+                       plot = TRUE) {
     
     # Loading shapefile from folder
     d60 <- sf::st_read(paste0(path, "/", base_name, duration_string))
