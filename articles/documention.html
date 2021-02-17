@@ -60,6 +60,9 @@
       <a href="../articles/documention.html">Bewertung Regenwassereinleitung</a>
     </li>
     <li>
+      <a href="../articles/kostra.html">KOSTRA</a>
+    </li>
+    <li>
       <a href="../articles/p_annual.html">P Annual</a>
     </li>
     <li>
@@ -215,7 +218,6 @@ Q<sub>E1,zul</sub>: zulässiger kritischer jährlicher Einleitabfluss [L/s]<br><
 <p><strong>Beispielrechnung</strong></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 
 <span class="va">A_befestigt</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">200</span> <span class="co">#ha</span>
 <span class="va">A_EZG1</span> <span class="op">&lt;-</span> <span class="fl">50</span> <span class="co"># km²</span>
@@ -239,11 +241,12 @@ Q<sub>E1,zul</sub>: zulässiger kritischer jährlicher Einleitabfluss [L/s]<br><
                  EZG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">A_EZG1</span>, <span class="va">A_EZG2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">201</span><span class="op">)</span><span class="op">)</span>,
                  QE1_zul <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">QE1_zul</span>, <span class="va">QE1_zul2</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">ggplot</span><span class="op">(</span><span class="va">df</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">A_befestigt</span>, y <span class="op">=</span> <span class="va">QE1_zul</span>, col <span class="op">=</span> <span class="va">EZG</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span>lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">+</span>
-  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Befestigte Fläche gegen QE1, zulässig"</span>, 
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span> x <span class="op">=</span> <span class="va">A_befestigt</span>, y <span class="op">=</span> <span class="va">QE1_zul</span>, col <span class="op">=</span> <span class="va">EZG</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Befestigte Fläche gegen QE1, zulässig"</span>, 
           subtitle <span class="op">=</span> <span class="st">"Wert für Hq1_pnat aus Hüllkurven mit 25 l/(s*km²) geschätzt"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_color_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"50"</span><span class="op">=</span><span class="st">"blue"</span>, <span class="st">"100"</span><span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> <span class="fu">xlab</span><span class="op">(</span><span class="st">"angeschlossene befestigte Fläche [ha]"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">ylab</span><span class="op">(</span><span class="st">"zulässiger jährlicher Einleitabfluss [L/s]"</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"50"</span><span class="op">=</span><span class="st">"blue"</span>, <span class="st">"100"</span><span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"angeschlossene befestigte Fläche [ha]"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"zulässiger jährlicher Einleitabfluss [L/s]"</span><span class="op">)</span></code></pre></div>
 <p><img src="documention_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <p><br></p>
 </div>
