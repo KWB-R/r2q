@@ -1,0 +1,43 @@
+---
+title: "KOSTRA"
+author: "Wolfgang Seis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{KOSTRA}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Herne
+
+```{r example_herne}
+link_to_coord_help <- "https://epsg.io/transform#s_srs=4326&t_srs=3034"
+
+ 
+# Example default values Herne
+herne <- r2q::get_KOSTRA()
+
+plotly::ggplotly(herne$plot)
+knitr::kable(herne$data)
+```
+
+## Berlin
+
+```{r example_berlin}
+# Example 10 min for Berlin
+berlin <- r2q::get_KOSTRA(coord_vector = c(4217676.98, 2862423.69),
+                duration_string = "0010",
+                location_name = "Berlin", 
+                plot = TRUE)
+
+plotly::ggplotly(berlin$plot)
+
+knitr::kable(berlin$data)
+```
