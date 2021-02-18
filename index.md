@@ -4,8 +4,6 @@
 [![Project Status](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/r2q)]()
 
-# r2q
-
 R Package with Functions and Exchange for Project
 R2Q.
 
@@ -28,9 +26,3 @@ if (! require("remotes")) {
 # Install KWB package 'r2q' from GitHub
 remotes::install_github("KWB-R/r2q")
 ```
-
-## Documentation
-
-Release: [https://kwb-r.github.io/r2q](https://kwb-r.github.io/r2q)
-
-Development: [https://kwb-r.github.io/r2q/dev](https://kwb-r.github.io/r2q/dev)

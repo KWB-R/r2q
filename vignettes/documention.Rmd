@@ -1,15 +1,20 @@
 ---
 title: "Bewertung Regenwassereinleitung"
 author: "Wolfgang Seis"
-date: "22 11 2020"
-output:
-  html_document: default
-  word_document: default
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Bewertung Regenwassereinleitung}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 ```
+
 
 ### 1. Zielstellung
 
@@ -162,7 +167,6 @@ Der hydraulische Nachweis ist erbracht wenn die Summe der Einleitescheitel Q~E1~
 
 ```{r  message=FALSE}
 
-library(tidyverse)
 
 A_befestigt <- 0:200 #ha
 A_EZG1 <- 50 # km²
@@ -186,6 +190,7 @@ df <- data.frame(A_befestigt = A_befestigt,
                  EZG = as.factor(rep(c(A_EZG1, A_EZG2), each = 201)),
                  QE1_zul = c(QE1_zul, QE1_zul2))
 
+library(ggplot2)
 ggplot(df, aes( x = A_befestigt, y = QE1_zul, col = EZG)) + geom_line(lwd = 1.5)+
   ggtitle("Befestigte Fläche gegen QE1, zulässig", 
           subtitle = "Wert für Hq1_pnat aus Hüllkurven mit 25 l/(s*km²) geschätzt") +
@@ -303,6 +308,7 @@ wobei HQ1~gemessen~ aus Hüllkurven für H~q1,nat~ und der Einzugsgebietsfläche
 ### 3.3 Flächenbezug und relevante Parameter
 
 Zu klären wäre welche PArameter ergänzt werden und ob die Flächenkategorien aus DWA 102-2 für diese neuen Stoffgruppen angepasst werden.
+
 
 
 

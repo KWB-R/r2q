@@ -12,9 +12,8 @@
 #' @param rain rain amount in mm/time (time must represent impact duration)
 #' 
 #' @return maximal connected impervious area in km2
-#'
-#' @examples
-#'
+#' @export
+#' 
 max_area <- function (
   Q_river,
   C_river,
@@ -44,7 +43,7 @@ max_area <- function (
   }
   
   else {
-  
+    
     ##maximal connected impervious area
     
     #maximal allowable Q_rain [m3/time]
@@ -53,7 +52,7 @@ max_area <- function (
     
     #maximal connected area in entire catchment [km2]
     
-    area_con_max <- Q_rain_max / coeff_runoff / rain_year *
+    area_con_max <- Q_rain_max / coeff_runoff / rain *
       1000 / #L -> m3
       1e6 #m2 -> km2 
   }

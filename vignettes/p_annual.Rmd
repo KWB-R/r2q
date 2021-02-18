@@ -1,5 +1,20 @@
-source(file = "r2q_functions.R")
+---
+title: "P Annual"
+author: "Wolfgang Seis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{P Annual}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+```{r  message=FALSE}
 ### get data------------------------------
 
 #river or lake
@@ -58,7 +73,7 @@ if (SUW_type == "river") {
 ##maximal connected impervious area for TP
 
 #for entire river catchment in km2
-area_con_max_TP <- max_area(Q_river = Q_mean *3600 *24 *365.25, 
+area_con_max_TP <- r2q::max_area(Q_river = Q_mean *3600 *24 *365.25, 
                          C_river = TP, 
                          C_threshold = threshold_TP, 
                          C_storm = TP_storm, 
@@ -75,15 +90,16 @@ area_plan_con_max_TP <- area_plan_con / area_con * area_con_max_TP
 ##maximal connected impervious area for PO4
 
 #for entire river catchment in km2
-area_con_max_PO4 <- max_area(Q_river = Q_mean *3600 *24 *365.25, 
+area_con_max_PO4 <- r2q::max_area(Q_river = Q_mean *3600 *24 *365.25, 
                             C_river = PO4, 
                             C_threshold = threshold_PO4, 
                             C_storm = PO4_storm, 
                             coeff_runoff = coeff_runoff, 
-                            rain = rain_year)
+                            rain                                                              = rain_year)
 
 #maximal connected area in planning area in km2
 
 area_con <- area_catch * coeff_imp
 
 area_plan_con_max_PO4 <- area_plan_con / area_con * area_con_max_PO4
+```

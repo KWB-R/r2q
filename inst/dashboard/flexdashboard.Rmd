@@ -20,18 +20,14 @@ color:white !important;
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
-library(tidyverse)
-library(data.table)
+library(tidyr)
+library(ggplot2)
 library(plotly)
 library(DT)
 
+# Example plot:
 
-
-source("hydrology_dev.R")
-
-# Emample plot:
-
-grid <- expand_grid(A_E0 = 1:200, A_ba = seq(.1, 10, .1))
+grid <- tidyr::expand_grid(A_E0 = 1:200, A_ba = seq(.1, 10, .1))
 
 grid$q_zul <- 1
 grid$allowed_Aba <- 1
@@ -39,15 +35,14 @@ grid$allowed_fDA <- 1
 
 
 for (i in 1:nrow(grid)){
-  grid$q_zul[i] <- get_q_zulaessig(A_ba = grid$A_ba[i], A_E0 = grid$A_E0[i])
-  grid$allowed_Aba[i] <- get_allowed_area(q_zul = grid$q_zul[i])
-  grid$allowed_fDA[i] <- get_average_runoff_coef(A_ba = grid$A_ba[i], 
+
+  grid$q_zul[i] <- r2q::get_q_zulaessig(A_ba = grid$A_ba[i], A_E0 = grid$A_E0[i])
+  grid$allowed_Aba[i] <- r2q::get_allowed_area(q_zul = grid$q_zul[i])
+  grid$allowed_fDA[i] <- r2q::get_average_runoff_coef(A_ba = grid$A_ba[i], 
                                                  q_zul = grid$q_zul[i],
                                                  R_Spende = 150)
+
 }
-
-
-
 
 ```
 Overview
@@ -59,8 +54,6 @@ Column {data-width=300 .sidebar}
 ### Sliders
 
 ```{r}
-
- 
 
 shiny::sliderInput("river_slider",
             "River catchment [km²]",
@@ -104,12 +97,14 @@ Column {data-width=350}
 
 ```{r}
 
-
-plot <- grid %>% ggplot(mapping= aes(x = A_ba, y = A_E0,  fill = q_zul))+ 
-  geom_tile()+ scale_color_viridis_c() + scale_fill_viridis_c() + 
+plot <- grid %>% 
+  ggplot(mapping= aes(x = A_ba, y = A_E0,  fill = q_zul))+ 
+  geom_tile()+ 
+  scale_color_viridis_c() + 
+  scale_fill_viridis_c() + 
   ggtitle("Zulässige Einleitmenge")
   
-ggplotly(plot)
+plotly::ggplotly(plot)
   
 ```
 
@@ -118,9 +113,12 @@ ggplotly(plot)
 
 
 ```{r}
-renderValueBox(valueBox(prettyNum(0.1, big.mark = ','), color = "#007c9f",
-                     caption = "Gefälle des Einzugsgebiets in %", 
-                     icon = "ion-navigate"))
+flexdashboard::renderValueBox(
+  flexdashboard::valueBox(prettyNum(0.1, big.mark = ','), 
+                          color = "#007c9f",
+                          caption = "Gefälle des Einzugsgebiets in %",
+                          icon = "ion-navigate")
+  )
 
 ```
 
@@ -129,9 +127,12 @@ renderValueBox(valueBox(prettyNum(0.1, big.mark = ','), color = "#007c9f",
 
 
 ```{r}
-renderValueBox(valueBox(prettyNum(0.1, big.mark = ','), color = "#007c9f",
-                     caption = "Annahme für Faktor x (Verhältnis Hq1,pnat, Hq2,pnat)", 
-                     icon = "ion-ios-partlysunny"))
+flexdashboard::renderValueBox(
+  flexdashboard::valueBox(prettyNum(0.1, big.mark = ','),
+                          color = "#007c9f",
+                          caption = "Annahme für Faktor x (Verhältnis Hq1,pnat, Hq2,pnat)",
+                          icon = "ion-ios-partlysunny")
+  )
 #<i class="fas fa-cloud-rain"></i>
 ```
 
@@ -164,18 +165,22 @@ Column{data-width=350}
 
 ```{r}
 
-#renderPlot(show_threshold_df() %>% ggplot(mapping= aes(x = A_ba, y = A_E0, col = q_zul, fill = q_zul))+ 
- # geom_tile()+ scale_color_viridis_c() + scale_fill_viridis_c() +
-#  xlab("befestigte Fläche [km²]") + 
-#  ylab("Einzugsgebietsfläche bis Einleitstelle [km²]") +
-#  ggtitle(bquote("Zulässige Einleitmenge" ~Q[E1][','][zul]))) 
+shiny::renderPlot(show_threshold_df() %>% 
+ggplot(mapping= aes(x = A_ba, y = A_E0, col = q_zul, fill = q_zul))+ 
+geom_tile() + 
+scale_color_viridis_c() + 
+scale_fill_viridis_c() +
+xlab("befestigte Fläche [km²]") + 
+ylab("Einzugsgebietsfläche bis Einleitstelle [km²]") +
+ggtitle(bquote("Zulässige Einleitmenge" ~Q[E1][','][zul]))) 
 
-plot <- grid %>% ggplot(mapping= aes(x = A_ba, y = A_E0,  fill = allowed_Aba))+ 
-  geom_tile()+ scale_color_viridis_c() + scale_fill_viridis_c() + 
-  ggtitle("Zulässige befestigte Fläche für fD = 0.7")
+
+plot <- grid %>% 
+ggplot(mapping= aes(x = A_ba, y = A_E0,  fill = allowed_Aba)) + 
+geom_tile()+ scale_color_viridis_c() + scale_fill_viridis_c() + 
+ggtitle("Zulässige befestigte Fläche für fD = 0.7")
   
 ggplotly(plot)
-
 
 ```
 
@@ -209,11 +214,12 @@ Column
 
 
 ```{r}
-datatable(
-  grid, rownames = FALSE,
-  extensions = 'Buttons', options = list(
-    dom = 'Bfrtip',
-    buttons = c('copy', 'csv', 'excel', 'pdf', 'print')
+DT::datatable(
+  grid, 
+  rownames = FALSE,
+  extensions = 'Buttons', 
+  options = list(dom = 'Bfrtip',
+                 buttons = c('copy', 'csv', 'excel', 'pdf', 'print')
   )
 )
 ```
