@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • r2q</title>
+<title>get substance thresholds for SUW during rain events — get_thresholds • r2q</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="get substance thresholds for SUW during rain events — get_thresholds" />
+<meta property="og:description" content="assembles relevant thresholds depending on
+SUW type (river or lake) and LAWA type
+from csv tables" />
 
 
 
@@ -58,7 +61,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -132,108 +135,45 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>get substance thresholds for SUW during rain events</h1>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/get_thresholds.R'><code>R/get_thresholds.R</code></a></small>
+    <div class="hidden name"><code>get_thresholds.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>assembles relevant thresholds depending on
+SUW type (river or lake) and LAWA type
+from csv tables</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>get_thresholds</span><span class='op'>(</span><span class='va'>data.dir</span>, SUW_type <span class='op'>=</span> <span class='st'>"river"</span>, LAWA_type <span class='op'>=</span> <span class='st'>"default"</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="criteria_test.html">criteria_test()</a></code> </p>
-        </td>
-        <td><p>Checks whether hydrologic criteria are fullfilled</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_Hq1_pnat.html">get_Hq1_pnat()</a></code> </p>
-        </td>
-        <td><p>Calculate natural runoff based on slope of landscape</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_KOSTRA.html">get_KOSTRA()</a></code> </p>
-        </td>
-        <td><p>Get KOSTRA</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_allowed_area.html">get_allowed_area()</a></code> </p>
-        </td>
-        <td><p>Get average permeability</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_average_runoff_coef.html">get_average_runoff_coef()</a></code> </p>
-        </td>
-        <td><p>Get average runoff coefficient</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_q_area_partial.html">get_q_area_partial()</a></code> </p>
-        </td>
-        <td><p>Calculate relevant discharge to surface water (rainwater only)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_q_area_total.html">get_q_area_total()</a></code> </p>
-        </td>
-        <td><p>Calculate relevant discharge of table of areas</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_q_zulaessig.html">get_q_zulaessig()</a></code> </p>
-        </td>
-        <td><p>Calculates tolerable hydraulic burden based on natural runoff estimation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_stormwater_concentrations.html">get_stormwater_concentrations()</a></code> </p>
-        </td>
-        <td><p>get average concentrations in stormwater runoff</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_thresholds.html">get_thresholds()</a></code> </p>
-        </td>
-        <td><p>get substance thresholds for SUW during rain events</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_x.html">get_x()</a></code> </p>
-        </td>
-        <td><p>Calculate acceptable additional runoff factor x</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="max_area.html">max_area()</a></code> </p>
-        </td>
-        <td><p>calculate maximal allowable connected area in a river catchment</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data.dir</th>
+      <td><p>path where threshold tables are stored</p></td>
+    </tr>
+    <tr>
+      <th>SUW_type</th>
+      <td><p>lake or river, river is used as default</p></td>
+    </tr>
+    <tr>
+      <th>LAWA_type</th>
+      <td><p>lake or river type as described in German OGewV.
+Only main type sould be indicated (e.g. insert 11 for river type 11.1 or 11 K).
+If unknown, "default" will return typical values valid for a range of SUW.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>data.frame with acute and annual substance threshold, suitable for a given SUW body</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
