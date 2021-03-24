@@ -1,0 +1,10 @@
+VariableName;UnitsAbbreviation;Group;threshold;threshold_type;LAWA_type;Source
+Orthophosphat;mg/L;Naehrstoffe;0.05;annual;2, 3, 4, 11;OGewV 2016, Anlage 7, 2.1.2, Jahresmittel
+Orthophosphat;mg/L;Naehrstoffe;0.07;annual;5, 6, 7, 9, 10, 14, 15, 16, 17, 18, 20, 21, 23 ;OGewV 2016, Anlage 7, 2.1.2, Jahresmittel
+Orthophosphat;mg/L;Naehrstoffe;0.1;annual;11, 12, 19;OGewV 2016, Anlage 7, 2.1.2, Jahresmittel
+Orthophosphat;mg/L;Naehrstoffe;0.2;annual;22;OGewV 2016, Anlage 7, 2.1.2, Jahresmittel
+Orthophosphat;mg/L;Naehrstoffe;0.07;annual;default;abgeleitet von OGewV
+Gesamt-Phosphor;mg/L;Naehrstoffe;0.1;annual;2, 3, 4, 5, 6, 7, 9, 10, 11, 14, 16, 17, 18, 20, 21, 23;OGewV 2016, Anlage 7, 2.1.2, Jahresmittel
+Gesamt-Phosphor;mg/L;Naehrstoffe;0.15;annual;11, 12, 19;OGewV 2016, Anlage 7, 2.1.2, Jahresmittel
+Gesamt-Phosphor;mg/L;Naehrstoffe;0.3;annual;22;OGewV 2016, Anlage 7, 2.1.2, Jahresmittel
+Gesamt-Phosphor;mg/L;Naehrstoffe;0.1;annual;default;abgeleitet von OGewV
