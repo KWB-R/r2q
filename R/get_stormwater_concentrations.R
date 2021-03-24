@@ -10,6 +10,8 @@
 #' 
 #' @return data.frame with mean(x), mean (log x) and sd (log x) 
 #' @export
+#' @importFrom stats sd
+#' @importFrom utils read.table
 #' 
 get_stormwater_concentrations <- function (
   data.dir,

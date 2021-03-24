@@ -12,7 +12,7 @@
 #' 
 #' @return data.frame with acute and annual substance threshold, suitable for a given SUW body
 #' @export
-#' 
+#' @importFrom stringr str_detect
 get_thresholds <- function (
   data.dir,
   SUW_type = "river",
