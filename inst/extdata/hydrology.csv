@@ -5,4 +5,4 @@ Faktor fuer zulaessige Abflusserhoehung fuer anthropogene Einfluesse;x;;
 angeschlossene befestigte Flaeche des geschlossenen Siedlungsgebietes im oberirdischen Einzugsgebiet des Gewaessers bis zur Einleitstelle;A_ba;1;km≤
 oberirdisches Einzugsgebiet des Gewaessers bis zu Einleitstelle;A_E0;2000;km≤
 Gef‰lle des Einzugsgebiets;gefaelle;0,1;%
-maximale Flieﬂzeit;tf;360;min
+maximale Flieﬂzeit;tf;15;min
