@@ -144,27 +144,27 @@
     <p>Calculate natural runoff based on slope of landscape</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_Hq1_pnat</span><span class='op'>(</span>gefaelle <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_Hq1_pnat</span><span class='op'>(</span>slope <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>gefaelle</th>
-      <td><p>gefaelle (unit ??)</p></td>
+      <th>slope</th>
+      <td><p>slope of the planning area (unit %)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>?????</p>
+    <p>potential annual natural discharge flow (unit l*s^-1 km²^-1)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>get_Hq1_pnat</span><span class='op'>(</span>gefaelle <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in get_Hq1_pnat(gefaelle = 0.1): unused argument (gefaelle = 0.1)</span></div><div class='input'><span class='fu'>get_Hq1_pnat</span><span class='op'>(</span>gefaelle <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in get_Hq1_pnat(gefaelle = 0.5): unused argument (gefaelle = 0.5)</span></div><div class='input'><span class='fu'>get_Hq1_pnat</span><span class='op'>(</span>gefaelle <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in get_Hq1_pnat(gefaelle = 2): unused argument (gefaelle = 2)</span></div><div class='input'><span class='fu'>get_Hq1_pnat</span><span class='op'>(</span>gefaelle <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in get_Hq1_pnat(gefaelle = 50): unused argument (gefaelle = 50)</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>get_Hq1_pnat</span><span class='op'>(</span>slope<span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 65</div><div class='input'><span class='fu'>get_Hq1_pnat</span><span class='op'>(</span>slope<span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 130</div><div class='input'><span class='fu'>get_Hq1_pnat</span><span class='op'>(</span>slope <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 300</div><div class='input'><span class='fu'>get_Hq1_pnat</span><span class='op'>(</span>slope <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 300</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

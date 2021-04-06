@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate acceptable additional runoff factor x — get_x • r2q</title>
+<title>get background concentrations for SUW before rain events — get_backgrounds • r2q</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Calculate acceptable additional runoff factor x — get_x" />
-<meta property="og:description" content="Calculate acceptable additional runoff factor x" />
+<meta property="og:title" content="get background concentrations for SUW before rain events — get_backgrounds" />
+<meta property="og:description" content="loads background concentrations
+based on entry by user or default values
+from csv table" />
 
 
 
@@ -135,33 +137,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate acceptable additional runoff factor x</h1>
-    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/hydrology.R'><code>R/hydrology.R</code></a></small>
-    <div class="hidden name"><code>get_x.Rd</code></div>
+    <h1>get background concentrations for SUW before rain events</h1>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/get_background.R'><code>R/get_background.R</code></a></small>
+    <div class="hidden name"><code>get_backgrounds.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Calculate acceptable additional runoff factor x</p>
+    <p>loads background concentrations
+based on entry by user or default values
+from csv table</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_x</span><span class='op'>(</span>Hq1_pnat <span class='op'>=</span> <span class='cn'>NA</span>, Hq2_pnat <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_backgrounds</span><span class='op'>(</span><span class='va'>data.dir</span>, SUW_type <span class='op'>=</span> <span class='st'>"river"</span>, <span class='va'>substances</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Hq1_pnat</th>
-      <td><p>potential annual natural discharge flow (unit l*s^-1 km²^-1)</p></td>
+      <th>data.dir</th>
+      <td><p>path where background tables are stored</p></td>
     </tr>
     <tr>
-      <th>Hq2_pnat</th>
-      <td><p>potential biennial natural discharge flow (unit l*s^-1 km²^-1)</p></td>
+      <th>SUW_type</th>
+      <td><p>lake or river, river is used as default</p></td>
+    </tr>
+    <tr>
+      <th>substances</th>
+      <td><p>array of substances</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>dimensionless factor regulating tolerable additional anthropogenic discharge</p>
+    <p>data.frame with background concentrations</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
