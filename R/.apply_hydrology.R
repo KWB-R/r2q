@@ -65,7 +65,9 @@ if(!planning_area %>% dplyr::filter(Einheit =="ha") %>%
   
 }
 
-rainfall <- r2q::get_KOSTRA(duration_string = paste0("0", hydrology$tf))
+zeros <- paste(replicate(4-stringr::str_count(hydrology$tf), "0"), collapse = "")
+
+rainfall <- r2q::get_KOSTRA(duration_string = paste0(zeros, hydrology$tf))
 
 result <- list()
 for(i in unique(planning_area$Type)){
