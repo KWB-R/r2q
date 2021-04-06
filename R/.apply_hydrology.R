@@ -65,21 +65,31 @@ if(!planning_area %>% dplyr::filter(Einheit =="ha") %>%
   
 }
 
+
+
 zeros <- paste(replicate(4-stringr::str_count(hydrology$tf), "0"), collapse = "")
 
 rainfall <- r2q::get_KOSTRA(duration_string = paste0(zeros, hydrology$tf))
 
 result <- list()
 for(i in unique(planning_area$Type)){
-  roofs <- planning_area %>% dplyr::filter(Type == i)
-  roofs$area <- roofs$Wert[roofs$Einheit == "ha"]
+  
+  var <- planning_area %>% dplyr::filter(Type == i)
+  var$area <- var$Wert[var$Einheit == "ha"]
 
-  roofs <- roofs %>% dplyr::filter(Einheit != "ha") %>% 
+  var <- var %>% dplyr::filter(Einheit != "ha") %>% 
   dplyr::mutate(rain = rainfall$data$Wert[rainfall$data$Jaehrlichkeit == "1 a" &
            rainfall$data$Kategorie == "Regenspende [ l/(s*ha) ]"])
 
-  roofs$qe_partial <- roofs$area*roofs$Wert*roofs$fD*roofs$rain
-  result[[i]] <- roofs
+  # checking that area add to 1
+  if(!var %>% dplyr::summarise(sum(Wert) ==1)){
+    
+    stop(paste("Error: Area ratios of", i, "have to sum to 1"))
+   }
+  
+  
+  var$qe_partial <- var$area*var$Wert*var$fD*var$rain
+  result[[i]] <- var
 }
 result <- dplyr::bind_rows(result)
 
