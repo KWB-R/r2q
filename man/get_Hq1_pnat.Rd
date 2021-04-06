@@ -4,20 +4,20 @@
 \alias{get_Hq1_pnat}
 \title{Calculate natural runoff based on slope of landscape}
 \usage{
-get_Hq1_pnat(gefaelle = 0.1)
+get_Hq1_pnat(slope = 0.1)
 }
 \arguments{
-\item{gefaelle}{gefaelle (unit ??)}
+\item{slope}{slope of the planning area (unit \%)}
 }
 \value{
-?????
+potential annual natural discharge flow (unit l*s^-1 km²^-1)
 }
 \description{
 Calculate natural runoff based on slope of landscape
 }
 \examples{
-get_Hq1_pnat(gefaelle = 0.1)
-get_Hq1_pnat(gefaelle = 0.5)
-get_Hq1_pnat(gefaelle = 2)
-get_Hq1_pnat(gefaelle = 50)
+get_Hq1_pnat(slope= 0.1)
+get_Hq1_pnat(slope= 0.5)
+get_Hq1_pnat(slope = 2)
+get_Hq1_pnat(slope = 50)
 }

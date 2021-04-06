@@ -9,14 +9,14 @@ get_q_zulaessig(Hq1_pnat = get_Hq1_pnat(), x = get_x(), A_ba, A_E0)
 \arguments{
 \item{Hq1_pnat}{default: r2q::get_Hq1_pnat()}
 
-\item{x}{default: r2q::get_x(}
+\item{x}{default: r2q::get_x()}
 
-\item{A_ba}{A_ba ???}
+\item{A_ba}{connected area of planning area (km²)}
 
-\item{A_E0}{A_E0 ???}
+\item{A_E0}{catchment area until point of discharge (km²)}
 }
 \value{
-???
+tolerable discharged cumulative flow of planning area in m³/s
 }
 \description{
 Calculates tolerable hydraulic burden based on natural runoff estimation
