@@ -1,21 +1,21 @@
 #' Calculate natural runoff based on slope of landscape
 #'
-#' @param gefaelle gefaelle (unit ??)
+#' @param slope  slope of the planning area (unit %)
 #'
-#' @return ?????
+#' @return potential annual natural discharge flow (unit l*s^-1 km²^-1)
 #' @export
 #'
 #' @examples
-#' get_Hq1_pnat(gefaelle = 0.1)
-#' get_Hq1_pnat(gefaelle = 0.5)
-#' get_Hq1_pnat(gefaelle = 2)
-#' get_Hq1_pnat(gefaelle = 50)
-get_Hq1_pnat <- function(gefaelle = 0.1)
+#' get_Hq1_pnat(slope= 0.1)
+#' get_Hq1_pnat(slope= 0.5)
+#' get_Hq1_pnat(slope = 2)
+#' get_Hq1_pnat(slope = 50)
+get_Hq1_pnat <- function(slope = 0.1)
 {
-  if(gefaelle < 0.2){
+  if(slope <= 0.2){
     65
   }
-  else if (gefaelle >0.2 & gefaelle <1){
+  else if (slope>0.2 & slope <1){
     130
   }
   else{
@@ -27,10 +27,10 @@ get_Hq1_pnat <- function(gefaelle = 0.1)
 
 #' Calculate acceptable additional runoff factor x
 #'
-#' @param Hq1_pnat Hq1_pnat ???
-#' @param Hq2_pnat Hq2_pnat ???
+#' @param Hq1_pnat potential annual natural discharge flow (unit l*s^-1 km²^-1)
+#' @param Hq2_pnat potential biennial natural discharge flow (unit l*s^-1 km²^-1)
 #'
-#' @return ???
+#' @return dimensionless factor regulating tolerable additional anthropogenic discharge
 #' @export
 #'
 get_x <- function(Hq1_pnat=NA, Hq2_pnat = NA) {
@@ -40,7 +40,7 @@ get_x <- function(Hq1_pnat=NA, Hq2_pnat = NA) {
   }
     
   else{  
-    Hq2_pnat/Hq1_pnat-1
+    Hq2_pnat / Hq1_pnat-1
   }
 }
 
@@ -48,14 +48,17 @@ get_x <- function(Hq1_pnat=NA, Hq2_pnat = NA) {
 #' Calculates tolerable hydraulic burden based on natural runoff estimation
 #'
 #' @param Hq1_pnat default: r2q::get_Hq1_pnat()
-#' @param x default: r2q::get_x(
-#' @param A_ba A_ba ???
-#' @param A_E0 A_E0 ???
+#' @param x default: r2q::get_x()
+#' @param A_ba connected area of planning area (km²)
+#' @param A_E0 catchment area until point of discharge (km²)
 #'
-#' @return ???
+#' @return tolerable discharged cumulative flow of planning area in m³/s
 #' @export
 
-get_q_zulaessig <- function(Hq1_pnat= get_Hq1_pnat(), x = get_x(), A_ba, A_E0){
+get_q_zulaessig <- function(Hq1_pnat = get_Hq1_pnat(), 
+                            x = get_x(), 
+                            A_ba, 
+                            A_E0){
   
   # units for Aba and AE= should be in km²
   
@@ -115,7 +118,7 @@ get_average_runoff_coef <- function(A_ba, q_zul, R_Spende){
 #' @return ????
 #' @export
 #'
-get_allowed_area <- function(f_DA=0.7, q_zul, R_Spende=150){
+get_allowed_area <- function(f_DA = 0.7, q_zul, R_Spende = 150){
   q_zul/(R_Spende*f_DA)
 }
 

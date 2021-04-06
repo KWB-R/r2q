@@ -1,0 +1,8 @@
+Variable;Abkuerzung.A102;Wert;Einheit
+potentiell natuerliche 1-jaehrliche Hochwasserabflussspende;Hq1_pnat;;l/(s*km≤)
+potentiell natuerliche 2-jaehrliche Hochwasserabflussspende;Hq2_pnat;;l/(s*km≤)
+Faktor fuer zulaessige Abflusserhoehung fuer anthropogene Einfluesse;x;;
+angeschlossene befestigte Flaeche des geschlossenen Siedlungsgebietes im oberirdischen Einzugsgebiet des Gewaessers bis zur Einleitstelle;A_ba;1;km≤
+oberirdisches Einzugsgebiet des Gewaessers bis zu Einleitstelle;A_E0;2000;km≤
+Gef‰lle des Einzugsgebiets;gefaelle;0,1;%
+maximale Flieﬂzeit;tf;360;min
