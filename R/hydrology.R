@@ -194,11 +194,11 @@ calculate_tolerable_discharge <- function(hydrology = hydrology_data, verbose = 
   }
   
   # Calculate x
-  hydrology$x <- r2q:::get_x(Hq1_pnat = hydrology$Hq1_pnat, 
+  hydrology$x <- get_x(Hq1_pnat = hydrology$Hq1_pnat, 
                             Hq2_pnat = hydrology$Hq2_pnat)
   
   # Calculate tolerable annual discharge flow in l/s
-  Q_E1_tolerable <- r2q::get_q_zulaessig(Hq1_pnat = hydrology$Hq1_pnat,
+  Q_E1_tolerable <- get_q_zulaessig(Hq1_pnat = hydrology$Hq1_pnat,
                                          x = hydrology$x,
                                          A_ba = hydrology$A_ba,
                                          A_E0 = hydrology$A_E0
