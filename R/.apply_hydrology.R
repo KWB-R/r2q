@@ -6,8 +6,11 @@ data.dir <- "inst/extdata/"
 
 #import hydology data
 
-hydrology <- readr::read_csv2("inst/extdata/hydrology.csv", col_types = "ccdc")
 
+hydrology_data <- readr::read_csv2(paste0(data.dir,"hydrology.csv"), col_types = "ccdc")
+
+
+calculate_tolerable_discharge <- function(hydrology = hydrology_data){
 messages <- list()
 
 # reshape for easier handling
@@ -29,7 +32,7 @@ if(is.na(hydrology$Hq1_pnat)){
     messages[[2]] <- m
   }
   else{
-    hydrology$Hq1_pnat <- r2q::get_Hq1_pnat(gefaelle = hydrology$gefaelle)
+    hydrology$Hq1_pnat <- r2q::get_Hq1_pnat(slope = hydrology$gefaelle)
   }
   
 }
@@ -45,31 +48,40 @@ Q_E1_tolerable <- r2q::get_q_zulaessig(Hq1_pnat = hydrology$Hq1_pnat,
                      A_E0 = hydrology$A_E0
                      )
 
+Q_tolerable_planning <- Q_E1_tolerable*hydrology$A_plan/hydrology$A_ba
+
 if(is.na(Q_E1_tolerable))
   {
     print("Calculation were not possible due to the following reasons:")
     lapply(messages, print)
   } else{
     print(paste("Based on provided input data a tolerable annual discharge flow of",
-    as.character(Q_E1_tolerable), "L/s was calculated"))
+    as.character(Q_E1_tolerable), "L/s was calculated for Aba. for the planning area this corresponds to", as.character(round(Q_tolerable_planning, 2)), "L/s"))
 }
+}
+
+
+
 
 
 planning_area <- readr::read_csv2(paste0(data.dir,"areas_hydrology.csv"))
 
+
 # check for consistencies
+
 if(!planning_area %>% dplyr::filter(Einheit =="ha") %>% 
-  dplyr::summarise(sum = sum(Wert)/100) == hydrology$A_ba){
+  dplyr::summarise(sum = sum(Wert)/100) == hydrology$A_plan){
   
-  stop("Error: Impervious areas has to be the same")
+  stop("Error: Impervious areas of planning area has to be smaller than totalimpervious area")
   
 }
 
-
-
+# constructing number of zeros for duration string
 zeros <- paste(replicate(4-stringr::str_count(hydrology$tf), "0"), collapse = "")
 
-rainfall <- r2q::get_KOSTRA(duration_string = paste0(zeros, hydrology$tf))
+# get KOSTRA rainfall based on coordinates and 
+rainfall <- r2q::get_KOSTRA(duration_string = paste0(zeros, hydrology$tf), plot = T)
+#rainfall <- r2q::get_KOSTRA(duration_string = "0010", plot = T)
 
 result <- list()
 for(i in unique(planning_area$Type)){
@@ -94,13 +106,13 @@ for(i in unique(planning_area$Type)){
 result <- dplyr::bind_rows(result)
 
 QE1_total <- sum(result$qe_partial)
-ratio_QE <- QE1_total/Q_E1_tolerable
+ratio_QE <- QE1_total / Q_tolerable_planning
 
-if(QE1_total > Q_E1_tolerable){
+if(QE1_total > Q_tolerable_planning){
   print(paste("Discharges exceed tolerable levels by", round((ratio_QE-1)*100), "%"))
   print("Consider reducing impervious areas or aquivalent measures ")
 }
 
-if(QE1_total <= Q_E1_tolerable){
+if(QE1_total <= Q_tolerable_planning){
   print(paste("Discharges are below tolerable levels by", round((ratio_QE-1)*100), "%"))
 }
