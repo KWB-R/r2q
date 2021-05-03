@@ -34,9 +34,7 @@ Imports:
     sf,
     stringr,
     tidyr,
-    readr,
-    r2q
-  
+    readr
 Suggests: 
     covr,
     flexdashboard,
