@@ -194,7 +194,7 @@ calculate_tolerable_discharge <- function(hydrology = hydrology_data, verbose = 
   }
   
   # Calculate x
-  hydrology$x <- r2q::get_x(Hq1_pnat = hydrology$Hq1_pnat, 
+  hydrology$x <- r2q:::get_x(Hq1_pnat = hydrology$Hq1_pnat, 
                             Hq2_pnat = hydrology$Hq2_pnat)
   
   # Calculate tolerable annual discharge flow in l/s

@@ -33,7 +33,10 @@ Imports:
     rlang,
     sf,
     stringr,
-    tidyr
+    tidyr,
+    readr,
+    r2q
+  
 Suggests: 
     covr,
     flexdashboard,
