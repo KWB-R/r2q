@@ -2,7 +2,7 @@
 % Please edit documentation in R/max_area.R
 \name{max_area}
 \alias{max_area}
-\title{calculate maximal allowable connected area in a river catchment at steady state}
+\title{old function, use max_area_steady_state or max_area_dynamic instead}
 \usage{
 max_area(Q_river, C_river, C_threshold, C_storm, coeff_runoff, rain)
 }
