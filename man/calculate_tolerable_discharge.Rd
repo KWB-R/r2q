@@ -2,12 +2,15 @@
 % Please edit documentation in R/hydrology.R
 \name{calculate_tolerable_discharge}
 \alias{calculate_tolerable_discharge}
-\title{Title}
+\title{Calculate Tolerable Discharge}
 \usage{
-calculate_tolerable_discharge(hydrology = hydrology_data, verbose = TRUE)
+calculate_tolerable_discharge(
+  hydrology = import_hydology_data(),
+  verbose = TRUE
+)
 }
 \arguments{
-\item{hydrology}{}
+\item{hydrology}{hydrology (tibble as retrieved by \link{\code{import_hydrology_data}})}
 
 \item{verbose}{if TRUE returns results as informative messages, If FALSE only return numeric value for planning area.}
 }
@@ -15,12 +18,9 @@ calculate_tolerable_discharge(hydrology = hydrology_data, verbose = TRUE)
 returns tolerable discharge for the planning area based on the data in hydrology table
 }
 \description{
-Title
+Calculate Tolerable Discharge
 }
 \examples{
- 
 calculate_tolerable_discharge(hydrology = hydrology_data, verbose = F)
-16.45757
 calculate_tolerable_discharge(hydrology = hydrology_data, verbose = T)
-"Based on provided input data a tolerable annual discharge flow of 283.036 L/s was calculated for Aba. For the planning area this corresponds to 16.46 L/s" 
 }

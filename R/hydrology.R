@@ -137,25 +137,33 @@ criteria_test <- function(Q_zulaessig, Q_ist) {
   
   Q_zulaessig <= Q_ist
   
-  }
+}
 
 
-
-
-
-#data folder
-data.dir <- "inst/extdata/"
-
-#import hydology data
-
-
-hydrology_data <- readr::read_csv(paste0(data.dir,"hydrology.csv"), 
-                                  col_types = "ccdc")
-
-
-#' Title
+#' Import hydrology data
 #'
-#' @param hydrology 
+#' @param csv_file path to csv file (default: system.file("inst/extdata/hydrology.csv", 
+#' package = "r2q"))
+#' @return hydrology data
+#' @export
+#' @importFrom readr read_csv
+#' @examples
+#' import_hydology_data() 
+import_hydology_data <- function(csv_file = system.file("extdata/hydrology.csv",
+                                                        package = "r2q")
+                                 ) {
+
+readr::read_csv(file = csv_file)                                   
+
+}
+
+
+ 
+                                  
+
+#' Calculate Tolerable Discharge
+#'
+#' @param hydrology hydrology (tibble as retrieved by \link{\code{import_hydrology_data}})
 #' @param verbose if TRUE returns results as informative messages, If FALSE only return numeric value for planning area.
 #' @return returns tolerable discharge for the planning area based on the data in hydrology table
 #' @export
@@ -163,7 +171,7 @@ hydrology_data <- readr::read_csv(paste0(data.dir,"hydrology.csv"),
 #' @examples
 #' calculate_tolerable_discharge(hydrology = hydrology_data, verbose = F)
 #' calculate_tolerable_discharge(hydrology = hydrology_data, verbose = T)
-calculate_tolerable_discharge <- function(hydrology = hydrology_data, verbose = TRUE){
+calculate_tolerable_discharge <- function(hydrology = import_hydology_data(), verbose = TRUE){
   messages <- list()
   
   # reshape for easier handling

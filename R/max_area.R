@@ -144,7 +144,7 @@ max_area_steady_state <- function (
 #' 
 #' @return maximal connected impervious area in km2
 #' @export
-#' 
+#' @importFrom stats optimize
 max_area_dynamic <- function (
   Q_river,
   C_river,
@@ -202,7 +202,7 @@ max_area_dynamic <- function (
       
     }
     
-    opt_result <- optimize(f = own_fn, interval = c(Amax_ini, Amax_ini*1e6))
+    opt_result <- stats::optimize(f = own_fn, interval = c(Amax_ini, Amax_ini*1e6))
     
     Amax <- as.numeric(opt_result[1]) / 1e6 #in km2
     
