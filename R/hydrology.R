@@ -148,8 +148,8 @@ criteria_test <- function(Q_zulaessig, Q_ist) {
 #' @export
 #' @importFrom readr read_csv
 #' @examples
-#' import_hydology_data() 
-import_hydology_data <- function(csv_file = system.file("extdata/hydrology.csv",
+#' import_hydrology_data() 
+import_hydrology_data <- function(csv_file = system.file("extdata/hydrology.csv",
                                                         package = "r2q")
                                  ) {
 
