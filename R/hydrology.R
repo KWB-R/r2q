@@ -169,9 +169,10 @@ readr::read_csv(file = csv_file)
 #' @export
 #'
 #' @examples
-#' calculate_tolerable_discharge(verbose = F)
-#' calculate_tolerable_discharge(verbose = T)
-calculate_tolerable_discharge <- function(hydrology = import_hydrology_data(), verbose = TRUE){
+#' calculate_tolerable_discharge(verbose = FALSE)
+#' calculate_tolerable_discharge(verbose = TRUE)
+calculate_tolerable_discharge <- function(hydrology = import_hydrology_data(), 
+                                          verbose = TRUE){
   messages <- list()
   
   # reshape for easier handling

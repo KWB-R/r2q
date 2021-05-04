@@ -21,6 +21,6 @@ returns tolerable discharge for the planning area based on the data in hydrology
 Calculate Tolerable Discharge
 }
 \examples{
-calculate_tolerable_discharge(verbose = F)
-calculate_tolerable_discharge(verbose = T)
+calculate_tolerable_discharge(verbose = FALSE)
+calculate_tolerable_discharge(verbose = TRUE)
 }
