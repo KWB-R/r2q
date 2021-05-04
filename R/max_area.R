@@ -152,7 +152,7 @@ max_area_dynamic <- function (
   C_storm,
   coeff_runoff,
   rain,
-  delat_t,
+  delta_t,
   river_length,
   river_cross_section
 )
