@@ -5,12 +5,12 @@
 \title{Calculate Tolerable Discharge}
 \usage{
 calculate_tolerable_discharge(
-  hydrology = import_hydology_data(),
+  hydrology = import_hydrology_data(),
   verbose = TRUE
 )
 }
 \arguments{
-\item{hydrology}{hydrology (tibble as retrieved by \link{import_hydrology_data})}
+\item{hydrology}{hydrology (tibble as retrieved by \code{\link{import_hydrology_data}})}
 
 \item{verbose}{if TRUE returns results as informative messages, If FALSE only return numeric value for planning area.}
 }
@@ -21,6 +21,6 @@ returns tolerable discharge for the planning area based on the data in hydrology
 Calculate Tolerable Discharge
 }
 \examples{
-calculate_tolerable_discharge(hydrology = hydrology_data, verbose = F)
-calculate_tolerable_discharge(hydrology = hydrology_data, verbose = T)
+calculate_tolerable_discharge(verbose = F)
+calculate_tolerable_discharge(verbose = T)
 }

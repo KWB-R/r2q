@@ -1,67 +1,9 @@
 library(magrittr)
 #---------import data -----------------------------
 
-#data folder
-data.dir <- "inst/extdata/"
+hydrology_data <- r2q::import_hydrology_data()
 
-#import hydology data
-
-
-hydrology_data <- readr::read_csv2(paste0(data.dir,"hydrology.csv"), col_types = "ccdc")
-
-
-calculate_tolerable_discharge <- function(hydrology = hydrology_data){
-messages <- list()
-
-# reshape for easier handling
-hydrology <- hydrology %>% 
-    dplyr::select(Abkuerzung.A102, Wert) %>% # select relevant columns
-    tidyr::spread(Abkuerzung.A102, Wert) # spread dataframe for "$" referencing
-
-# basic checks
-if (is.na(hydrology$A_ba) | is.na(hydrology$A_E0)){
-  m <- "Calculation not possible as information about catchment and planning area missing"
-  print(m)
-  messages[[1]] <- m
-} 
-
-if(is.na(hydrology$Hq1_pnat)){
-  if(is.na(hydrology$gefaelle)){
-    m <- "Calculation not possible as information 'Gefaelle' and 'Hq1_pnat' missing"
-    print(m)
-    messages[[2]] <- m
-  }
-  else{
-    hydrology$Hq1_pnat <- r2q::get_Hq1_pnat(slope = hydrology$gefaelle)
-  }
-  
-}
-
-# Calculate x
-hydrology$x <- r2q::get_x(Hq1_pnat = hydrology$Hq1_pnat, 
-                          Hq2_pnat = hydrology$Hq2_pnat)
-
-# Calculate tolerable annual discharge flow in l/s
-Q_E1_tolerable <- r2q::get_q_zulaessig(Hq1_pnat = hydrology$Hq1_pnat,
-                     x = hydrology$x,
-                     A_ba = hydrology$A_ba,
-                     A_E0 = hydrology$A_E0
-                     )
-
-Q_tolerable_planning <- Q_E1_tolerable*hydrology$A_plan/hydrology$A_ba
-
-if(is.na(Q_E1_tolerable))
-  {
-    print("Calculation were not possible due to the following reasons:")
-    lapply(messages, print)
-  } else{
-    print(paste("Based on provided input data a tolerable annual discharge flow of",
-    as.character(Q_E1_tolerable), "L/s was calculated for Aba. for the planning area this corresponds to", as.character(round(Q_tolerable_planning, 2)), "L/s"))
-}
-}
-
-
-
+calculate_tolerable_discharge(hydrology = hydrology_data)
 
 
 planning_area <- readr::read_csv2(paste0(data.dir,"areas_hydrology.csv"))
