@@ -163,7 +163,7 @@ readr::read_csv(file = csv_file)
 
 #' Calculate Tolerable Discharge
 #'
-#' @param hydrology hydrology (tibble as retrieved by \link{\code{import_hydrology_data}})
+#' @param hydrology hydrology (tibble as retrieved by \link{import_hydrology_data})
 #' @param verbose if TRUE returns results as informative messages, If FALSE only return numeric value for planning area.
 #' @return returns tolerable discharge for the planning area based on the data in hydrology table
 #' @export

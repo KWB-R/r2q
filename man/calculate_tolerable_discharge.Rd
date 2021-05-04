@@ -10,7 +10,7 @@ calculate_tolerable_discharge(
 )
 }
 \arguments{
-\item{hydrology}{hydrology (tibble as retrieved by \link{\code{import_hydrology_data}})}
+\item{hydrology}{hydrology (tibble as retrieved by \link{import_hydrology_data})}
 
 \item{verbose}{if TRUE returns results as informative messages, If FALSE only return numeric value for planning area.}
 }
