@@ -11,7 +11,7 @@ max_area_dynamic(
   C_storm,
   coeff_runoff,
   rain,
-  delat_t,
+  delta_t,
   river_length,
   river_cross_section
 )
@@ -29,11 +29,11 @@ max_area_dynamic(
 
 \item{rain}{rain amount in mm/time (time must represent impact duration)}
 
+\item{delta_t}{impact duration (typically = flow time in river stretch = rain duration)}
+
 \item{river_length}{length of impacted urban river stretch in m}
 
 \item{river_cross_section}{average cross section of river in m2}
-
-\item{delta_t}{impact duration (typically = flow time in river stretch = rain duration)}
 }
 \value{
 maximal connected impervious area in km2

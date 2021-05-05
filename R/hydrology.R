@@ -137,36 +137,42 @@ criteria_test <- function(Q_zulaessig, Q_ist) {
   
   Q_zulaessig <= Q_ist
   
-  }
+}
 
 
-
-
-
-#data folder
-data.dir <- "inst/extdata/"
-
-#import hydology data
-
-
-hydrology_data <- readr::read_csv(paste0(data.dir,"hydrology.csv"), 
-                                  col_types = "ccdc")
-
-
-#' Title
+#' Import hydrology data
 #'
-#' @param hydrology 
+#' @param csv_file path to csv file (default: system.file("inst/extdata/hydrology.csv", 
+#' package = "r2q"))
+#' @return hydrology data
+#' @export
+#' @importFrom readr read_csv
+#' @examples
+#' import_hydrology_data() 
+import_hydrology_data <- function(csv_file = system.file("extdata/hydrology.csv",
+                                                        package = "r2q")
+                                 ) {
+
+readr::read_csv(file = csv_file)                                   
+
+}
+
+
+ 
+                                  
+
+#' Calculate Tolerable Discharge
+#'
+#' @param hydrology hydrology (tibble as retrieved by \code{\link{import_hydrology_data}})
 #' @param verbose if TRUE returns results as informative messages, If FALSE only return numeric value for planning area.
 #' @return returns tolerable discharge for the planning area based on the data in hydrology table
 #' @export
 #'
 #' @examples
-#'  
-#' calculate_tolerable_discharge(hydrology = hydrology_data, verbose = F)
-#' 16.45757
-#' calculate_tolerable_discharge(hydrology = hydrology_data, verbose = T)
-#'"Based on provided input data a tolerable annual discharge flow of 283.036 L/s was calculated for Aba. For the planning area this corresponds to 16.46 L/s" 
-calculate_tolerable_discharge <- function(hydrology = hydrology_data, verbose = TRUE){
+#' calculate_tolerable_discharge(verbose = FALSE)
+#' calculate_tolerable_discharge(verbose = TRUE)
+calculate_tolerable_discharge <- function(hydrology = import_hydrology_data(), 
+                                          verbose = TRUE){
   messages <- list()
   
   # reshape for easier handling
@@ -194,11 +200,11 @@ calculate_tolerable_discharge <- function(hydrology = hydrology_data, verbose = 
   }
   
   # Calculate x
-  hydrology$x <- r2q:::get_x(Hq1_pnat = hydrology$Hq1_pnat, 
+  hydrology$x <- get_x(Hq1_pnat = hydrology$Hq1_pnat, 
                             Hq2_pnat = hydrology$Hq2_pnat)
   
   # Calculate tolerable annual discharge flow in l/s
-  Q_E1_tolerable <- r2q::get_q_zulaessig(Hq1_pnat = hydrology$Hq1_pnat,
+  Q_E1_tolerable <- get_q_zulaessig(Hq1_pnat = hydrology$Hq1_pnat,
                                          x = hydrology$x,
                                          A_ba = hydrology$A_ba,
                                          A_E0 = hydrology$A_E0
@@ -221,7 +227,7 @@ calculate_tolerable_discharge <- function(hydrology = hydrology_data, verbose = 
     }
   }
 }
-calculate_tolerable_discharge(hydrology = hydrology_data, verbose = T)
+
 
 
 
