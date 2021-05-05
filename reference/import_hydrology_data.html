@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>old function, use max_area_steady_state or max_area_dynamic instead — max_area • r2q</title>
+<title>Import hydrology data — import_hydrology_data • r2q</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,8 @@
 
 
 
-<meta property="og:title" content="old function, use max_area_steady_state or max_area_dynamic instead — max_area" />
-<meta property="og:description" content="based on concentration thresholds
-based on DWA A102 approach
-can be used for annual and acute impacts
-if steady state concentration can be assumed or if inlets are
-at one inlet point on the river stretch" />
+<meta property="og:title" content="Import hydrology data — import_hydrology_data" />
+<meta property="og:description" content="Import hydrology data" />
 
 
 
@@ -139,54 +135,53 @@ at one inlet point on the river stretch" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>old function, use max_area_steady_state or max_area_dynamic instead</h1>
-    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/max_area.R'><code>R/max_area.R</code></a></small>
-    <div class="hidden name"><code>max_area.Rd</code></div>
+    <h1>Import hydrology data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/hydrology.R'><code>R/hydrology.R</code></a></small>
+    <div class="hidden name"><code>import_hydrology_data.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>based on concentration thresholds
-based on DWA A102 approach
-can be used for annual and acute impacts
-if steady state concentration can be assumed or if inlets are
-at one inlet point on the river stretch</p>
+    <p>Import hydrology data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>max_area</span><span class='op'>(</span><span class='va'>Q_river</span>, <span class='va'>C_river</span>, <span class='va'>C_threshold</span>, <span class='va'>C_storm</span>, <span class='va'>coeff_runoff</span>, <span class='va'>rain</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>import_hydrology_data</span><span class='op'>(</span>
+  csv_file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/hydrology.csv"</span>, package <span class='op'>=</span> <span class='st'>"r2q"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Q_river</th>
-      <td><p>River flow in m3/time (time must represent impact duration)</p></td>
-    </tr>
-    <tr>
-      <th>C_river</th>
-      <td><p>background concentration in mg/L</p></td>
-    </tr>
-    <tr>
-      <th>C_threshold</th>
-      <td><p>concentration threshold in mg/L</p></td>
-    </tr>
-    <tr>
-      <th>C_storm</th>
-      <td><p>concentration in stormwater in mg/L</p></td>
-    </tr>
-    <tr>
-      <th>coeff_runoff</th>
-      <td><p>runoff coefficient of connected impervious area</p></td>
-    </tr>
-    <tr>
-      <th>rain</th>
-      <td><p>rain amount in mm/time (time must represent impact duration)</p></td>
+      <th>csv_file</th>
+      <td><p>path to csv file (default: system.file("inst/extdata/hydrology.csv",
+package = "r2q"))</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>maximal connected impervious area in km2</p>
+    <p>hydrology data</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>import_hydrology_data</span><span class='op'>(</span><span class='op'>)</span> 
+</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'><span style='color: #00BBBB;'>──</span><span> </span><span style='font-weight: bold;'>Column specification</span><span> </span><span style='color: #00BBBB;'>────────────────────────────────────────────────────────</span><span></span>
+#&gt; <span class='message'>cols(</span>
+#&gt; <span class='message'>  Variable = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
+#&gt; <span class='message'>  Abkuerzung.A102 = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
+#&gt; <span class='message'>  Wert = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
+#&gt; <span class='message'>  Einheit = </span><span style='color: #BB0000;'>col_character()</span><span></span>
+#&gt; <span class='message'>)</span></div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 8 x 4</span><span>
+#&gt;   Variable                                   Abkuerzung.A102     Wert Einheit   
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> </span><span style='color: #949494;'>"</span><span>potentiell natuerliche 1-jaehrliche Hoch… Hq1_pnat         130     </span><span style='color: #949494;'>"</span><span>l/(s*km\…
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> </span><span style='color: #949494;'>"</span><span>potentiell natuerliche 2-jaehrliche Hoch… Hq2_pnat          </span><span style='color: #BB0000;'>NA</span><span>     </span><span style='color: #949494;'>"</span><span>l/(s*km\…
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> </span><span style='color: #949494;'>"</span><span>Faktor fuer zulaessige Abflusserhoehung … x                 </span><span style='color: #BB0000;'>NA</span><span>      </span><span style='color: #BB0000;'>NA</span><span>       
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> </span><span style='color: #949494;'>"</span><span>angeschlossene befestigte Flaeche des ge… A_ba               1.65  </span><span style='color: #949494;'>"</span><span>km\xec</span><span style='color: #949494;'>"</span><span>  
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> </span><span style='color: #949494;'>"</span><span>oberirdisches Einzugsgebiet des Gewaesse… A_E0               5.26  </span><span style='color: #949494;'>"</span><span>km\xec</span><span style='color: #949494;'>"</span><span>  
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> </span><span style='color: #949494;'>"</span><span>Gef?lle des Einzugsgebiets</span><span style='color: #949494;'>"</span><span>               gefaelle           0.1   </span><span style='color: #949494;'>"</span><span>%</span><span style='color: #949494;'>"</span><span>       
+#&gt; </span><span style='color: #BCBCBC;'>7</span><span> </span><span style='color: #949494;'>"</span><span>maximale Flie\xa0zeit</span><span style='color: #949494;'>"</span><span>                    tf              </span><span style='text-decoration: underline;'>1</span><span>080     </span><span style='color: #949494;'>"</span><span>min</span><span style='color: #949494;'>"</span><span>     
+#&gt; </span><span style='color: #BCBCBC;'>8</span><span> </span><span style='color: #949494;'>"</span><span>Planungsgebiet</span><span style='color: #949494;'>"</span><span>                           A_plan             0.096 </span><span style='color: #949494;'>"</span><span>km\xec</span><span style='color: #949494;'>"</span><span>  </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
