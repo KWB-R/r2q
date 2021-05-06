@@ -1,8 +1,8 @@
 Flaechentyp,Wert,Einheit,Variable,fD,Type
-Dachfleachen_gesamt,500,ha,roof_total,,roof
+Dachfleachen_gesamt,50,ha,roof_total,,roof
 Anteil_Gruendach,0.2,-,r_greenroof,0.8,roof
 Anteil_Dach_versiegelt,0.8,-,r_impervious_roof,1,roof
-Straﬂen und Wegfl‰chen gesamt,500,ha,roads_total,,roads
+Straﬂen und Wegfl‰chen gesamt,50,ha,roads_total,,roads
 Anteil Asphalt fugenlos,0.4,-,r_concrete_impervious,1,roads
 Anteil Pflaster dichte Fugen,0.1,-,r_cobblestones_dense_puts,0.9,roads
 Anteil fester Kiesbelag,0.1,-,r_gravel_dense,0.8,roads
