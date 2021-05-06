@@ -1,12 +1,12 @@
-Flaechentyp;Wert;Einheit;Variable;fD;Type
-Dachfleachen_gesamt;25;ha;roof_total;;roof
-Anteil_Gruendach;0,2;%;r_greenroof;0,8;roof
-Anteil_Dach_versiegelt;0,8;%;r_impervious_roof;1;roof
-Straﬂen und Wegfl‰chen gesamt;25;ha;roads_total;;roads
-Anteil Asphalt fugenlos;0,4;%;r_concrete_impervious;1;roads
-Anteil Pflaster dichte Fugen;0,1;%;r_cobblestones_dense_puts;0,9;roads
-Anteil fester Kiesbelag;0,1;%;r_graveL_dense;0,8;roads
-Anteil Pflaster offene Fugen;0,1;%;r_cobblestones_open_puts;0,7;roads
-Anteil lockerer Kies Schotterrasen;0,1;%;r_graveL_lose;0,6;roads
-Anteil Vebundsteine mit Fugen Sickersteine;0,1;%;r_pervious_stones;0,5;roads
-Anteil Rasengittersteine;0,1;%;r_grid_stone;0,4;roads
+Flaechentyp,Wert,Einheit,Variable,fD,Type
+Dachfleachen_gesamt,25,ha,roof_total,,roof
+Anteil_Gruendach,0,%,r_greenroof,0.8,roof
+Anteil_Dach_versiegelt,0,%,r_impervious_roof,1,roof
+Straﬂen und Wegfl‰chen gesamt,25,ha,roads_total,,roads
+Anteil Asphalt fugenlos,0,%,r_concrete_impervious,1,roads
+Anteil Pflaster dichte Fugen,0,%,r_cobblestones_dense_puts,0.9,roads
+Anteil fester Kiesbelag,0,%,r_gravel_dense,0.8,roads
+Anteil Pflaster offene Fugen,0,%,r_cobblestones_open_puts,0.7,roads
+Anteil lockerer Kies Schotterrasen,0,%,r_gravel_lose,0.6,roads
+Anteil Vebundsteine mit Fugen Sickersteine,0,%,r_pervious_stones,0.5,roads
+Anteil Rasengittersteine,0,%,r_grid_stone,0.4,roads
