@@ -25,22 +25,19 @@ max_area <- function (
   rain
 )
 {
-  ##check numbers
-  if (! valid_concentrations(C_river, C_storm, C_threshold)) {
-    return(NA)
-  } 
+  warning(
+    "Please use max_area_steady_state() or max_area_dynamic() instead of ", 
+    "max_area(). "
+  )
   
-  ##maximal connected impervious area
-  
-  #maximal allowable Q_rain [m3/time]
-  
-  Q_rain_max <- Q_river * (C_river - C_threshold) / (C_threshold - C_storm)
-  
-  #maximal connected area in entire catchment [km2]
-  
-  Q_rain_max / coeff_runoff / rain *
-    1000 / #L -> m3
-    1e6 #m2 -> km2 
+  max_area_steady_state(
+    Q_river = Q_river, 
+    C_river = C_river, 
+    C_threshold = C_threshold, 
+    C_storm = C_storm, 
+    coeff_runoff = coeff_runoff, 
+    rain = rain
+  )
 }
 
 # valid_concentrations ---------------------------------------------------------
