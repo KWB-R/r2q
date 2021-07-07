@@ -25,23 +25,22 @@ max_area <- function (
   rain
 )
 {
-  
   ##check numbers
   if (! valid_concentrations(C_river, C_storm, C_threshold)) {
     return(NA)
   } 
   
-    ##maximal connected impervious area
-    
-    #maximal allowable Q_rain [m3/time]
-    
-    Q_rain_max <- Q_river*(C_river - C_threshold) / (C_threshold - C_storm)
-    
-    #maximal connected area in entire catchment [km2]
-    
-    area_con_max <- Q_rain_max / coeff_runoff / rain *
-      1000 / #L -> m3
-      1e6 #m2 -> km2 
+  ##maximal connected impervious area
+  
+  #maximal allowable Q_rain [m3/time]
+  
+  Q_rain_max <- Q_river * (C_river - C_threshold) / (C_threshold - C_storm)
+  
+  #maximal connected area in entire catchment [km2]
+  
+  Q_rain_max / coeff_runoff / rain *
+    1000 / #L -> m3
+    1e6 #m2 -> km2 
 }
 
 # valid_concentrations ---------------------------------------------------------
@@ -93,23 +92,22 @@ max_area_steady_state <- function (
   rain
 )
 {
-  
   ##check numbers
   if (! valid_concentrations(C_river, C_storm, C_threshold)) {
     return(NA)
   }
   
-    ##maximal connected impervious area
-    
-    #maximal allowable Q_rain [m3/time]
-    
-    Q_rain_max <- Q_river*(C_river - C_threshold) / (C_threshold - C_storm)
-    
-    #maximal connected area in entire catchment [km2]
-    
-    area_con_max <- Q_rain_max / coeff_runoff / rain *
-      1000 / #L -> m3
-      1e6 #m2 -> km2 
+  ##maximal connected impervious area
+  
+  #maximal allowable Q_rain [m3/time]
+  
+  Q_rain_max <- Q_river * (C_river - C_threshold) / (C_threshold - C_storm)
+  
+  #maximal connected area in entire catchment [km2]
+  
+  Q_rain_max / coeff_runoff / rain *
+    1000 / #L -> m3
+    1e6 #m2 -> km2 
 }
 
 #' calculate maximal allowable connected area in a river catchment for a river section
@@ -144,43 +142,46 @@ max_area_dynamic <- function (
   river_cross_section
 )
 {
-  
   ##check numbers
   if (! valid_concentrations(C_river, C_storm, C_threshold)) {
     return(NA)
   }
   
-    #river stretch volume
-    V_river <- river_length * river_cross_section
+  #river stretch volume
+  V_river <- river_length * river_cross_section
+  
+  #intitial Amax in m2
+  Amax_ini <- max_area_steady_state(
+    Q_river = Q_river, 
+    C_river = C_river, 
+    C_threshold = C_threshold, 
+    C_storm = C_storm, 
+    coeff_runoff = coeff_runoff, 
+    rain = rain
+  ) * 1e6
+  
+  #function to optimize
+  f <- function(a) {
     
-    #intitial Amax in m2
-    Amax_ini <- max_area_steady_state(Q_river = Q_river, C_river = C_river, 
-                                      C_threshold = C_threshold, C_storm = C_storm, 
-                                      coeff_runoff = coeff_runoff, rain = rain) * 1e6
+    concentration <- mixed_reactor_C(
+      Area = a,
+      Q_river = Q_river,
+      C_river = C_river,
+      C_threshold = C_threshold,
+      C_storm = C_storm,
+      coeff_runoff = coeff_runoff,
+      rain = rain,
+      delta_t = delta_t,
+      Vol = V_river
+    )
     
-    #function to optimize
-    
-    own_fn <- function(a) {
-      
-      abs(mixed_reactor_C(Area = a,
-                          Q_river = Q_river,
-                          C_river = C_river,
-                          C_threshold = C_threshold,
-                          C_storm = C_storm,
-                          coeff_runoff = coeff_runoff,
-                          rain = rain,
-                          delta_t = delta_t,
-                          Vol = V_river) - C_threshold)
-      
-    }
-    
-    opt_result <- stats::optimize(f = own_fn, interval = c(Amax_ini, Amax_ini*1e6))
-    
-    Amax <- as.numeric(opt_result[1]) / 1e6 #in km2
+    abs(concentration - C_threshold)
+  }
+  
+  opt_result <- stats::optimize(f = f, interval = c(Amax_ini, Amax_ini * 1e6))
+  
+  as.numeric(opt_result[1]) / 1e6 #in km2
 }
-
-
-
 
 #' calculate steady state concentration in river for complete mixing
 #'
@@ -207,15 +208,11 @@ steady_state_C <- function (
   Area
 )
 {
-  
   #Q_rain in [m3/time]
-  Q_rain <- rain * Area * coeff_runoff /1000
-  c_steady <- (Q_river * C_river + Q_rain * C_storm) / (Q_river + Q_rain)
+  Q_rain <- rain * Area * coeff_runoff / 1000
   
-  c_steady
-  
+  (Q_river * C_river + Q_rain * C_storm) / (Q_river + Q_rain)
 }
-
 
 #' calculate dynamic concentration in river stretch
 #'
@@ -247,21 +244,19 @@ mixed_reactor_C <- function (
   Vol
 )
 {
-  
   #Q_rain in [m3/time]
-  Q_rain <- rain * Area * coeff_runoff /1000
+  Q_rain <- rain * Area * coeff_runoff / 1000
   
   #steady state C
-  C_steady <- steady_state_C(Q_river = Q_river,
-                             C_river = C_river,
-                             C_storm = C_storm,
-                             coeff_runoff = coeff_runoff,
-                             rain = rain,
-                             Area = Area)
+  C_steady <- steady_state_C(
+    Q_river = Q_river,
+    C_river = C_river,
+    C_storm = C_storm,
+    coeff_runoff = coeff_runoff,
+    rain = rain,
+    Area = Area
+  )
   
   #concentration at time t
-  c_t <- (C_river - C_steady) * exp(-(Q_river + Q_rain) / Vol * delta_t) + C_steady
-  
-  c_t
-  
+  (C_river - C_steady) * exp(-(Q_river + Q_rain) / Vol * delta_t) + C_steady
 }
