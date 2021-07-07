@@ -28,13 +28,9 @@ max_area <- function (
   
   ##check numbers
   if (! valid_concentrations(C_river, C_storm, C_threshold)) {
-    
-    NA
-    
+    return(NA)
   } 
   
-  else {
-    
     ##maximal connected impervious area
     
     #maximal allowable Q_rain [m3/time]
@@ -46,7 +42,6 @@ max_area <- function (
     area_con_max <- Q_rain_max / coeff_runoff / rain *
       1000 / #L -> m3
       1e6 #m2 -> km2 
-  }
 }
 
 # valid_concentrations ---------------------------------------------------------
@@ -101,13 +96,9 @@ max_area_steady_state <- function (
   
   ##check numbers
   if (! valid_concentrations(C_river, C_storm, C_threshold)) {
-    
-    NA
-    
+    return(NA)
   }
   
-  else {
-    
     ##maximal connected impervious area
     
     #maximal allowable Q_rain [m3/time]
@@ -119,7 +110,6 @@ max_area_steady_state <- function (
     area_con_max <- Q_rain_max / coeff_runoff / rain *
       1000 / #L -> m3
       1e6 #m2 -> km2 
-  }
 }
 
 #' calculate maximal allowable connected area in a river catchment for a river section
@@ -157,13 +147,9 @@ max_area_dynamic <- function (
   
   ##check numbers
   if (! valid_concentrations(C_river, C_storm, C_threshold)) {
-    
-    NA
-    
+    return(NA)
   }
   
-  else {
-    
     #river stretch volume
     V_river <- river_length * river_cross_section
     
@@ -191,7 +177,6 @@ max_area_dynamic <- function (
     opt_result <- stats::optimize(f = own_fn, interval = c(Amax_ini, Amax_ini*1e6))
     
     Amax <- as.numeric(opt_result[1]) / 1e6 #in km2
-  }
 }
 
 
