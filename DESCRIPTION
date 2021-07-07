@@ -5,7 +5,7 @@ Authors@R:
     c(person(given = "Wolfgang",
              family = "Seis",
              role = c("aut", "cre"),
-             email = "wolfang.seis@kompetenz-wasser.de",
+             email = "wolfgang.seis@kompetenz-wasser.de",
              comment = c(ORCID = "0000-0002-7436-8575")),
       person(given = "Andreas",
              family = "Matzinger",
