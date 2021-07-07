@@ -27,22 +27,11 @@ max_area <- function (
 {
   
   ##check numbers
-  if (C_river > C_threshold) {
-    
-    print("Background river concentration exceeds threshold.")
+  if (! valid_concentrations(C_river, C_storm, C_threshold)) {
     
     NA
     
-  }
-  
-  else if (C_storm <= C_threshold) {
-    
-    print("Stormwater concentration is <= threshold. This parameter does not limit connected, impervious area")
-    
-    NA
-    
-    
-  }
+  } 
   
   else {
     
@@ -58,9 +47,29 @@ max_area <- function (
       1000 / #L -> m3
       1e6 #m2 -> km2 
   }
-  
 }
 
+# valid_concentrations ---------------------------------------------------------
+valid_concentrations <- function(C_river, C_storm, C_threshold) {
+  
+  valid <- TRUE
+  
+  if (C_river > C_threshold) {
+    
+    print("Background river concentration exceeds threshold.")
+    
+    valid <- FALSE
+  }
+  
+  if (C_storm <= C_threshold) {
+    
+    print("Stormwater concentration is <= threshold. This parameter does not limit connected, impervious area")
+    
+    valid <- FALSE
+  }
+  
+  valid
+}
 
 #' calculate maximal allowable connected area in a river catchment at steady state
 #'
@@ -91,20 +100,9 @@ max_area_steady_state <- function (
 {
   
   ##check numbers
-  if (C_river > C_threshold) {
-    
-    print("Background river concentration exceeds threshold.")
+  if (! valid_concentrations(C_river, C_storm, C_threshold)) {
     
     NA
-    
-  }
-  
-  else if (C_storm <= C_threshold) {
-    
-    print("Stormwater concentration is <= threshold. This parameter does not limit connected, impervious area")
-    
-    NA
-    
     
   }
   
@@ -122,7 +120,6 @@ max_area_steady_state <- function (
       1000 / #L -> m3
       1e6 #m2 -> km2 
   }
-  
 }
 
 #' calculate maximal allowable connected area in a river catchment for a river section
@@ -159,20 +156,9 @@ max_area_dynamic <- function (
 {
   
   ##check numbers
-  if (C_river > C_threshold) {
-    
-    print("Background river concentration exceeds threshold.")
+  if (! valid_concentrations(C_river, C_storm, C_threshold)) {
     
     NA
-    
-  }
-  
-  else if (C_storm <= C_threshold) {
-    
-    print("Stormwater concentration is <= threshold. This parameter does not limit connected, impervious area")
-    
-    NA
-    
     
   }
   
@@ -183,33 +169,29 @@ max_area_dynamic <- function (
     
     #intitial Amax in m2
     Amax_ini <- max_area_steady_state(Q_river = Q_river, C_river = C_river, 
-                         C_threshold = C_threshold, C_storm = C_storm, 
-                         coeff_runoff = coeff_runoff, rain = rain) * 1e6
+                                      C_threshold = C_threshold, C_storm = C_storm, 
+                                      coeff_runoff = coeff_runoff, rain = rain) * 1e6
     
     #function to optimize
     
     own_fn <- function(a) {
       
       abs(mixed_reactor_C(Area = a,
-                           Q_river = Q_river,
-                           C_river = C_river,
-                           C_threshold = C_threshold,
-                           C_storm = C_storm,
-                           coeff_runoff = coeff_runoff,
-                           rain = rain,
-                           delta_t = delta_t,
-                           Vol = V_river) - C_threshold)
+                          Q_river = Q_river,
+                          C_river = C_river,
+                          C_threshold = C_threshold,
+                          C_storm = C_storm,
+                          coeff_runoff = coeff_runoff,
+                          rain = rain,
+                          delta_t = delta_t,
+                          Vol = V_river) - C_threshold)
       
     }
     
     opt_result <- stats::optimize(f = own_fn, interval = c(Amax_ini, Amax_ini*1e6))
     
     Amax <- as.numeric(opt_result[1]) / 1e6 #in km2
-    
-    
-    
   }
-  
 }
 
 
