@@ -2,10 +2,10 @@ Package: r2q
 Title: R Package with Functions and Exchange for Project R2Q
 Version: 0.0.0.9000
 Authors@R: 
-    c(person(given = "Wolfang",
+    c(person(given = "Wolfgang",
              family = "Seis",
              role = c("aut", "cre"),
-             email = "wolfang.seis@kompetenz-wasser.de",
+             email = "wolfgang.seis@kompetenz-wasser.de",
              comment = c(ORCID = "0000-0002-7436-8575")),
       person(given = "Andreas",
              family = "Matzinger",
@@ -32,7 +32,9 @@ Imports:
     magrittr,
     rlang,
     sf,
-    tidyr
+    stringr,
+    tidyr,
+    readr
 Suggests: 
     covr,
     flexdashboard,

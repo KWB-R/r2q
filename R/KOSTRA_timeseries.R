@@ -83,13 +83,13 @@ get_KOSTRA <- function(path = system.file("extdata/KOSTRA", package = "r2q"), # 
         ggplot2::theme_grey(base_size = 13) +
         ggplot2::theme(legend.position = "bottom") +
         ggplot2::ylab("") 
-    print(p)
-    }
+        print(p)
+    return(list(plot = p, 
+                    data = df))
+    }else{
 
   # Return numeric results  
-  return(list(plot = p, 
-              data = df)
-         )
+  return(list(data = df) )}
 }
 
 
