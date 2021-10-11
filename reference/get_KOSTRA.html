@@ -192,12 +192,14 @@ and also produce a ggplot2 plot if parameter plot = TRUE)</p>
   
 <span class='co'># Example default values Herne</span>
 <span class='va'>herne</span> <span class='op'>&lt;-</span> <span class='fu'>get_KOSTRA</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Reading layer `StatRR_KOSTRA-DWD-2010R_D0060' from data source `/Users/runner/work/_temp/Library/r2q/extdata/KOSTRA/GIS_KOSTRA-DWD-2010R_D0060' using driver `ESRI Shapefile'
+</div><div class='output co'>#&gt; Reading layer `StatRR_KOSTRA-DWD-2010R_D0060' from data source 
+#&gt;   `/Users/runner/work/_temp/Library/r2q/extdata/KOSTRA/GIS_KOSTRA-DWD-2010R_D0060' 
+#&gt;   using driver `ESRI Shapefile'
 #&gt; Simple feature collection with 8453 features and 10 fields
 #&gt; Geometry type: POLYGON
 #&gt; Dimension:     XY
 #&gt; Bounding box:  xmin: 3710675 ymin: 2271848 xmax: 4354525 ymax: 3149248
-#&gt; Projected CRS: ETRS89_LCC_Europe</div><div class='img'><img src='get_KOSTRA-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>herne</span><span class='op'>$</span><span class='va'>plot</span>
+#&gt; Projected CRS: ETRS89-extended / LCC Europe</div><div class='img'><img src='get_KOSTRA-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>herne</span><span class='op'>$</span><span class='va'>plot</span>
 </div><div class='img'><img src='get_KOSTRA-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>herne</span><span class='op'>$</span><span class='va'>data</span>
 </div><div class='output co'>#&gt;    Jaehrlichkeit                  Kategorie      Wert
 #&gt; 1            1 a Bemessungniederschlag [mm]  15.90000
@@ -221,12 +223,14 @@ and also produce a ggplot2 plot if parameter plot = TRUE)</p>
 <span class='co'># Example 10 min for Berlin</span>
 <span class='va'>berlin</span> <span class='op'>&lt;-</span> <span class='fu'>get_KOSTRA</span><span class='op'>(</span>coord_vector <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4217676.98</span>, <span class='fl'>2862423.69</span><span class='op'>)</span>,
 duration_string <span class='op'>=</span> <span class='st'>"0010"</span>, location_name <span class='op'>=</span> <span class='st'>"Berlin"</span>, plot <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Reading layer `StatRR_KOSTRA-DWD-2010R_D0010' from data source `/Users/runner/work/_temp/Library/r2q/extdata/KOSTRA/GIS_KOSTRA-DWD-2010R_D0010' using driver `ESRI Shapefile'
+</div><div class='output co'>#&gt; Reading layer `StatRR_KOSTRA-DWD-2010R_D0010' from data source 
+#&gt;   `/Users/runner/work/_temp/Library/r2q/extdata/KOSTRA/GIS_KOSTRA-DWD-2010R_D0010' 
+#&gt;   using driver `ESRI Shapefile'
 #&gt; Simple feature collection with 8453 features and 10 fields
 #&gt; Geometry type: POLYGON
 #&gt; Dimension:     XY
 #&gt; Bounding box:  xmin: 3710675 ymin: 2271848 xmax: 4354525 ymax: 3149248
-#&gt; Projected CRS: ETRS89_LCC_Europe</div><div class='img'><img src='get_KOSTRA-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>berlin</span><span class='op'>$</span><span class='va'>plot</span>
+#&gt; Projected CRS: ETRS89-extended / LCC Europe</div><div class='img'><img src='get_KOSTRA-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>berlin</span><span class='op'>$</span><span class='va'>plot</span>
 </div><div class='img'><img src='get_KOSTRA-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>berlin</span><span class='op'>$</span><span class='va'>data</span>
 </div><div class='output co'>#&gt;    Jaehrlichkeit                  Kategorie     Wert
 #&gt; 1            1 a Bemessungniederschlag [mm]   8.7000
@@ -259,7 +263,7 @@ duration_string <span class='op'>=</span> <span class='st'>"0010"</span>, locati
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/wseis'>Wolfang Seis</a>, <a href='https://github.com/amatzi'>Andreas Matzinger</a>, <a href='https://www.kompetenz-wasser.de/en/project/r2q/'>R2Q</a>.</p>
+  <p>Developed by Wolfgang Seis, <a href='https://github.com/amatzi'>Andreas Matzinger</a>, <a href='https://www.kompetenz-wasser.de/en/project/r2q/'>R2Q</a>.</p>
 </div>
 
 <div class="pkgdown">
