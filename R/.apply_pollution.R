@@ -107,7 +107,7 @@ for (substance in C_thresholds$VariableName) {
                                                             C_storm = C_storm$Mean[C_storm$VariableName == substance], 
                                                             coeff_runoff = fD_catch, 
                                                             rain = rain_event / 100 / 100,
-                                                            delat_t = delta_t*60,
+                                                            delta_t = delta_t*60,
                                                             river_length = river_length,
                                                             river_cross_section = river_cross_section)
     
@@ -119,7 +119,7 @@ for (substance in C_thresholds$VariableName) {
 
 
 
-#maximal connected area in planning area in km2
+#maximal connected area in planning area in ha
 
 
 area_max$max_area_plan_ha <- area_plan_con / area_catch_con *
