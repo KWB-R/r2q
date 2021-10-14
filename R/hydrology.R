@@ -217,6 +217,7 @@ calculate_tolerable_discharge <- function(hydrology = import_hydrology_data(),
     print("Calculation were not possible due to the following reasons:")
     lapply(messages, print)
   } else{
+    
     if(verbose){
     print(paste("Based on provided input data a tolerable annual discharge flow of",
                 as.character(Q_E1_tolerable), "L/s was calculated for Aba.",
@@ -244,7 +245,7 @@ calculate_tolerable_discharge <- function(hydrology = import_hydrology_data(),
 #' @examples KOSTRA_string_from_numeric(10)
 #' KOSTRA_string_from_numeric(360)
 #' 
-KOSTRA_string_from_numeric <- function(time_numeric=hydrology$tf){
+KOSTRA_string_from_numeric <- function(time_numeric){
   
   # constructing number of zeros for duration string
   length <- stringr::str_count(time_numeric)
@@ -266,7 +267,8 @@ KOSTRA_string_from_numeric <- function(time_numeric=hydrology$tf){
 #' 
 calculate_relevant_discharge <- function(data =r2q::import_hydrology_data(), 
                                          area_classification = T,
-                                         path_to_area="./inst/extdata/areas_hydrology.csv"){
+                                         path_to_area = system.file("extdata/areas_hydrology.csv",
+                                                                  package = "r2q")){
   
   # loading area data
   #planning_area <- readr::read_csv(path_to_area)#paste0(data.dir,"areas_hydrology.csv"))
@@ -290,7 +292,7 @@ calculate_relevant_discharge <- function(data =r2q::import_hydrology_data(),
     if(!planning_area %>% dplyr::filter(Einheit =="ha") %>% 
        dplyr::summarise(sum = sum(Wert)/100) == hydrology$A_plan){
       
-      stop("Error: Impervious areas of planning area has to be smaller than totalimpervious area")
+      stop("Error: Impervious areas of planning area has to be equal in both tables")
     }
   }
   
