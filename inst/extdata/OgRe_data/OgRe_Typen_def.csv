@@ -1,0 +1,53 @@
+Flaechentyp;Flaechentyp_klar;OgRe_Typ;OgRe_Typ_klar
+1;Dichte Blockbebauung, geschlossener Hinterhof, 5 - 6-geschossig;1;ALT
+2;Geschlossene Blockbebauung, Hinterhof, 5-geschossig;1;ALT
+3;Geschlossene und halboffene Blockbebauung, Schmuck- und Gartenhof, 4-geschossig;1;ALT
+6;Mischbebauung, halboffener und offener Schuppenhof, 2 - 4-geschossig;1;ALT
+7;Entkernte Blockrandbebauung, Lckenschluss nach 1945;1;ALT
+8;Heterogene, innerst„dtische Mischbebauung, Lckenschluss nach 1945;1;ALT
+9;Groásiedlungen und Punkthochh„user, 4 - 11-geschossig;2;NEU
+10;Blockrandbebauung mit Groáh”fen (1920-1940er), 3 - 5-geschossig;1;ALT
+11;Freie Zeilenbebauung mit landschaftlichem Siedlungsgrn (1950-1970er), 3 - 6-geschossig;2;NEU
+12;Altbau-Schule (Baujahr vor 1945);1;ALT
+13;Neubau-Schule (Baujahr nach 1945);2;NEU
+16;Sportanlagen, ungedeckt;6;AND
+17;Sportanlagen, gedeckt;6;AND
+21;D”rfliche Mischbebauung;3;EFH
+22;Reihen- und Doppelh„user mit Garten;3;EFH
+23;Freistehende Einfamilienh„user mit Garten;3;EFH
+24;Villen und Stadtvillen mit parkartigem Garten;3;EFH
+25;Verdichtung in Einzelhausgebieten, Mischbebauung mit G„rten und halbprivater Umgrnung;3;EFH
+27;Friedhof;6;AND
+29;Kerngebiet;6;AND
+30;Gewerbe- und Industriegebiet, groáfl„chiger Einzelhandel, geringe Bebauung;4;GEW
+31;Gewerbe- und Industriegebiet, groáfl„chiger Einzelhandel, dichte Bebauung;4;GEW
+32;Fl„chen der Ver- und Entsorgung;4;GEW
+33;Mischgebiet ohne Wohngebietscharakter, geringe Bebauung;6;AND
+36;Baumschule / Gartenbau;6;AND
+37;Kleingartenanlage;3;EFH
+38;Mischgebiet ohne Wohngebietscharakter, dichte Bebauung;6;AND
+41;Sicherheit und Ordnung;6;AND
+43;Verwaltung;6;AND
+44;Hochschule und Forschung;6;AND
+45;Kultur;6;AND
+46;Krankenhaus;6;AND
+47;Kindertagesst„tte;6;AND
+49;Kirche;6;AND
+51;Sonstige Jugendeinrichtungen;6;AND
+53;Park / Grnfl„che;6;AND
+54;Stadtplatz / Promenade;6;AND
+55;Wald;6;AND
+56;Landwirtschaft;6;AND
+57;Brachfl„che;6;AND
+58;Campingplatz;6;AND
+59;Wochenendh„user und Kleingarten „hnliche Gebiete;3;EFH
+60;Sonstige und heterogene Gemeinbedarfs- und Sondergebiete;6;AND
+72;Parallele Zeilenbebauung mit architektonischem Zeilengrn (1920-1930er), 3-5-geschossig;1;ALT
+73;Geschosswohnungsbau der 1990er Jahre und jnger;2;NEU
+91;Parkplatz;6;AND
+92;Bahnhof und Bahnanlage ohne Gleisk”rper;6;AND
+93;Flughafen;6;AND
+94;sonstige Verkehrsfl„chen;6;AND
+98;Baustelle;6;AND
+99;Gleisk”rper;6;AND
+100;Gew„sser;6;AND
