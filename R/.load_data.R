@@ -10,16 +10,17 @@ library(readxl)
 site_data <- read_excel(path = "inst/extdata/Data_entry/Bsp_Herne.xlsx", 
                         sheet = "site_data")
 
+# load manually entered data
+siteData <- r2q::load_site_data(
+  data.dir = "inst/extdata/Data_entry", 
+  filename = "Bsp_Herne.xlsx")
 
+surfaceData <- r2q::load_surface_data(
+  data.dir = "inst/extdata/Data_entry", 
+  filename = "Bsp_Herne.xlsx")
 
-siteData <- r2q::load_site_data(data.dir = "inst/extdata/Data_entry", 
-               filename = "Bsp_Herne.xlsx")
-
-surfaceData <- r2q::(data.dir = "inst/extdata/Data_entry", 
-                  filename = "Bsp_Herne.xlsx")
-
-
+devtools::document()
 
 # erstellen einer Funktion mit Dokumentation
-usethis::use_r("test")
+usethis::use_r("get_package_data")
 

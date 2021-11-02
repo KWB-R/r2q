@@ -1,10 +1,10 @@
-#' Loading all information about local properties
+#' Loading site specific information
 #' 
 #' this functions loads the data from the sheet "site_data" within the data
 #' entry excel file and returns the specified parameters in a list
 #'
-#' @param data.dir the directory where the entry data table is
-#' @param filename path of the site info Excel File including ".xlsx" . 
+#' @param data.dir The directory of the entry data table.
+#' @param filename Name of the R2Q-Excel File including ".xlsx".
 #' 
 #' @return 
 #' A list with all parameters from the site info table as seperate list 
@@ -13,7 +13,7 @@
 #' @importFrom readxl read_excel
 #' @export
 #' 
-#' @example 
+#' @examples 
 #' load_site_data(
 #' data.dir = "inst/extdata/Data_entry", 
 #' filename = "Bsp_Herne.xlsx")
@@ -48,8 +48,8 @@ load_site_data <- function(
 #' this functions loads the data from the sheet "surface_data" within the data
 #' entry excel file 
 #'
-#' @param data.dir the directory where the entry data table is
-#' @param filename path of the site info Excel File including ".xlsx" . 
+#' @param data.dir The directory of the entry data table.
+#' @param filename Name of the R2Q-Excel File including ".xlsx".
 #' 
 #' @return 
 #' A data frame with all surface subtypes, the covered area in ha and the 
@@ -58,7 +58,7 @@ load_site_data <- function(
 #' @importFrom readxl read_excel
 #' @export
 #' 
-#' @example 
+#' @examples
 #' load_site_data(
 #' data.dir = "inst/extdata/Data_entry", 
 #' filename = "Bsp_Herne.xlsx")
@@ -105,4 +105,59 @@ load_surface_data <- function(
             planning_area, " ha")
   }
   df_out
+}
+
+#' Loading local background concentration
+#' 
+#' This functions loads the data from the sheet "pollution_data" within the 
+#' R2Q-Excel file for data entry
+#'
+#' @param data.dir The directory of the entry data table.
+#' @param filename Name of the R2Q-Excel File including ".xlsx".
+#' @param default_for_na If TRUE, default values are used for substances that
+#' were not measured
+#' @param SUW_type Only used if default_for_na is TRUE. "lake" or "river", 
+#' "river" is used as default
+#' 
+#' @return 
+#' A data frame background concentration as defined in the Excel sheet. If
+#' default values are used this is documented in the "comment" column.
+#' 
+#' @importFrom readxl read_excel
+#' @export
+#' 
+#' @examples 
+#' load_site_data(
+#' data.dir = "inst/extdata/Data_entry", 
+#' filename = "Bsp_Herne.xlsx")
+#' 
+load_background_data <- function(
+  data.dir,
+  filename,
+  default_for_na = TRUE,
+  SUW_type = "river" 
+){
+  df_in <- readxl::read_excel(
+    path = file.path(data.dir, filename),
+    sheet = "pollution_data")
+  
+  colnames(df_in)[colnames(df_in) == "Background Concentration"] <- "river"
+  df_in$Comment <- "no_default"
+  
+  if(default_for_na){
+    suppressWarnings(
+      default_index <- which(is.na(as.numeric(df_in$river)))
+    )
+    substances_needed <- df_in[["Substance"]][default_index]
+    
+    defaults <- get_default_background(SUW_type = SUW_type)
+    defaults_row <- 
+      lapply(substances_needed, function(x){which(defaults[["Substance"]] == x)})
+    
+    for(i in 1:length(default_index)){
+      df_in$river[default_index[i]] <- defaults[defaults_row[[i]], "Default"]
+      df_in$Comment[default_index[i]] <- "default"
+    }
+    
+  }
 }

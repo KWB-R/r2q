@@ -2,14 +2,14 @@
 % Please edit documentation in R/load_site_info.R
 \name{load_site_data}
 \alias{load_site_data}
-\title{Loading all information about local properties}
+\title{Loading site specific information}
 \usage{
 load_site_data(data.dir, filename)
 }
 \arguments{
-\item{data.dir}{the directory where the entry data table is}
+\item{data.dir}{The directory of the entry data table.}
 
-\item{filename}{path of the site info Excel File including ".xlsx" .}
+\item{filename}{Name of the R2Q-Excel File including ".xlsx".}
 }
 \value{
 A list with all parameters from the site info table as seperate list
@@ -19,4 +19,10 @@ site_info table
 \description{
 this functions loads the data from the sheet "site_data" within the data
 entry excel file and returns the specified parameters in a list
+}
+\examples{
+load_site_data(
+data.dir = "inst/extdata/Data_entry", 
+filename = "Bsp_Herne.xlsx")
+
 }

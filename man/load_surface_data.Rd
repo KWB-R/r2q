@@ -7,9 +7,9 @@
 load_surface_data(data.dir, filename)
 }
 \arguments{
-\item{data.dir}{the directory where the entry data table is}
+\item{data.dir}{The directory of the entry data table.}
 
-\item{filename}{path of the site info Excel File including ".xlsx" .}
+\item{filename}{Name of the R2Q-Excel File including ".xlsx".}
 }
 \value{
 A data frame with all surface subtypes, the covered area in ha and the
@@ -18,4 +18,10 @@ corresponding runoff coefficient
 \description{
 this functions loads the data from the sheet "surface_data" within the data
 entry excel file
+}
+\examples{
+load_site_data(
+data.dir = "inst/extdata/Data_entry", 
+filename = "Bsp_Herne.xlsx")
+
 }
