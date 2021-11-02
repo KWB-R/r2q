@@ -1,4 +1,4 @@
-VariableName;UnitsAbbreviation;Group;threshold;threshold_type;Source
+Substance;Unit;Group;threshold;threshold_type;Source
 Anthracen;ug/L;PAK;0.7;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
 Cadmium gelöst;ug/L;Schwermetalle, gelöst;0.9;acute;OGewV 2016, Anlage 8, Tabelle 2, Wasserhärte 4, ZHK-UQN
 Carbendazim;ug/L;Biozide;0.7;acute;OGewV 2016, Anlage 6, ZHK-UQN

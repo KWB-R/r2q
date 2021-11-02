@@ -1,4 +1,4 @@
-VariableName;UnitsAbbreviation;Group;threshold;threshold_type;LAWA_type;Source
+Substance;Unit;Group;threshold;threshold_type;LAWA_type;Source
 Gesamt-Phosphor;ug/L;Naehrstoffe;12;annual;4;OGewV 2016, Anlage 7, 2.1.2, obere Grenze
 Gesamt-Phosphor;ug/L;Naehrstoffe;20;annual;5, 7, 8, 9;OGewV 2016, Anlage 7, 2.1.2, obere Grenze, mesotroph 1
 Gesamt-Phosphor;ug/L;Naehrstoffe;26;annual;1, 2, 3;OGewV 2016, Anlage 7, 2.1.2, obere Grenze, mesotroph 1

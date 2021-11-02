@@ -2,10 +2,11 @@ library(dplyr)
 #data folder
 input_path <- "inst/extdata/Eingabe/"
 filename <- "info_pollution.csv"
-
 rain_event_repetition <- 1 # every x years
+library(udunits2)
 
 if(FALSE){
+  
   # load data --------------------------------------------------------------------
   site_data <- load_site_info(path = input_path, filename = filename)
   
@@ -30,44 +31,43 @@ if(FALSE){
     rain_events$data$Jaehrlichkeit == paste(rain_event_repetition, "a") & 
       rain_events$data$Kategorie == "Regenspende [ l/(s*ha) ]", "Wert"]
   
-  #result_format
-  area_max <- C_thresholds[, 1:3]
+  # combine all tables (result_format)
+  area_max <- combine_concentration_tables(threshold_table = C_thresholds, 
+                                           storm_tablem = C_storm, 
+                                           background_table = C_background)
+  # add result columns
   area_max$max_area_catch_ha <- NA
+  for (i in 1:nrow(area_max)) {
+    # get substance sheet
+    substance <- as.list(area_max[i,])
+    
+    # if there is not background concentration use the default value
+    if(is.na(substance["c_river"])){
+      substance["c_river"] <- substance["default_river"]
+    }
+    
+    # no further calculations if substance concentration or threshold is missing
+    if(all(!is.na(
+      substance[c("threshold", "threshold_type", "c_storm", "c_river")]))){
   
-  counter <- 0
-  for (substance in C_thresholds$VariableName) {
-    counter <- counter + 1
-    
-    # get the row number of the substance in all tables 
-    # (threshold, stormwater, background)
-    tsb <- all_substance_rows(substance = substance)
-    
-    # no further calculations if substance is missing in one of the bales
-    if(all(!is.na(unlist(tsb)))){
-      th_types <- C_thresholds$threshold_type[tsb$t]
-      #annual or event based analysis?
-      if (any(th_types == "annual")){
-        
-        tsb$t <- tsb$t[(th_types == "annual")]
-        
-        area_max$max_area_catch_ha[counter] <- 
+      # annual or event based analysis?
+      if (substance$threshold_type == "annual"){
+        area_max$max_area_catch_ha[i] <- 
           max_area_steady_state(
             Q_river = site_data$Q_mean$Value *3600 *24 *365.25, # from m³/s to m³/a
-            Ci_river = C_background$Background_conc[tsb$b], 
-            Ci_threshold = C_thresholds$threshold[tsb$t], 
-            Ci_storm = C_storm$Mean[tsb$s], 
+            Ci_river = substance$c_river, 
+            Ci_threshold = substance$threshold, 
+            Ci_storm = substance$c_storm, 
             coeff_runoff = site_data$f_D_catch$Value, 
             q_rain = site_data[["rain_year"]]$Value) * 
           100 # from km² in ha
-        
       } else {
-        
-        area_max$max_area_catch_ha[counter] <- 
+        area_max$max_area_catch_ha[i] <- 
           max_area_dynamic(
             Q_river = site_data[["Q_mean"]]$Value, 
-            Ci_river = C_background[tsb$b, "Background_conc"], 
-            Ci_threshold = C_thresholds[tsb$t, "threshold"], 
-            Ci_storm = C_storm[tsb$s, "Mean"], 
+            Ci_river = substance$c_river, 
+            Ci_threshold = substance$threshold, 
+            Ci_storm = substance$c_storm, 
             coeff_runoff = site_data[["f_D_catch"]]$Value, 
             q_rain = rain_event / 100 / 100, # from L/(s*ha) to L/(s*m²)
             t_rain = site_data[["impact_time"]]$Value * 60, # Duration in s
@@ -93,6 +93,9 @@ if(FALSE){
   area_max$max_area_catch_ha <- signif(area_max$max_area_catch_ha, 2)
   area_max$max_area_plan_ha <- signif(area_max$max_area_plan_ha, 2)
   area_max$max_area_plan_percent<- round(area_max$max_area_plan_percent, 2)
+  area_max$threshold <- signif(area_max$threshold, 3)
+  area_max$c_storm <- signif(area_max$c_storm, 3)
+  area_max$c_river<- signif(area_max$c_river, 3)
   #acute substances
   # Achtung, hier ist die Vorgab, dass die Reihenfolge der Substanzen in 
   # C_thresholds und C_storm gleich ist --> Sollte geändert werden
@@ -116,7 +119,7 @@ if(FALSE){
   
   write.table(
     area_max, 
-    file = "C:/Users/mzamzo/Documents/R2Q/output/max_area_malte.csv", 
+    file = "C:/Users/mzamzo/Documents/R2Q/output/max_area_malte2.csv", 
     sep = ";", dec = ".", row.names = FALSE)
   
 }
@@ -240,12 +243,12 @@ max_area_steady_state <- function(
   
   if (to_high) {
     print("Background river concentration exceeds threshold.")
-    max_sealed_area<- 0
+    max_sealed_area<- -Inf
   }
   
   if (no_hazard) {
     print("Stormwater concentration is <= threshold. This parameter does not limit connected, impervious area")
-    max_sealed_area <-Inf
+    max_sealed_area <- Inf
   } 
   
   if (!(any(to_high, no_hazard))) {
@@ -349,6 +352,28 @@ mixed_reactor_C <- function (
   c_t <- Ci_steady + (Ci_river - Ci_steady) * exp(- Q_total / V_river * t_rain) 
     
   c_t
+}
+
+merge_by_pollutant <- function(
+  dataFrame1, 
+  dataFrame2
+){
+  merge(dataFrame1, dataFrame2, by = c("VariableName", "UnitsAbbreviation"), 
+        all = TRUE)
+}
+
+combine_concentration_tables <- function(
+  threshold_table, 
+  storm_tablem, 
+  background_table
+){
+  th <- C_thresholds[,c("VariableName", "UnitsAbbreviation", "Group", "threshold", "threshold_type")]
+  st <- C_storm[, c("VariableName", "UnitsAbbreviation", "Mean")]
+  colnames(st)[3] <- "c_storm" 
+  ba <- C_background[,c("VariableName", "UnitsAbbreviation", "Background_conc", "Default")]
+  colnames(ba)[3:4] <- c("c_river", "default_river")
+  
+  Reduce(merge_by_pollutant, list(th, st, ba))
 }
 
 

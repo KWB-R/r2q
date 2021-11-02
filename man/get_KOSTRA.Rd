@@ -9,7 +9,7 @@ get_KOSTRA(
   coord_vector = c(3813634.44, 2753912.5),
   location_name = "Herne",
   base_name = "GIS_KOSTRA-DWD-2010R_D",
-  duration_string = "0060",
+  duration_string = 60,
   plot = TRUE
 )
 }
@@ -22,7 +22,7 @@ get_KOSTRA(
 
 \item{base_name}{default: "GIS_KOSTRA-DWD-2010R_D"}
 
-\item{duration_string}{default: "0060"}
+\item{duration_string}{Duration of precipitation in minutes}
 
 \item{plot}{boolean (TRUE for plotting or FALSE if plotting is not required)}
 }
