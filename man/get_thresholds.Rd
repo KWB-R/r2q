@@ -4,12 +4,10 @@
 \alias{get_thresholds}
 \title{get substance thresholds for SUW during rain events}
 \usage{
-get_thresholds(data.dir, SUW_type = "river", LAWA_type = "default")
+get_thresholds(SUW_type = "river", LAWA_type = "default")
 }
 \arguments{
-\item{data.dir}{path where threshold tables are stored}
-
-\item{SUW_type}{lake or river, river is used as default}
+\item{SUW_type}{"lake" or "river", "river" is used as default}
 
 \item{LAWA_type}{lake or river type as described in German OGewV.
 Only main type sould be indicated (e.g. insert 11 for river type 11.1 or 11 K).

@@ -4,19 +4,18 @@
 \alias{get_stormwater_concentrations}
 \title{get average concentrations in stormwater runoff}
 \usage{
-get_stormwater_concentrations(data.dir, substances)
+get_stormwater_concentrations(substances = NULL)
 }
 \arguments{
-\item{data.dir}{path where OgRe_data are stored}
-
-\item{substances}{substance name or vector of substance names in German}
+\item{substances}{substance name or vector of substance names in German
+if left NULL all parameters measured in OgRe will be loaded}
 }
 \value{
 data.frame with mean(x), mean (log x) and sd (log x)
 }
 \description{
 assembles concentrations in stormwater runoff
-for selected substances bases on Berlin OgRe data set
-from csv table. IN addition to averages, coeffs for log-normal
+for selected substances based on Berlin OgRe data set
+from csv table. In addition to averages, coeffs for log-normal
 distribution are assessed
 }

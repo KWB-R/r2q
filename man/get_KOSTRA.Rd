@@ -2,39 +2,34 @@
 % Please edit documentation in R/KOSTRA_timeseries.R
 \name{get_KOSTRA}
 \alias{get_KOSTRA}
-\title{Get KOSTRA}
+\title{Get KOSTRA rain characteristics}
 \usage{
-get_KOSTRA(
-  path = system.file("extdata/KOSTRA", package = "r2q"),
-  coord_vector = c(3813634.44, 2753912.5),
-  location_name = "Herne",
-  base_name = "GIS_KOSTRA-DWD-2010R_D",
-  duration_string = 60,
-  plot = TRUE
-)
+get_KOSTRA(coord_vector, duration_string, location_name = NULL, plot = TRUE)
 }
 \arguments{
-\item{path}{path to shapefiles (default: system.file("extdata/KOSTRA", package = "r2q"))}
-
-\item{coord_vector}{coordinates in 3034}
-
-\item{location_name}{default: "Herne"}
-
-\item{base_name}{default: "GIS_KOSTRA-DWD-2010R_D"}
+\item{coord_vector}{coordinates in ETRS89. See Datails for more information.}
 
 \item{duration_string}{Duration of precipitation in minutes}
+
+\item{location_name}{used for plot title. Default is NULL}
 
 \item{plot}{boolean (TRUE for plotting or FALSE if plotting is not required)}
 }
 \value{
-Return list with elements "plot" and "data" (numeric results)
+A list with elements "plot" and "data" (numeric results)
 and also produce a ggplot2 plot if parameter plot = TRUE)
 }
 \description{
-Get KOSTRA
+Get KOSTRA rain characteristics
+}
+\details{
+The KOSTRA Data is available for a grid of x x x km. The location
+is given in coordinates in the ETRS89 system
+(For information see: https://epsg.io/3034)
+Longitudes and Lattidudes in WGS84 can be converted into ETRS89 here:
+https://epsg.io/transform#s_srs=4326&t_srs=3034
 }
 \examples{
-link_to_coord_help <- "https://epsg.io/transform#s_srs=4326&t_srs=3034"
   
 # Example default values Herne
 herne <- get_KOSTRA()
