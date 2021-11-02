@@ -2,38 +2,37 @@
 % Please edit documentation in R/max_area.R
 \name{mixed_reactor_C}
 \alias{mixed_reactor_C}
-\title{calculate dynamic concentration in river stretch}
+\title{Calculate the dynamic concentration in a river stretch}
 \usage{
 mixed_reactor_C(
   Q_river,
-  C_river,
-  C_threshold,
-  C_storm,
+  Ci_river,
+  Ci_storm,
   coeff_runoff,
-  rain,
-  delta_t,
+  q_rain,
+  t_rain,
   Area,
-  Vol
+  V_river
 )
 }
 \arguments{
-\item{Q_river}{River flow in m3/time (time must represent impact duration)}
+\item{Q_river}{Average flow of the river in m³/s}
 
-\item{C_river}{background concentration in mg/L}
+\item{Ci_river}{Background concentration for substance i. Concentration unit
+must fit to Ci_threshold and Ci_storm.}
 
-\item{C_threshold}{concentration threshold in mg/L}
-
-\item{C_storm}{concentration in stormwater in mg/L}
+\item{Ci_storm}{Concentration in stormwater run-off for substance i. Concentration unit
+must fit to Ci_threshold and Ci_river.}
 
 \item{coeff_runoff}{runoff coefficient of connected impervious area}
 
-\item{rain}{rain amount in mm/time (time must represent impact duration)}
+\item{q_rain}{Amount of rain amount in L/(s*m²)}
 
-\item{delta_t}{impact duration (typically = flow time in river stretch = rain duration, same time unit as rain/flow)}
+\item{t_rain}{duration of the rain in seconds}
 
 \item{Area}{impervious, connected area in m2}
 
-\item{Vol}{reactor volume (= river stretch volume) in m3}
+\item{V_river}{volume of the river in m³}
 }
 \value{
 dynamic concentration after time delta_t in mg/L
