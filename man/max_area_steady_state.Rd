@@ -6,25 +6,32 @@
 \usage{
 max_area_steady_state(
   Q_river,
-  C_river,
-  C_threshold,
-  C_storm,
+  Ci_river,
+  Ci_threshold,
+  Ci_storm,
   coeff_runoff,
-  rain
+  Q_rain,
+  substance_i = NULL
 )
 }
 \arguments{
-\item{Q_river}{River flow in m3/time (time must represent impact duration)}
+\item{Q_river}{Annual river flow in m³/a}
 
-\item{C_river}{background concentration in mg/L}
+\item{Ci_river}{Background concentration for substance i. Concentration unit
+must fit to Ci_threshold and Ci_storm.}
 
-\item{C_threshold}{concentration threshold in mg/L}
+\item{Ci_threshold}{Threshold value for substance i. Concentration unit
+must fit to Ci_river and Ci_storm.}
 
-\item{C_storm}{concentration in stormwater in mg/L}
+\item{Ci_storm}{Concentration in stormwater run-off for substance i. Concentration unit
+must fit to Ci_threshold and Ci_river.}
 
-\item{coeff_runoff}{runoff coefficient of connected impervious area}
+\item{coeff_runoff}{Run-off coefficient of connected impervious area}
 
-\item{rain}{rain amount in mm/time (time must represent impact duration)}
+\item{Q_rain}{Annual amount of rain amount in mm/a}
+
+\item{substance_i}{the substance name is only used for messages,
+not for calculation}
 }
 \value{
 maximal connected impervious area in km2

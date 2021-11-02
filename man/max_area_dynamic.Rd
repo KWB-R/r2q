@@ -6,30 +6,33 @@
 \usage{
 max_area_dynamic(
   Q_river,
-  C_river,
-  C_threshold,
-  C_storm,
+  Ci_river,
+  Ci_threshold,
+  Ci_storm,
   coeff_runoff,
-  rain,
-  delta_t,
+  q_rain,
+  t_rain,
   river_length,
   river_cross_section
 )
 }
 \arguments{
-\item{Q_river}{River flow in m3/time (time must represent impact duration)}
+\item{Q_river}{Average River flow in m3/s}
 
-\item{C_river}{background concentration in mg/L}
+\item{Ci_river}{Background concentration for substance i. Concentration unit
+must fit to Ci_threshold and Ci_storm.}
 
-\item{C_threshold}{concentration threshold in mg/L}
+\item{Ci_threshold}{Threshold value for substance i. Concentration unit
+must fit to Ci_river and Ci_storm.}
 
-\item{C_storm}{concentration in stormwater in mg/L}
+\item{Ci_storm}{Concentration in stormwater run-off for substance i. Concentration unit
+must fit to Ci_threshold and Ci_river.}
 
 \item{coeff_runoff}{runoff coefficient of connected impervious area}
 
-\item{rain}{rain amount in mm/time (time must represent impact duration)}
+\item{q_rain}{rain amount in mm/(m2*s)}
 
-\item{delta_t}{impact duration (typically = flow time in river stretch = rain duration)}
+\item{t_rain}{duration of rain in s}
 
 \item{river_length}{length of impacted urban river stretch in m}
 
