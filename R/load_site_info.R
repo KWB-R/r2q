@@ -139,10 +139,11 @@ load_background_data <- function(
 ){
   df_in <- readxl::read_excel(
     path = file.path(data.dir, filename),
-    sheet = "pollution_data")
+    sheet = "pollution_data", 
+    col_types = c("text", "text", "numeric", "text"), na = "NA")
   
   colnames(df_in)[colnames(df_in) == "Background Concentration"] <- "river"
-  df_in$Comment <- "no_default"
+  df_in$Comment <- "entered"
   
   if(default_for_na){
     suppressWarnings(
@@ -158,6 +159,6 @@ load_background_data <- function(
       df_in$river[default_index[i]] <- defaults[defaults_row[[i]], "Default"]
       df_in$Comment[default_index[i]] <- "default"
     }
-    
   }
+  df_in
 }
