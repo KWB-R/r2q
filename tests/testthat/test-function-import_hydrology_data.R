@@ -5,11 +5,11 @@
 # so that real cases are tested. You should then delete this comment.
 #
 
-test_that("get_q_area_partial() works", {
+test_that("import_hydrology_data() works", {
 
   expect_error(
-    r2q:::get_q_area_partial()
-    # argument "A_ba" is missing, with no default
+    r2q:::import_hydrology_data()
+    # '' does not exist in current working directory ('C:/Users/mzamzo/Documents/R/git/r2q').
   )
 
 })

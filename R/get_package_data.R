@@ -164,9 +164,13 @@ get_KOSTRA <- function(
   #duration_string for rain data selection
   duration_string <- sprintf("%04d", as.numeric(duration_string))
   
+  
   # Loading shapefile from folder
   d_shape <- sf::st_read(
-    paste0("inst/extdata/KOSTRA/", "GIS_KOSTRA-DWD-2010R_D", duration_string))
+    system.file(paste0("extdata/KOSTRA/", 
+                       "GIS_KOSTRA-DWD-2010R_D", 
+                       duration_string), 
+                package = "r2q"))
   
   # define Point geometry 
   herne <- sf::st_sfc(sf::st_point(coord_vector))

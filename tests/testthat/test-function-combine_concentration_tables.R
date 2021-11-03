@@ -5,11 +5,11 @@
 # so that real cases are tested. You should then delete this comment.
 #
 
-test_that("get_q_area_partial() works", {
+test_that("combine_concentration_tables() works", {
 
   expect_error(
-    r2q:::get_q_area_partial()
-    # argument "A_ba" is missing, with no default
+    r2q:::combine_concentration_tables()
+    # argument "threshold_table" is missing, with no default
   )
 
 })
