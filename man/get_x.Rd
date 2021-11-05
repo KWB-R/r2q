@@ -4,7 +4,7 @@
 \alias{get_x}
 \title{Calculate acceptable additional runoff factor x}
 \usage{
-get_x(Hq1_pnat = NA, Hq2_pnat = NA)
+get_x(Hq1_pnat, Hq2_pnat)
 }
 \arguments{
 \item{Hq1_pnat}{potential annual natural discharge flow (unit l*s^-1 km²^-1)}

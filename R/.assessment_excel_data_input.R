@@ -27,20 +27,21 @@ c_table <- r2q::combine_concentration_tables(
   onlyComplete = T)
 
 # process ----------------------------------------------------------------------
-rain_event <- 
-  local_rain$data$Wert[local_rain$data$Jaehrlichkeit == "1 a" & 
-                         local_rain$data$Kategorie == "Regenspende"]
-
-area_max <- r2q::add_max_areas(
+area_table <- r2q::add_max_areas(
   combined_concentration_table = c_table, 
-  siteData = siteData, 
-  q_rain = rain_event,
+  site_data = siteData, 
+  q_rain = 4.877,
   t_rain = t_rain)
 
-output_table <- r2q::add_critical_loads(max_area_table = area_max)
+area_table <- add_hydrolic(site_data = siteData, 
+                           max_area_table = area_table, 
+                           q_rain = 4.877)
 
 write.table(
-  output_table, 
-  file = "C:/Users/mzamzo/Documents/R2Q/output/max_area_malte2.csv", 
+  area_table, 
+  file = "C:/Users/mzamzo/Documents/R2Q/output/max_area_malte3.csv", 
   sep = ";", dec = ".", row.names = FALSE)
 
+# Adding maximal allowed loads for discharge into surface water
+load_table <- r2q::add_critical_loads(max_area_table = area_max, 
+                                      site_data = siteData)

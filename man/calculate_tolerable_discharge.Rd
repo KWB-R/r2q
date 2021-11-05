@@ -2,25 +2,53 @@
 % Please edit documentation in R/hydrology.R
 \name{calculate_tolerable_discharge}
 \alias{calculate_tolerable_discharge}
-\title{Calculate Tolerable Discharge}
+\title{Calculate tolerable discharge}
 \usage{
 calculate_tolerable_discharge(
-  hydrology = import_hydrology_data(),
+  area_catch = 1,
+  area_con_catch = 1,
+  area_plan = 0,
+  slope_catch = 0.1,
+  Hq1pnat_catch = NULL,
+  Hq2pnat_catch = NULL,
+  site_data = NULL,
   verbose = TRUE
 )
 }
 \arguments{
-\item{hydrology}{hydrology (tibble as retrieved by \code{\link{import_hydrology_data}})}
+\item{area_catch}{catchment area in km²}
 
-\item{verbose}{if TRUE returns results as informative messages, If FALSE only return numeric value for planning area.}
+\item{area_con_catch}{impervious catchment area discharging into the surface
+water in km²}
+
+\item{area_plan}{planning area in km² (default is 0 -> no planning area)}
+
+\item{slope_catch}{average slope of the catchment area in \% (Defalut is 0.1)}
+
+\item{Hq1pnat_catch}{natural average catchment discharge for a yearly rain
+event in L/(s*km²) (Defautl is NULL)}
+
+\item{Hq2pnat_catch}{natural average catchment discharge for a bienneal
+rain event in L/(s*km²) (Defautl is NULL)}
+
+\item{site_data}{site data loaded by \code{\link{laod_site_data}}). If
+defined, this overwrites all other values.}
+
+\item{verbose}{if TRUE returns results as informative messages,
+If FALSE only return numeric value for planning area.}
 }
 \value{
-returns tolerable discharge for the planning area based on the data in hydrology table
+Table with tolerable discharge for the whole Catchment and
+planning area in L/s. Furthermore, x is given which is a factor for allowed
+discharge increase compared to the natural status and is included in the
+calculation for the tolerable discharges. The definition of x can be found
+in guideline DWA-A 102-3
 }
 \description{
-Calculate Tolerable Discharge
+Uses the site data to calculate a natural stormwater run-off for a yearly
+rain event
 }
 \examples{
-calculate_tolerable_discharge(verbose = FALSE)
-calculate_tolerable_discharge(verbose = TRUE)
+
+
 }

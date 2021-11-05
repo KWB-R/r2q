@@ -38,6 +38,12 @@ load_site_data <- function(
   })
   names(siteData) <- site_data[["Parameter"]]
   
+  if(all(is.na(c(siteData[["slope_catch"]]$Value,
+                 siteData[["Hq1pnat_catch"]]$Value)))){
+    stop("Hydrolic calculation not possible as information of slope and", 
+         " Hq1pnat missing. At least one parameter must be provided")
+  }
+  
   # exclude all the NA values --> Either headings or not obligatory
   del <- which(sapply(siteData, function(x){is.na(x["Value"])}))
   siteData <- siteData[-del]

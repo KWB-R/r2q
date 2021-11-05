@@ -16,21 +16,22 @@ get_thresholds <- function (
   LAWA_type = "default"
 )
 {
-  data.dir <- "inst/extdata/Thresholds"
-  
   # acute concentration (valid for all SUW type)
   acute_thresholds <- read.table(
-    file = file.path(data.dir, "thresholds_acute.csv"),
+    file = system.file("extdata/Thresholds/thresholds_acute.csv", 
+                       package = "r2q"),
     sep = ";", dec = ".", as.is = TRUE, header = TRUE)
   
-  # annual thresholds (depending von SUW type)
+  # annual thresholds (depending on SUW type)
   if (SUW_type == "river") {
     annual_thresholds <- read.table(
-      file = file.path(data.dir, "thresholds_annual_rivers.csv"),
+      file = system.file("extdata/Thresholds/thresholds_annual_rivers.csv", 
+                         package = "r2q"),
       sep = ";", dec = ".", as.is = TRUE, header = TRUE)
   } else {
     annual_thresholds <- read.table(
-      file = file.path(data.dir, "thresholds_annual_lakes.csv"),
+      file = system.file("extdata/Thresholds/thresholds_annual_lakes.csv", 
+                         package = "r2q"),
       sep = ";", dec = ".", as.is = TRUE, header = TRUE)
   }
   
@@ -42,12 +43,14 @@ get_thresholds <- function (
       length(here_it_is) > 0
     }))
   
-  # set index to default if the specified Lawa type was not found
+  # set index to default if the specified LAWA type was not found
   if (length(index_SUW_type) == 0) {
     index_SUW_type <- which(annual_thresholds$LAWA_type == "default")
+    warning("Lawa Type ", LAWA_type, " not found.",
+            " -> LAWA Type was set to default instead")
   }
   
-  # 
+  
   if(any(duplicated(annual_thresholds$Substance[index_SUW_type]))){
     warning("two thresholds were found for Lawa Type: ", LAWA_type, 
             " -> LAWA Type was set to default instead")
@@ -58,7 +61,6 @@ get_thresholds <- function (
                           names(annual_thresholds) != "LAWA_type"])
   
 }
-
 
 #' get average concentrations in stormwater runoff
 #'
@@ -77,7 +79,8 @@ get_thresholds <- function (
 #' 
 get_stormwater_concentrations <- function (substances = NULL)
 {
-  OgRe_data <- read.table(file = "inst/extdata/OgRe_data/OgRe_drain.csv", 
+  OgRe_data <- read.table(file = system.file("extdata/OgRe_data/OgRe_drain.csv", 
+                                             package = "r2q"), 
                           sep = ";", dec = ".", header = TRUE, as.is = TRUE)
   
   
@@ -241,17 +244,21 @@ get_KOSTRA <- function(
 get_default_background <- function (
   SUW_type = "river"
 ){
-  data.dir <- "inst/extdata/Default_data"
+
   #get background_concentrations for SUW_type
   if (SUW_type == "river") {
     
-    C_background <- read.table(file = file.path(data.dir, "Background_concentrations_river.csv"),
-                               sep = ";", dec = ".", as.is = TRUE, header = TRUE)
+    C_background <- 
+      read.table(file = system.file("extdata/Default_data/Background_concentrations_river.csv", 
+                                    package = "r2q"),
+                 sep = ";", dec = ".", as.is = TRUE, header = TRUE)
     
   } else {
     
-    C_background <- read.table(file = file.path(data.dir, "Eingabe/Background_concentrations_lake.csv"),
-                               sep = ";", dec = ".", as.is = TRUE, header = TRUE)
+    C_background <- 
+      read.table(file = system.file("extdata/Default_data/Background_concentrations_lake.csv", 
+                                    package = "r2q"),
+                 sep = ";", dec = ".", as.is = TRUE, header = TRUE)
     
   }
   C_background 
