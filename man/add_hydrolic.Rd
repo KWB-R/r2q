@@ -10,6 +10,8 @@ add_hydrolic(site_data, max_area_table, q_rain)
 \item{site_data}{The site specific data loaded with function "loda_site_data"}
 
 \item{max_area_table}{Table created with}
+
+\item{q_rain}{characteristic rainfall in L/(s*ha)}
 }
 \value{
 the combined max_area table is extend by a row with the result of the

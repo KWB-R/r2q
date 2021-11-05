@@ -8,9 +8,8 @@
 test_that("calculate_tolerable_discharge() works", {
 
   expect_error(
-    r2q:::calculate_tolerable_discharge()
+    r2q:::calculate_tolerable_discharge(site_data = NA)
     # '' does not exist in current working directory ('C:/Users/mzamzo/Documents/R/git/r2q').
   )
 
 })
-

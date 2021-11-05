@@ -14,7 +14,7 @@ calculate_surface_discharge(area = 1, fD = 0.9, q_rain, surface_Data = NULL)
 \item{q_rain}{Amount of rain in L / (s*ha)}
 
 \item{surface_Data}{loaded surface data
-(retrieved by \code{\link{laod_surface_data}}). If defined, this overwrites
+(created by \code{\link{load_surface_data}}). If defined, this overwrites
 the values of "area" and "fD"}
 }
 \value{

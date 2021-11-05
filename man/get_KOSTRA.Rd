@@ -32,13 +32,15 @@ https://epsg.io/transform#s_srs=4326&t_srs=3034
 \examples{
   
 # Example default values Herne
-herne <- get_KOSTRA()
+herne <- r2q::get_KOSTRA(coord_vector = c(3813634.44, 2753912.5), 
+duration_string = 1080, 
+location_name = "Herne")
 herne$plot
 herne$data
   
 # Example 10 min for Berlin
 berlin <- get_KOSTRA(coord_vector = c(4217676.98, 2862423.69),
-duration_string = "0010", location_name = "Berlin", plot = TRUE)
+duration_string = 10, location_name = "Berlin", plot = TRUE)
 berlin$plot
 berlin$data
 

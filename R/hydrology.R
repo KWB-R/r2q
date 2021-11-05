@@ -63,7 +63,7 @@ get_q_max <- function(
 
 #' Get allowed impervious area
 #'
-#' @param f_DA Run-off coefficient of impervious area
+#' @param f_D Run-off coefficient of impervious area
 #' @param Q_tol Tolearble discharge into the surface water in L/s
 #' @param q_rain presipitaion rate in L/(s * ha)
 #'
@@ -89,7 +89,7 @@ get_allowed_area <- function(f_D , Q_tol, q_rain){
 #' event in L/(s*km²) (Defautl is NULL)
 #' @param Hq2pnat_catch natural average catchment discharge for a bienneal 
 #' rain event in L/(s*km²) (Defautl is NULL)
-#' @param site_data site data loaded by \code{\link{laod_site_data}}). If 
+#' @param site_data site data loaded by function "load_site_data". If 
 #' defined, this overwrites all other values.
 #' @param verbose if TRUE returns results as informative messages, 
 #' If FALSE only return numeric value for planning area.
@@ -157,7 +157,7 @@ calculate_tolerable_discharge <- function(
 #' @param area Impervious area in ha
 #' @param fD Runoff coefficient of impervious area
 #' @param surface_Data loaded surface data 
-#' (retrieved by \code{\link{laod_surface_data}}). If defined, this overwrites
+#' (created by \code{\link{load_surface_data}}). If defined, this overwrites
 #' the values of "area" and "fD"
 #'
 #' @return 

@@ -22,7 +22,7 @@ entry excel file and returns the specified parameters in a list
 }
 \examples{
 load_site_data(
-data.dir = "inst/extdata/Data_entry", 
+data.dir = system.file("extdata/Data_entry", package = "r2q"), 
 filename = "Bsp_Herne.xlsx")
 
 }

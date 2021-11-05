@@ -4,12 +4,14 @@
 \alias{add_critical_loads}
 \title{Critical Pollutant loads into the surface water}
 \usage{
-add_critical_loads(max_area_table, site_data)
+add_critical_loads(max_area_table, site_data, q_rain)
 }
 \arguments{
 \item{max_area_table}{Table created with}
 
 \item{site_data}{The site specific data loaded with function "loda_site_data"}
+
+\item{q_rain}{characteristic rainfall in L/(s*ha)}
 }
 \value{
 the combined max_area table is extend by the columns

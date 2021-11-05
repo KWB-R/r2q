@@ -31,7 +31,7 @@ event in L/(s*km²) (Defautl is NULL)}
 \item{Hq2pnat_catch}{natural average catchment discharge for a bienneal
 rain event in L/(s*km²) (Defautl is NULL)}
 
-\item{site_data}{site data loaded by \code{\link{laod_site_data}}). If
+\item{site_data}{site data loaded by function "load_site_data". If
 defined, this overwrites all other values.}
 
 \item{verbose}{if TRUE returns results as informative messages,

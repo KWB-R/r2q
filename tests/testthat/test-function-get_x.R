@@ -7,7 +7,8 @@
 
 test_that("get_x() works", {
 
-  r2q:::get_x()
+  expect_error(
+  r2q:::get_x(Hq1_pnat = NA))
 
 })
 

@@ -11,11 +11,12 @@
 #' items. Per Parameter the item is a list containing the columnn names of the 
 #' site_info table 
 #' @importFrom readxl read_excel
+#' @importFrom utils type.convert
 #' @export
 #' 
 #' @examples 
 #' load_site_data(
-#' data.dir = "inst/extdata/Data_entry", 
+#' data.dir = system.file("extdata/Data_entry", package = "r2q"), 
 #' filename = "Bsp_Herne.xlsx")
 #' 
 load_site_data <- function(
@@ -33,7 +34,7 @@ load_site_data <- function(
       stop("No value for oblitogry parameter ", site_data[i,1])
     }
     one_parameter$Value <- 
-      type.convert(x = one_parameter$Value, as.is = TRUE)
+      utils::type.convert(x = one_parameter$Value, as.is = TRUE)
     one_parameter
   })
   names(siteData) <- site_data[["Parameter"]]
@@ -66,7 +67,7 @@ load_site_data <- function(
 #' 
 #' @examples
 #' load_site_data(
-#' data.dir = "inst/extdata/Data_entry", 
+#' data.dir = system.file("extdata/Data_entry", package = "r2q"), 
 #' filename = "Bsp_Herne.xlsx")
 #' 
 load_surface_data <- function(
@@ -134,7 +135,7 @@ load_surface_data <- function(
 #' 
 #' @examples 
 #' load_site_data(
-#' data.dir = "inst/extdata/Data_entry", 
+#' data.dir = system.file("extdata/Data_entry", package = "r2q"), 
 #' filename = "Bsp_Herne.xlsx")
 #' 
 load_background_data <- function(

@@ -36,13 +36,13 @@ add_max_areas <- function(
     if (substance$threshold_type == "annual"){
       area_max$max_area_catch_ha[i] <- 
         max_area_steady_state(
-          Q_river = site_data[["Q_mean"]]$Value *3600 *24 *365.25, # from m³/s to m³/a
+          Q_river = site_data[["Q_mean"]]$Value *3600 *24 *365.25, # from m3/s to m3/a
           Ci_river = substance$c_river, 
           Ci_threshold = substance$threshold, 
           Ci_storm = substance$c_storm, 
           coeff_runoff = site_data[["f_D_catch"]]$Value, 
           Q_rain = site_data[["rain_year"]]$Value) * 
-        100 # from km² in ha
+        100 # from km2 in ha
     } else {
       area_max$max_area_catch_ha[i] <- 
         max_area_dynamic(
@@ -51,11 +51,11 @@ add_max_areas <- function(
           Ci_threshold = substance$threshold, 
           Ci_storm = substance$c_storm, 
           coeff_runoff = site_data[["f_D_catch"]]$Value, 
-          q_rain = q_rain / 100 / 100, # from L/(s*ha) to L/(s*m²)
+          q_rain = q_rain / 100 / 100, # from L/(s*ha) to L/(s*m2)
           t_rain = t_rain, # Duration in s
           river_length = site_data[["river_length"]]$Value,
           river_cross_section = site_data[["river_cross_section"]]$Value) * 
-        100 # from km² in ha
+        100 # from km2 in ha
     }
     
   }
@@ -95,6 +95,7 @@ add_max_areas <- function(
 #' 
 #' @param max_area_table Table created with 
 #' @param site_data The site specific data loaded with function "loda_site_data"
+#' @param q_rain characteristic rainfall in L/(s*ha)
 #' 
 #' @return 
 #' the combined max_area table is extend by the columns
@@ -106,12 +107,12 @@ add_max_areas <- function(
 #' @export
 #' 
 add_critical_loads <- function(
-  max_area_table, site_data
+  max_area_table, site_data, q_rain
 ){
   df_out <- max_area_table
   
   # factor for unit conversion
-  to_kg <- data.frame("unit" = c("ng", "µg", "ug",  "mg", "g"),
+  to_kg <- data.frame("unit" = c("ng", "\u03bcg", "ug",  "mg", "g"),
                       "factor" = c(1E-12, 1E-9, 1E-9,1E-6, 1E-3))
   factor_kg <- c()
   for(i in 1:nrow(df_out)){
@@ -126,7 +127,7 @@ add_critical_loads <- function(
   index_annual <- which(df_out$threshold_type == "annual")
   
   df_out$crit_load_g_event[index_acute] <- 
-    signif(rain_event * # in  L/(s*ha)
+    signif(q_rain * # in  L/(s*ha)
              df_out$max_area_plan_ha[index_acute] * # in ha
              site_data[["f_D_plan"]]$Value * # [-]
              site_data[["impact_time"]]$Value * 60 * # [s] 
@@ -135,8 +136,8 @@ add_critical_loads <- function(
   
   # überschreiben für annual substances
   df_out$crit_load_kg_year[index_annual] <- 
-    signif(site_data[["rain_year"]]$Value * # [L/(m²a)]
-             df_out$max_area_plan_ha[index_annual] * 1e4 * # ha to m² 
+    signif(site_data[["rain_year"]]$Value * # [L/(m2*a)]
+             df_out$max_area_plan_ha[index_annual] * 1e4 * # ha to m2
              site_data[["f_D_plan"]]$Value  * # [i]
              df_out$c_storm[index_annual] * 
              factor_kg[index_annual], 3)
@@ -150,6 +151,7 @@ add_critical_loads <- function(
 #' 
 #' @param max_area_table Table created with 
 #' @param site_data The site specific data loaded with function "loda_site_data"
+#' @param q_rain characteristic rainfall in L/(s*ha)
 #' 
 #' @return 
 #' the combined max_area table is extend by a row with the result of the
@@ -167,7 +169,7 @@ add_hydrolic <- function(
   
   # tolerable discharge
   Q_tolerable <- calculate_tolerable_discharge(
-    site_data = siteData,
+    site_data = site_data,
     verbose = F)
   
   df_out["Parameter"] <- "Discharge"
@@ -184,7 +186,7 @@ add_hydrolic <- function(
     Q_tol = Q_tolerable$planning, 
     q_rain = q_rain) 
   df_out["share_of_currently_sealed"] <- df_out["max_area_plan_ha"] /
-    siteData$area_con_plan$Value
+    site_data$area_con_plan$Value
   
   rbind(max_area_table, df_out)
 }

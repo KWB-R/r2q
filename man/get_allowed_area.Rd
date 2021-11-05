@@ -7,11 +7,11 @@
 get_allowed_area(f_D, Q_tol, q_rain)
 }
 \arguments{
+\item{f_D}{Run-off coefficient of impervious area}
+
 \item{Q_tol}{Tolearble discharge into the surface water in L/s}
 
 \item{q_rain}{presipitaion rate in L/(s * ha)}
-
-\item{f_DA}{Run-off coefficient of impervious area}
 }
 \value{
 allowed impervious area in ha
