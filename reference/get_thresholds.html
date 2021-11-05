@@ -138,7 +138,7 @@ from csv tables" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>get substance thresholds for SUW during rain events</h1>
-    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/get_thresholds.R'><code>R/get_thresholds.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/get_package_data.R'><code>R/get_package_data.R</code></a></small>
     <div class="hidden name"><code>get_thresholds.Rd</code></div>
     </div>
 
@@ -148,18 +148,14 @@ SUW type (river or lake) and LAWA type
 from csv tables</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_thresholds</span><span class='op'>(</span><span class='va'>data.dir</span>, SUW_type <span class='op'>=</span> <span class='st'>"river"</span>, LAWA_type <span class='op'>=</span> <span class='st'>"default"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_thresholds</span><span class='op'>(</span>SUW_type <span class='op'>=</span> <span class='st'>"river"</span>, LAWA_type <span class='op'>=</span> <span class='st'>"default"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data.dir</th>
-      <td><p>path where threshold tables are stored</p></td>
-    </tr>
-    <tr>
       <th>SUW_type</th>
-      <td><p>lake or river, river is used as default</p></td>
+      <td><p>"lake" or "river", "river" is used as default</p></td>
     </tr>
     <tr>
       <th>LAWA_type</th>

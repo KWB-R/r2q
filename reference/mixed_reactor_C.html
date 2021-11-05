@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>calculate dynamic concentration in river stretch — mixed_reactor_C • r2q</title>
+<title>Calculate the dynamic concentration in a river stretch — mixed_reactor_C • r2q</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="calculate dynamic concentration in river stretch — mixed_reactor_C" />
+<meta property="og:title" content="Calculate the dynamic concentration in a river stretch — mixed_reactor_C" />
 <meta property="og:description" content="based on mixed reactor approach" />
 
 
@@ -135,7 +135,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>calculate dynamic concentration in river stretch</h1>
+    <h1>Calculate the dynamic concentration in a river stretch</h1>
     <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/max_area.R'><code>R/max_area.R</code></a></small>
     <div class="hidden name"><code>mixed_reactor_C.Rd</code></div>
     </div>
@@ -146,14 +146,13 @@
 
     <pre class="usage"><span class='fu'>mixed_reactor_C</span><span class='op'>(</span>
   <span class='va'>Q_river</span>,
-  <span class='va'>C_river</span>,
-  <span class='va'>C_threshold</span>,
-  <span class='va'>C_storm</span>,
+  <span class='va'>Ci_river</span>,
+  <span class='va'>Ci_storm</span>,
   <span class='va'>coeff_runoff</span>,
-  <span class='va'>rain</span>,
-  <span class='va'>delta_t</span>,
+  <span class='va'>q_rain</span>,
+  <span class='va'>t_rain</span>,
   <span class='va'>Area</span>,
-  <span class='va'>Vol</span>
+  <span class='va'>V_river</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -161,39 +160,37 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>Q_river</th>
-      <td><p>River flow in m3/time (time must represent impact duration)</p></td>
+      <td><p>Average flow of the river in m³/s</p></td>
     </tr>
     <tr>
-      <th>C_river</th>
-      <td><p>background concentration in mg/L</p></td>
+      <th>Ci_river</th>
+      <td><p>Background concentration for substance i. Concentration unit
+must fit to Ci_threshold and Ci_storm.</p></td>
     </tr>
     <tr>
-      <th>C_threshold</th>
-      <td><p>concentration threshold in mg/L</p></td>
-    </tr>
-    <tr>
-      <th>C_storm</th>
-      <td><p>concentration in stormwater in mg/L</p></td>
+      <th>Ci_storm</th>
+      <td><p>Concentration in stormwater run-off for substance i. Concentration unit
+must fit to Ci_threshold and Ci_river.</p></td>
     </tr>
     <tr>
       <th>coeff_runoff</th>
       <td><p>runoff coefficient of connected impervious area</p></td>
     </tr>
     <tr>
-      <th>rain</th>
-      <td><p>rain amount in mm/time (time must represent impact duration)</p></td>
+      <th>q_rain</th>
+      <td><p>Amount of rain amount in L/(s*m²)</p></td>
     </tr>
     <tr>
-      <th>delta_t</th>
-      <td><p>impact duration (typically = flow time in river stretch = rain duration, same time unit as rain/flow)</p></td>
+      <th>t_rain</th>
+      <td><p>duration of the rain in seconds</p></td>
     </tr>
     <tr>
       <th>Area</th>
       <td><p>impervious, connected area in m2</p></td>
     </tr>
     <tr>
-      <th>Vol</th>
-      <td><p>reactor volume (= river stretch volume) in m3</p></td>
+      <th>V_river</th>
+      <td><p>volume of the river in m³</p></td>
     </tr>
     </table>
 

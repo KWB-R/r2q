@@ -154,11 +154,12 @@ at one inlet point on the river stretch</p>
 
     <pre class="usage"><span class='fu'>max_area_steady_state</span><span class='op'>(</span>
   <span class='va'>Q_river</span>,
-  <span class='va'>C_river</span>,
-  <span class='va'>C_threshold</span>,
-  <span class='va'>C_storm</span>,
+  <span class='va'>Ci_river</span>,
+  <span class='va'>Ci_threshold</span>,
+  <span class='va'>Ci_storm</span>,
   <span class='va'>coeff_runoff</span>,
-  <span class='va'>rain</span>
+  <span class='va'>Q_rain</span>,
+  substance_i <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -166,27 +167,35 @@ at one inlet point on the river stretch</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>Q_river</th>
-      <td><p>River flow in m3/time (time must represent impact duration)</p></td>
+      <td><p>Annual river flow in m³/a</p></td>
     </tr>
     <tr>
-      <th>C_river</th>
-      <td><p>background concentration in mg/L</p></td>
+      <th>Ci_river</th>
+      <td><p>Background concentration for substance i. Concentration unit
+must fit to Ci_threshold and Ci_storm.</p></td>
     </tr>
     <tr>
-      <th>C_threshold</th>
-      <td><p>concentration threshold in mg/L</p></td>
+      <th>Ci_threshold</th>
+      <td><p>Threshold value for substance i. Concentration unit
+must fit to Ci_river and Ci_storm.</p></td>
     </tr>
     <tr>
-      <th>C_storm</th>
-      <td><p>concentration in stormwater in mg/L</p></td>
+      <th>Ci_storm</th>
+      <td><p>Concentration in stormwater run-off for substance i. Concentration unit
+must fit to Ci_threshold and Ci_river.</p></td>
     </tr>
     <tr>
       <th>coeff_runoff</th>
-      <td><p>runoff coefficient of connected impervious area</p></td>
+      <td><p>Run-off coefficient of connected impervious area</p></td>
     </tr>
     <tr>
-      <th>rain</th>
-      <td><p>rain amount in mm/time (time must represent impact duration)</p></td>
+      <th>Q_rain</th>
+      <td><p>Annual amount of rain amount in mm/a</p></td>
+    </tr>
+    <tr>
+      <th>substance_i</th>
+      <td><p>the substance name is only used for messages,
+not for calculation</p></td>
     </tr>
     </table>
 

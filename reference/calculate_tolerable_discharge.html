@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate Tolerable Discharge — calculate_tolerable_discharge • r2q</title>
+<title>Calculate tolerable discharge — calculate_tolerable_discharge • r2q</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Calculate Tolerable Discharge — calculate_tolerable_discharge" />
-<meta property="og:description" content="Calculate Tolerable Discharge" />
+<meta property="og:title" content="Calculate tolerable discharge — calculate_tolerable_discharge" />
+<meta property="og:description" content="Uses the site data to calculate a natural stormwater run-off for a yearly
+rain event" />
 
 
 
@@ -135,17 +136,24 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate Tolerable Discharge</h1>
+    <h1>Calculate tolerable discharge</h1>
     <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/hydrology.R'><code>R/hydrology.R</code></a></small>
     <div class="hidden name"><code>calculate_tolerable_discharge.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Calculate Tolerable Discharge</p>
+    <p>Uses the site data to calculate a natural stormwater run-off for a yearly
+rain event</p>
     </div>
 
     <pre class="usage"><span class='fu'>calculate_tolerable_discharge</span><span class='op'>(</span>
-  hydrology <span class='op'>=</span> <span class='fu'><a href='import_hydrology_data.html'>import_hydrology_data</a></span><span class='op'>(</span><span class='op'>)</span>,
+  area_catch <span class='op'>=</span> <span class='fl'>1</span>,
+  area_con_catch <span class='op'>=</span> <span class='fl'>1</span>,
+  area_plan <span class='op'>=</span> <span class='fl'>0</span>,
+  slope_catch <span class='op'>=</span> <span class='fl'>0.1</span>,
+  Hq1pnat_catch <span class='op'>=</span> <span class='cn'>NULL</span>,
+  Hq2pnat_catch <span class='op'>=</span> <span class='cn'>NULL</span>,
+  site_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
@@ -153,41 +161,56 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>hydrology</th>
-      <td><p>hydrology (tibble as retrieved by <code><a href='import_hydrology_data.html'>import_hydrology_data</a></code>)</p></td>
+      <th>area_catch</th>
+      <td><p>catchment area in km²</p></td>
+    </tr>
+    <tr>
+      <th>area_con_catch</th>
+      <td><p>impervious catchment area discharging into the surface
+water in km²</p></td>
+    </tr>
+    <tr>
+      <th>area_plan</th>
+      <td><p>planning area in km² (default is 0 -&gt; no planning area)</p></td>
+    </tr>
+    <tr>
+      <th>slope_catch</th>
+      <td><p>average slope of the catchment area in % (Defalut is 0.1)</p></td>
+    </tr>
+    <tr>
+      <th>Hq1pnat_catch</th>
+      <td><p>natural average catchment discharge for a yearly rain
+event in L/(s*km²) (Defautl is NULL)</p></td>
+    </tr>
+    <tr>
+      <th>Hq2pnat_catch</th>
+      <td><p>natural average catchment discharge for a bienneal
+rain event in L/(s*km²) (Defautl is NULL)</p></td>
+    </tr>
+    <tr>
+      <th>site_data</th>
+      <td><p>site data loaded by <code>laod_site_data</code>). If
+defined, this overwrites all other values.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>if TRUE returns results as informative messages, If FALSE only return numeric value for planning area.</p></td>
+      <td><p>if TRUE returns results as informative messages,
+If FALSE only return numeric value for planning area.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>returns tolerable discharge for the planning area based on the data in hydrology table</p>
+    <p>Table with tolerable discharge for the whole Catchment and
+planning area in L/s. Furthermore, x is given which is a factor for allowed
+discharge increase compared to the natural status and is included in the
+calculation for the tolerable discharges. The definition of x can be found
+in guideline DWA-A 102-3</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'>calculate_tolerable_discharge</span><span class='op'>(</span>verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>Rows: </span><span style='color: #0000BB;'>8</span> <span style='font-weight: bold;'>Columns: </span><span style='color: #0000BB;'>4</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>──</span> <span style='font-weight: bold;'>Column specification</span> <span style='color: #00BBBB;'>────────────────────────────────────────────────────────</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>Delimiter:</span> ","</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BB0000;'>chr</span> (3): Variable, Abkuerzung.A102, Einheit</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>dbl</span> (1): Wert</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Use <span style='color: #262626; background-color: #DADADA;'>`spec()`</span> to retrieve the full column specification for this data.</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Specify the column types or set <span style='color: #262626; background-color: #DADADA;'>`show_col_types = FALSE`</span> to quiet this message.</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 171.4331</span>
-<span class='r-in'><span class='fu'>calculate_tolerable_discharge</span><span class='op'>(</span>verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>Rows: </span><span style='color: #0000BB;'>8</span> <span style='font-weight: bold;'>Columns: </span><span style='color: #0000BB;'>4</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>──</span> <span style='font-weight: bold;'>Column specification</span> <span style='color: #00BBBB;'>────────────────────────────────────────────────────────</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>Delimiter:</span> ","</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BB0000;'>chr</span> (3): Variable, Abkuerzung.A102, Einheit</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>dbl</span> (1): Wert</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Use <span style='color: #262626; background-color: #DADADA;'>`spec()`</span> to retrieve the full column specification for this data.</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Specify the column types or set <span style='color: #262626; background-color: #DADADA;'>`show_col_types = FALSE`</span> to quiet this message.</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Based on provided input data a tolerable annual discharge flow of 283.036 L/s was calculated for Aba. For the planning area this corresponds to 171.43 L/s"</span>
-</pre>
+    <pre class="examples"><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get average permeability — get_allowed_area • r2q</title>
+<title>Get allowed impervious area — get_allowed_area • r2q</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Get average permeability — get_allowed_area" />
-<meta property="og:description" content="Get average permeability" />
+<meta property="og:title" content="Get allowed impervious area — get_allowed_area" />
+<meta property="og:description" content="Get allowed impervious area" />
 
 
 
@@ -135,37 +135,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get average permeability</h1>
+    <h1>Get allowed impervious area</h1>
     <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/hydrology.R'><code>R/hydrology.R</code></a></small>
     <div class="hidden name"><code>get_allowed_area.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get average permeability</p>
+    <p>Get allowed impervious area</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_allowed_area</span><span class='op'>(</span>f_DA <span class='op'>=</span> <span class='fl'>0.7</span>, <span class='va'>q_zul</span>, R_Spende <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_allowed_area</span><span class='op'>(</span><span class='va'>f_D</span>, <span class='va'>Q_tol</span>, <span class='va'>q_rain</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>Q_tol</th>
+      <td><p>Tolearble discharge into the surface water in L/s</p></td>
+    </tr>
+    <tr>
+      <th>q_rain</th>
+      <td><p>presipitaion rate in L/(s * ha)</p></td>
+    </tr>
+    <tr>
       <th>f_DA</th>
-      <td><p>f_DA</p></td>
-    </tr>
-    <tr>
-      <th>q_zul</th>
-      <td><p>q_zul</p></td>
-    </tr>
-    <tr>
-      <th>R_Spende</th>
-      <td><p>R_Spende</p></td>
+      <td><p>Run-off coefficient of impervious area</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>????</p>
+    <p>allowed impervious area in ha</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

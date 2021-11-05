@@ -41,8 +41,8 @@
 
 <meta property="og:title" content="get average concentrations in stormwater runoff — get_stormwater_concentrations" />
 <meta property="og:description" content="assembles concentrations in stormwater runoff
-for selected substances bases on Berlin OgRe data set
-from csv table. IN addition to averages, coeffs for log-normal
+for selected substances based on Berlin OgRe data set
+from csv table. In addition to averages, coeffs for log-normal
 distribution are assessed" />
 
 
@@ -139,29 +139,26 @@ distribution are assessed" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>get average concentrations in stormwater runoff</h1>
-    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/get_stormwater_concentrations.R'><code>R/get_stormwater_concentrations.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/get_package_data.R'><code>R/get_package_data.R</code></a></small>
     <div class="hidden name"><code>get_stormwater_concentrations.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>assembles concentrations in stormwater runoff
-for selected substances bases on Berlin OgRe data set
-from csv table. IN addition to averages, coeffs for log-normal
+for selected substances based on Berlin OgRe data set
+from csv table. In addition to averages, coeffs for log-normal
 distribution are assessed</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_stormwater_concentrations</span><span class='op'>(</span><span class='va'>data.dir</span>, <span class='va'>substances</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_stormwater_concentrations</span><span class='op'>(</span>substances <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data.dir</th>
-      <td><p>path where OgRe_data are stored</p></td>
-    </tr>
-    <tr>
       <th>substances</th>
-      <td><p>substance name or vector of substance names in German</p></td>
+      <td><p>substance name or vector of substance names in German
+if left NULL all parameters measured in OgRe will be loaded</p></td>
     </tr>
     </table>
 
