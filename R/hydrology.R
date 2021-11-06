@@ -1,27 +1,36 @@
 #' Calculate natural runoff based on slope of landscape
 #'
 #' @param slope  slope of the planning area (unit %)
+#' @param area_catch catchment area  (in km2)
 #'
 #' @return potential annual natural discharge flow (unit l*s^-1 km²^-1)
 #' @export
 #'
 #' @examples
-#' get_Hq1_pnat(slope= 0.1)
-#' get_Hq1_pnat(slope= 0.5)
-#' get_Hq1_pnat(slope = 2)
-#' get_Hq1_pnat(slope = 50)
-get_Hq1_pnat <- function(slope = 0.1)
+
+get_Hq1_pnat <- function(slope , area_cath)
 {
   if(slope <= 0.2){
-    75
+    if(area_catch >= 50){
+      75
+    } else {
+      -1.1 * area_catch + 130
+    }
   }
-  else if (slope>0.2 & slope <1){
-    130
+  else if (slope > 0.2 & slope <= 1){
+    if(area_catch >= 100){
+      100
+    } else {
+      -1 * area_catch + 200
+    }
   }
   else{
-    300
+    if(area_catch >= 400){
+      150
+    } else {
+      -0.5 * area_catch + 350
+    }
   }
-
 }
 
 #' Calculate acceptable additional runoff factor x
@@ -35,7 +44,7 @@ get_Hq1_pnat <- function(slope = 0.1)
 get_x <- function(Hq1_pnat, Hq2_pnat) {
   
   if(is.null(Hq2_pnat)){
-    0.1
+    0.1 
   }
     
   else{  
