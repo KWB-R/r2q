@@ -8,7 +8,7 @@
 #'
 #' @examples
 
-get_Hq1_pnat <- function(slope , area_cath)
+get_Hq1_pnat <- function(slope , area_catch)
 {
   if(slope <= 0.2){
     if(area_catch >= 50){
@@ -128,10 +128,11 @@ calculate_tolerable_discharge <- function(
   }
   
   if(is.null(Hq1pnat_catch)){
-    Hq1pnat_catch <- get_Hq1_pnat(slope = slope_catch, area_cath = area_catch)
+    Hq1pnat_catch <- get_Hq1_pnat(slope = slope_catch, area_catch = area_catch)
   }
   
-  df_out <- data.frame("x" = NA, 
+  df_out <- data.frame("Hq1pnat" = Hq1pnat_catch,
+                       "x" = NA, 
                        "catchment" = NA, 
                        "planning" = NA,
                        "unit" = "L/s")

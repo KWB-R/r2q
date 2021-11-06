@@ -33,7 +33,7 @@ area_table <- r2q::add_max_areas(
   q_rain = 4.877,
   t_rain = t_rain)
 
-area_table <- add_hydrolic(site_data = siteData, 
+area_table <- r2q::add_hydrolic(site_data = siteData, 
                            max_area_table = area_table, 
                            q_rain = 4.877)
 
