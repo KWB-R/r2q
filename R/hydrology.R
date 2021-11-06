@@ -128,7 +128,7 @@ calculate_tolerable_discharge <- function(
   }
   
   if(is.null(Hq1pnat_catch)){
-    Hq1pnat_catch <- get_Hq1_pnat(slope = slope_catch)
+    Hq1pnat_catch <- get_Hq1_pnat(slope = slope_catch, area_cath = area_catch)
   }
   
   df_out <- data.frame("x" = NA, 
