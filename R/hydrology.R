@@ -3,18 +3,19 @@
 #' @param slope  slope of the planning area (unit %)
 #' @param area_catch catchment area  (in km2)
 #'
-#' @return potential annual natural discharge flow (unit l*s^-1 km²^-1)
+#' @return potential annual natural discharge flow (unit L/(s*km2))
 #' @export
 #'
 #' @examples
+#' get_Hq1_pnat(slope = 0.1, area_catch = 5.62)
 
 get_Hq1_pnat <- function(slope , area_catch)
 {
   if(slope <= 0.2){
-    if(area_catch >= 50){
-      75
+    if(area_catch >= 60){
+      50
     } else {
-      -1.1 * area_catch + 130
+      -4/3 * area_catch + 130
     }
   }
   else if (slope > 0.2 & slope <= 1){

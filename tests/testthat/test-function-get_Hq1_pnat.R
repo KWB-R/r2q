@@ -7,7 +7,7 @@
 
 test_that("get_Hq1_pnat() works", {
 
-  r2q:::get_Hq1_pnat()
+  r2q:::get_Hq1_pnat(slope = 0.1, area_catch = 1)
 
 })
 

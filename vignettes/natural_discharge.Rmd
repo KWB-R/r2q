@@ -1,0 +1,26 @@
+library(r2q)
+area_catch <- seq(1,150,1)
+
+Hqpnat1 <- sapply(area_catch, get_Hq1_pnat, slope = 0.1)
+HQpnat1 <- Hqpnat1 * area_catch / 1000
+Hqpnat2 <- sapply(area_catch, get_Hq1_pnat, slope = 0.5)
+HQpnat2 <- Hqpnat2 * area_catch / 1000
+Hqpnat3 <- sapply(area_catch, get_Hq1_pnat, slope = 2)
+HQpnat3 <- Hqpnat3 * area_catch / 1000
+
+plot(x = area_catch, y = Hqpnat3, type = "l", xlab = "Catchment Area [km²]",
+     ylab = "Natural Discharge [m³/(s*km²]", ylim = c(0,350), lwd = 2)
+lines(x = area_catch, y = Hqpnat2, col = "orange", lwd = 2)
+lines(x = area_catch, y = Hqpnat1, col = "steelblue", lwd = 2)
+legend("bottomleft", legend = c("< 0.2 %", "0.2 - 1 %", "> 1%"), 
+       col = c("black", "orange", "steelblue"), lwd = 2, title = "Slope", 
+       cex = 0.8)
+
+plot(x = area_catch, y = HQpnat3, type = "l", xlab = "Catchment Area [km²]",
+     ylab = "Natural Discharge [m³/s]", lwd = 2)
+lines(x = area_catch, y = HQpnat2, col = "orange", lwd = 2)
+lines(x = area_catch, y = HQpnat1, col = "steelblue", lwd = 2)
+legend("topleft", legend = c("< 0.2 %", "0.2 - 1 %", "> 1%"), 
+       col = c("black", "orange", "steelblue"), lwd = 2, title = "Slope", 
+       cex = 0.8)
+
