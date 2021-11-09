@@ -1,4 +1,3 @@
-t_rain = 1080 # mins
 
 # load external data -----------------------------------------------------------
 siteData <- r2q::load_site_data(
@@ -12,12 +11,26 @@ c_river <- r2q::load_background_data(
 # load package data ------------------------------------------------------------
 c_storm <- r2q::get_stormwater_concentrations()
 
-c_threshold <- r2q::get_thresholds(LAWA_type = "11")
+c_threshold <- r2q::get_thresholds(LAWA_type = "default")
 
-local_rain <- r2q::get_KOSTRA(
-  coord_vector = c(siteData$x_coordinate$Value, siteData$y_coordinate$Value), 
-  duration_string = t_rain, 
-  location_name = "Herne")
+# yearly rain 
+# duration either calculated with natural catchment discharge
+rain <- get_rain(area_catch = siteData$area_catch$Value, 
+         river_cross_section = siteData$river_cross_section$Value,
+         river_length = siteData$river_length$Value)
+
+# Calculated by average river flow
+rain <- get_rain(area_catch = siteData$area_catch$Value, 
+                   river_cross_section = siteData$river_cross_section$Value,
+                   river_length = siteData$river_length$Value, 
+                   use_p1nat = FALSE, 
+                   river_flow = siteData$Q_mean$Value)
+
+# or manualy entered
+rain <- get_rain(area_catch = siteData$area_catch$Value, 
+                   river_cross_section = siteData$river_cross_section$Value,
+                   river_length = siteData$river_length$Value, 
+                   mins = 1080)
 
 # combine data
 c_table <- r2q::combine_concentration_tables(
@@ -30,18 +43,19 @@ c_table <- r2q::combine_concentration_tables(
 area_table <- r2q::add_max_areas(
   combined_concentration_table = c_table, 
   site_data = siteData, 
-  q_rain = 4.877,
-  t_rain = t_rain)
+  q_rain = rain["q_rain"],
+  t_rain = rain["duration"])
 
 area_table <- r2q::add_hydrolic(site_data = siteData, 
                            max_area_table = area_table, 
-                           q_rain = 4.877)
+                           q_rain = rain["q_rain"])
 
 write.table(
   area_table, 
-  file = "C:/Users/mzamzo/Documents/R2Q/output/max_area_malte3.csv", 
+  file = "C:/Users/mzamzo/Documents/R2Q/output/1080min.csv", 
   sep = ";", dec = ".", row.names = FALSE)
 
 # Adding maximal allowed loads for discharge into surface water
-load_table <- r2q::add_critical_loads(max_area_table = area_max, 
-                                      site_data = siteData)
+load_table <- r2q::add_critical_loads(max_area_table = area_table, 
+                                      site_data = siteData, 
+                                      q_rain = rain["q_rain"])
