@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>How to merge two R2Q concentration tables — merge_by_pollutant • r2q</title>
+<title>lin_interpolation — lin_interpolation • r2q</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="How to merge two R2Q concentration tables — merge_by_pollutant" />
-<meta property="og:description" content="This is a helping function for &quot;combine_concentration_tables&quot;" />
+<meta property="og:title" content="lin_interpolation — lin_interpolation" />
+<meta property="og:description" content="Linear interpolation between two data poins" />
 
 
 
@@ -138,35 +138,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>How to merge two R2Q concentration tables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/helping_functions.R'><code>R/helping_functions.R</code></a></small>
-    <div class="hidden name"><code>merge_by_pollutant.Rd</code></div>
+    <h1>lin_interpolation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/choose_rain.R'><code>R/choose_rain.R</code></a></small>
+    <div class="hidden name"><code>lin_interpolation.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is a helping function for "combine_concentration_tables"</p>
+    <p>Linear interpolation between two data poins</p>
     </div>
 
-    <pre class="usage"><span class='fu'>merge_by_pollutant</span><span class='op'>(</span><span class='va'>dataFrame1</span>, <span class='va'>dataFrame2</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>lin_interpolation</span><span class='op'>(</span><span class='va'>x1</span>, <span class='va'>x2</span>, <span class='va'>y1</span>, <span class='va'>y2</span>, <span class='va'>x_is</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dataFrame1</th>
-      <td><p>A R2Q concentration data Frame</p></td>
+      <th>x1</th>
+      <td><p>x value of first data point</p></td>
     </tr>
     <tr>
-      <th>dataFrame2</th>
-      <td><p>Another R2Q concentration data Fram</p></td>
+      <th>x2</th>
+      <td><p>x value of second data point</p></td>
+    </tr>
+    <tr>
+      <th>y1</th>
+      <td><p>y value of first data point</p></td>
+    </tr>
+    <tr>
+      <th>y2</th>
+      <td><p>y value of second data point</p></td>
+    </tr>
+    <tr>
+      <th>x_is</th>
+      <td><p>corresponding x value to the searched y value</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe containing all substance measured in all units listed in
-dataFrame1 and dataFrame2</p>
+    <p>Y-Value to the corresponding x value in the unit of the other y values</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>lin_interpolation</span><span class='op'>(</span>x1 <span class='op'>=</span> <span class='fl'>60</span>, x2 <span class='op'>=</span> <span class='fl'>90</span>, y1 <span class='op'>=</span> <span class='fl'>30</span>, y2 <span class='op'>=</span> <span class='fl'>55</span>, x_is <span class='op'>=</span> <span class='fl'>70</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 38.33333</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

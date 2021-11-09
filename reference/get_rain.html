@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>How to merge two R2Q concentration tables — merge_by_pollutant • r2q</title>
+<title>get_rain — get_rain • r2q</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="How to merge two R2Q concentration tables — merge_by_pollutant" />
-<meta property="og:description" content="This is a helping function for &quot;combine_concentration_tables&quot;" />
+<meta property="og:title" content="get_rain — get_rain" />
+<meta property="og:description" content="The rate of the yearly rain event depends on the prescribed duration. In this
+function the duration is either calculated using the natural catchment
+discharge, using the average river flow or entered manualle." />
 
 
 
@@ -138,35 +140,81 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>How to merge two R2Q concentration tables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/helping_functions.R'><code>R/helping_functions.R</code></a></small>
-    <div class="hidden name"><code>merge_by_pollutant.Rd</code></div>
+    <h1>get_rain</h1>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/r2q/blob/master/R/choose_rain.R'><code>R/choose_rain.R</code></a></small>
+    <div class="hidden name"><code>get_rain.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is a helping function for "combine_concentration_tables"</p>
+    <p>The rate of the yearly rain event depends on the prescribed duration. In this
+function the duration is either calculated using the natural catchment
+discharge, using the average river flow or entered manualle.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>merge_by_pollutant</span><span class='op'>(</span><span class='va'>dataFrame1</span>, <span class='va'>dataFrame2</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_rain</span><span class='op'>(</span>
+  <span class='va'>area_catch</span>,
+  <span class='va'>river_cross_section</span>,
+  <span class='va'>river_length</span>,
+  Hq_pnat1_catch <span class='op'>=</span> <span class='cn'>NULL</span>,
+  slope <span class='op'>=</span> <span class='fl'>0.1</span>,
+  use_p1nat <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  river_flow <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mins <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dataFrame1</th>
-      <td><p>A R2Q concentration data Frame</p></td>
+      <th>area_catch</th>
+      <td><p>The catchment area in km2</p></td>
     </tr>
     <tr>
-      <th>dataFrame2</th>
-      <td><p>Another R2Q concentration data Fram</p></td>
+      <th>river_cross_section</th>
+      <td><p>The average river cross section in the catchment
+in m2</p></td>
+    </tr>
+    <tr>
+      <th>river_length</th>
+      <td><p>The length of the affected urban river stretch in m</p></td>
+    </tr>
+    <tr>
+      <th>Hq_pnat1_catch</th>
+      <td><p>the natural catchment discharge for a yearly rain event
+in L/(s*km2). If NULL it will be estimated by slope and area of the catchment</p></td>
+    </tr>
+    <tr>
+      <th>slope</th>
+      <td><p>Average slope of the catchment in % (Default is 0.1)</p></td>
+    </tr>
+    <tr>
+      <th>use_p1nat</th>
+      <td><p>If TRUE, the natural catchment discharge is used
+(see get_Hq1_pnat) is used to define the precipitation duration. If FALSE
+the average river flow is used. Exception: If mins is defined, this value is
+used.</p></td>
+    </tr>
+    <tr>
+      <th>river_flow</th>
+      <td><p>The average river flow in m³/s (only needed if use_p1nat
+= FALSE and min = NULL)</p></td>
+    </tr>
+    <tr>
+      <th>mins</th>
+      <td><p>The Default is NULL. In this case either natural catchment
+discharge or average river flow is used for precipitation duration. If not
+Null, mins is used and overwrites the parameter "use_p1nat".</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe containing all substance measured in all units listed in
-dataFrame1 and dataFrame2</p>
+    <p>A Vector with the calculated duration of precipitation in minutes and the
+rain event based on KOSTRA in L/(s*ha)</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
