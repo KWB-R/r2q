@@ -17,26 +17,42 @@ sources <- c("Dach", "Strasse", "Hof", "Putzfassade")
 
 #prepare summary table for OgRe EZG
 x_summary <- data.frame("OgRe_Type" = OgRe_Types,
-                       # "Fl_BitDach" = NA,
+                       # "Fl_MetDach" = NA,
                        #  "Fl_ZiegDach" = NA,
                        # "Fl_RestDach" = NA,
                         "Fl_Dach" = NA,
                         "Fl_Hof" = NA,
                         "Fl_Str" = NA,
                         "Fl_PutzFass" = NA,
-                       # "Runoff_BitDach" = NA,
+                       # "Runoff_MetDach" = NA,
                        # "Runoff_ZiegDach" = NA,
                        # "Runoff_RestDach" = NA,
                         "Runoff_Dach" = NA,
                         "Runoff_Hof" = NA,
                         "Runoff_Str" = NA,
                         "Runoff_PutzFass" = NA,
-                        "Load_Cu" = NA,
-                        "Load_Zn" = NA,
-                        "Load_Benzothiazol" = NA,
+                        "Load_Anthra" = NA,
+                        "Load_Cd_gel" = NA,
+                        "Load_Carben" = NA,
+                        "Load_DEHP" = NA,
+                        "Load_MCPP" = NA,
+                        "Load_Phena" = NA,
                         "Load_Diuron" = NA,
-                        "Load_Mecoprop" = NA,
-                        "Load_Terbutryn" = NA)
+                        "Load_Fluora" = NA,
+                        "Load_Pb_gel" = NA,
+                        "Load_Naphta" = NA,
+                        "Load_Ni_gel" = NA,
+                        "Load_Be_pyr" = NA,
+                        "Load_Be_b_flu" = NA,
+                        "Load_Be_k_flu" = NA,
+                        "Load_Be_per" = NA,
+                        "Load_Terbu" = NA,
+                        "Load_Zn_gel" = NA,
+                        "Load_Cu_gel" = NA,
+                        "Load_AFS_fe" = NA,
+                        "Load_OPO4" = NA,
+                        "Load_TP" = NA
+)
 
 #prepare format of result tables 
 x_summary_Konz <- data.frame("Source" = sources,
@@ -124,13 +140,31 @@ for (OgRe_Type in OgRe_Types) {
   x_summary$Runoff_Str[index] <- x_summary$Runoff_Str[index] - 0.5 * x_summary$Runoff_PutzFass[index]
   
   #loads in kg/yr
-  x_summary$Load_Cu[index] <- sum(x_type$Kupfer_kg_ * x_type$clip_factor)
-  x_summary$Load_Zn[index] <- sum(x_type$Zink_kg_yr * x_type$clip_factor)
+  x_summary$Load_Anthra[index] <- sum(x_type$Anthra_kg_ * x_type$clip_factor)
+  x_summary$Load_TP[index] <- sum(x_type$TP_kg_yr * x_type$clip_factor)
+  x_summary$Load_OPO4[index] <- sum(x_type$OPO4_kg_yr * x_type$clip_factor)
+  x_summary$Load_AFS_fe[index] <- sum(x_type$AFS_fe_kg_ * x_type$clip_factor)
+  x_summary$Load_Cu_gel[index] <- sum(x_type$Cu_gel_kg_ * x_type$clip_factor)
+  
+  x_summary$Load_Zn_gel[index] <- sum(x_type$Zn_gel_kg_ * x_type$clip_factor)
+  x_summary$Load_Terbu[index] <- sum(x_type$Terbu_kg_y * x_type$clip_factor)
+  x_summary$Load_Be_per[index] <- sum(x_type$Be_per_kg_ * x_type$clip_factor)
+  x_summary$Load_Be_k_flu[index] <- sum(x_type$Be_k_flu_k * x_type$clip_factor)
+  x_summary$Load_Be_b_flu[index] <- sum(x_type$Be_b_flu_k * x_type$clip_factor)
+  
+  x_summary$Load_Be_pyr[index] <- sum(x_type$Be_pyr_kg_ * x_type$clip_factor)
+  x_summary$Load_Ni_gel[index] <- sum(x_type$Ni_gel_kg_ * x_type$clip_factor)
+  x_summary$Load_Naphta[index] <- sum(x_type$Naphta_kg_ * x_type$clip_factor)
+  x_summary$Load_Pb_gel[index] <- sum(x_type$Pb_gel_kg_ * x_type$clip_factor)
+  x_summary$Load_Fluora[index] <- sum(x_type$Fluora_kg_ * x_type$clip_factor)
+  
   x_summary$Load_Diuron[index] <- sum(x_type$Diuron_kg_ * x_type$clip_factor)
-  x_summary$Load_Mecoprop[index] <- sum(x_type$Mecoprop_k * x_type$clip_factor)
-  x_summary$Load_Terbutryn[index] <- sum(x_type$Terbutryn_ * x_type$clip_factor)
-  x_summary$Load_Benzothiazol[index] <- sum(x_type$Benzothiaz * # only main benzothiazole metabolite
-                                            x_type$clip_factor)
+  x_summary$Load_Phena[index] <- sum(x_type$Phena_kg_y * x_type$clip_factor)
+  x_summary$Load_MCPP[index] <- sum(x_type$MCPP_kg_yr * x_type$clip_factor)
+  x_summary$Load_DEHP[index] <- sum(x_type$DEHP_kg_yr * x_type$clip_factor)
+  x_summary$Load_Carben[index] <- sum(x_type$Carben_kg_ * x_type$clip_factor)
+  x_summary$Load_Cd_gel[index] <- sum(x_type$Cd_gel_kg_ * x_type$clip_factor)
+  
 }
 
 #write.table(x = x_summary, file = file.path(write.dir, "summary_by_OgRe_catchment.csv"), 
