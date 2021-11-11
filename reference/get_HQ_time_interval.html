@@ -189,13 +189,25 @@ in L/(s*km2). If NULL it will be estimated by slope and area of the catchment</p
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Travel time of discharged water within the natural catchment in minutes</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The natural catchment discharge is estimated based on the supplementary
+information of DWA-A 102-3. Unlike the rain intensity of a yearly rain, the
+estimated natural discharge is independent of the rain duration.
+According to DWA-A 102-3 two more factors would increase the travel time that
+are not considered here: 1) The longest travel time within the sewer network
+of the planning area and 2) The increased water level leading to a higher
+river cross section and thus to a longer travel time.
+Instead a constant of 60 minutes is added to the calculated travel time. This
+also ensures that the rain duration is high enough (&gt; 60 min) for a
+toxicological relevance.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>get_HQ_time_interval</span><span class='op'>(</span>
 area_catch <span class='op'>=</span> <span class='fl'>5.62</span>,
 river_cross_section <span class='op'>=</span> <span class='fl'>0.54</span>, 
 river_length <span class='op'>=</span> <span class='fl'>5000</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 65.36067</div><div class='input'>
+</div><div class='output co'>#&gt; [1] 125.3607</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
