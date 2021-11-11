@@ -122,7 +122,9 @@ add_critical_loads <- function(
           grep(substr(df_out$Unit[i], 1, 1), substr(to_kg$unit, 1, 1))]) 
   }
   
-  df_out[["crit_load_g_event"]] <- df_out[["crit_load_kg_year"]] <- NA
+  df_out[["crit_load_g_event"]] <- df_out[["crit_load_kg_year"]] <-
+    df_out[["is_load_g_event"]] <- df_out[["is_load_kg_year"]] <- NA
+  
   index_acute <- which(df_out$threshold_type == "acute")
   index_annual <- which(df_out$threshold_type == "annual")
   
@@ -134,10 +136,25 @@ add_critical_loads <- function(
              df_out$c_storm[index_acute] * 
              (factor_kg[index_acute] * 1E03), 3)
   
+  df_out$is_load_g_event[index_acute] <- 
+    signif(q_rain * # in  L/(s*ha)
+             site_data[["area_con_plan"]]$Value * 100 * # in ha
+             site_data[["f_D_plan"]]$Value * # [-]
+             site_data[["impact_time"]]$Value * 60 * # [s] 
+             df_out$c_storm[index_acute] * 
+             (factor_kg[index_acute] * 1E03), 3)
+  
   # überschreiben für annual substances
   df_out$crit_load_kg_year[index_annual] <- 
     signif(site_data[["rain_year"]]$Value * # [L/(m2*a)]
              df_out$max_area_plan_ha[index_annual] * 1e4 * # ha to m2
+             site_data[["f_D_plan"]]$Value  * # [i]
+             df_out$c_storm[index_annual] * 
+             factor_kg[index_annual], 3)
+  
+  df_out$is_load_kg_year[index_annual] <- 
+    signif(site_data[["rain_year"]]$Value * # [L/(m2*a)]
+             site_data[["area_con_plan"]]$Value * 1e6 * # ha to m2
              site_data[["f_D_plan"]]$Value  * # [i]
              df_out$c_storm[index_annual] * 
              factor_kg[index_annual], 3)
