@@ -19,18 +19,18 @@ rain <- get_rain(area_catch = siteData$area_catch$Value,
          river_cross_section = siteData$river_cross_section$Value,
          river_length = siteData$river_length$Value)
 
-# Calculated by average river flow
-rain <- get_rain(area_catch = siteData$area_catch$Value, 
-                   river_cross_section = siteData$river_cross_section$Value,
-                   river_length = siteData$river_length$Value, 
-                   use_p1nat = FALSE, 
-                   river_flow = siteData$Q_mean$Value)
-
-# or manualy entered
-rain <- get_rain(area_catch = siteData$area_catch$Value, 
-                   river_cross_section = siteData$river_cross_section$Value,
-                   river_length = siteData$river_length$Value, 
-                   mins = 1080)
+# # Calculated by average river flow
+# rain <- get_rain(area_catch = siteData$area_catch$Value, 
+#                    river_cross_section = siteData$river_cross_section$Value,
+#                    river_length = siteData$river_length$Value, 
+#                    use_p1nat = FALSE, 
+#                    river_flow = siteData$Q_mean$Value)
+# 
+# # or manualy entered
+# rain <- get_rain(area_catch = siteData$area_catch$Value, 
+#                    river_cross_section = siteData$river_cross_section$Value,
+#                    river_length = siteData$river_length$Value, 
+#                    mins = 1080)
 
 # combine data
 c_table <- r2q::combine_concentration_tables(
@@ -52,10 +52,15 @@ area_table <- r2q::add_hydrolic(site_data = siteData,
 
 write.table(
   area_table, 
-  file = "C:/Users/mzamzo/Documents/R2Q/output/1080min.csv", 
+  file = "C:/Users/mzamzo/Documents/R2Q/output/Baukau_example.csv", 
   sep = ";", dec = ".", row.names = FALSE)
 
 # Adding maximal allowed loads for discharge into surface water
-load_table <- r2q::add_critical_loads(max_area_table = area_table, 
+area_table <- r2q::add_critical_loads(max_area_table = area_table, 
                                       site_data = siteData, 
                                       q_rain = rain["q_rain"])
+
+write.table(
+  area_table, 
+  file = "C:/Users/mzamzo/Documents/R2Q/output/Baukau_example.csv", 
+  sep = ";", dec = ".", row.names = FALSE)

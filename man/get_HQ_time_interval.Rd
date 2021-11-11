@@ -33,6 +33,18 @@ This function calculates the time in minutes that is needed for the water to
 travel through the affected urban river stretch for a yearly rain event,
 based on a natural catchment discharge
 }
+\details{
+The natural catchment discharge is estimated based on the supplementary
+information of DWA-A 102-3. Unlike the rain intensity of a yearly rain, the
+estimated natural discharge is independent of the rain duration.
+According to DWA-A 102-3 two more factors would increase the travel time that
+are not considered here: 1) The longest travel time within the sewer network
+of the planning area and 2) The increased water level leading to a higher
+river cross section and thus to a longer travel time.
+Instead a constant of 60 minutes is added to the calculated travel time. This
+also ensures that the rain duration is high enough (> 60 min) for a
+toxicological relevance.
+}
 \examples{
 get_HQ_time_interval(
 area_catch = 5.62,

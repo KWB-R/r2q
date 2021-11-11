@@ -12,6 +12,18 @@
 #' in L/(s*km2). If NULL it will be estimated by slope and area of the catchment
 #' @param slope Average slope of the catchment in % (Default is 0.1)
 #' 
+#' @details 
+#' The natural catchment discharge is estimated based on the supplementary 
+#' information of DWA-A 102-3. Unlike the rain intensity of a yearly rain, the 
+#' estimated natural discharge is independent of the rain duration. 
+#' According to DWA-A 102-3 two more factors would increase the travel time that
+#' are not considered here: 1) The longest travel time within the sewer network 
+#' of the planning area and 2) The increased water level leading to a higher
+#' river cross section and thus to a longer travel time. 
+#' Instead a constant of 60 minutes is added to the calculated travel time. This 
+#' also ensures that the rain duration is high enough (> 60 min) for a
+#' toxicological relevance.
+#' 
 #' @return 
 #' Travel time of discharged water within the natural catchment in minutes
 #' 
@@ -35,7 +47,8 @@ get_HQ_time_interval <- function(
   }
   HQ_pnat1 <- Hq_pnat1 * area_catch / 1000 # m3/s
   
-  (river_length * river_cross_section) / HQ_pnat1 / 60 # time in minutes
+  (river_length * river_cross_section) / HQ_pnat1 / 60  + # from s to min
+    60 # 60 additional minutes for flow time in the sewer system
 }
 
 #' lin_interpolation
