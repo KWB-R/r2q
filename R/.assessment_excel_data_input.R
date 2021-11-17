@@ -2,16 +2,16 @@
 # load external data -----------------------------------------------------------
 siteData <- r2q::load_site_data(
   data.dir = "inst/extdata/Data_entry", 
-  filename = "Bsp_Herne.xlsx")
+  filename = "Baukau.xlsx")
 
 c_river <- r2q::load_background_data(
-  data.dir = "inst/extdata/Data_entry", 
-  filename = "Bsp_Herne.xlsx", default_for_na = TRUE)
+  data.dir = "inst/extdata/Data_entry",
+  filename = "Baukau.xlsx", default_for_na = TRUE)
 
 # load package data ------------------------------------------------------------
 c_storm <- r2q::get_stormwater_concentrations()
 
-c_threshold <- r2q::get_thresholds(LAWA_type = "default")
+c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
 
 # yearly rain 
 # duration either calculated with natural catchment discharge
@@ -55,10 +55,11 @@ area_table <- r2q::add_critical_loads(max_area_table = area_table,
                                       site_data = siteData, 
                                       q_rain = rain["q_rain"])
 
+
 # Save data --------------------------------------------------------------------
 write.table(
   area_table, 
-  file = "C:/Users/mzamzo/Documents/R2Q/output/Baukau_example.csv", 
+  file = "C:/Users/mzamzo/Documents/R2Q/output/Baukau.csv", 
   sep = ";", dec = ".", row.names = FALSE)
 
 
