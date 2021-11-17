@@ -61,13 +61,13 @@ add_max_areas <- function(
   }
   
   # maximal connected area in planning area in ha
-  area_max$max_area_plan_ha <- 
+  area_max[["max_area_plan_ha"]] <- 
     (site_data[["area_con_plan"]]$Value  / site_data[["f_D_plan"]]$Value) / 
     (site_data[["area_con_catch"]]$Value / site_data[["f_D_catch"]]$Value) * 
     area_max$max_area_catch_ha
   
   # required reduction impervious area [%]
-  area_max$share_of_currently_sealed <- 
+  area_max[["share_of_status_quo"]] <- 
     area_max$max_area_plan_ha / # [ha]
     site_data[["area_con_plan"]]$Value # [km²] --> factor 100 for % included
   
@@ -76,8 +76,8 @@ add_max_areas <- function(
     signif(area_max$max_area_catch_ha, 2)
   area_max$max_area_plan_ha <- 
     signif(area_max$max_area_plan_ha, 2)
-  area_max$share_of_currently_sealed<- 
-    round(area_max$share_of_currently_sealed, 2)
+  area_max$share_of_status_quo<- 
+    round(area_max$share_of_status_quo, 2)
   area_max$threshold <- 
     signif(area_max$threshold, 3)
   area_max$c_storm <- 
@@ -122,8 +122,9 @@ add_critical_loads <- function(
           grep(substr(df_out$Unit[i], 1, 1), substr(to_kg$unit, 1, 1))]) 
   }
   
-  df_out[["crit_load_g_event"]] <- df_out[["crit_load_kg_year"]] <-
-    df_out[["is_load_g_event"]] <- df_out[["is_load_kg_year"]] <- NA
+  df_out[["min_efficiency"]] <-
+  df_out[["is_load_g_event"]] <- df_out[["is_load_kg_year"]] <- 
+  df_out[["crit_load_g_event"]] <- df_out[["crit_load_kg_year"]] <- NA
   
   index_acute <- which(df_out$threshold_type == "acute")
   index_annual <- which(df_out$threshold_type == "annual")
@@ -159,6 +160,16 @@ add_critical_loads <- function(
              df_out$c_storm[index_annual] * 
              factor_kg[index_annual], 3)
   
+  # add minimal efficiency of pollutant removal
+  df_out$min_efficiency[index_acute] <- 
+    round(((df_out$is_load_g_event - df_out$crit_load_g_event) / 
+    df_out$is_load_g_event)[index_acute] * 100, 1)
+  
+  df_out$min_efficiency[index_annual] <- 
+    round(((df_out$is_load_kg_year - df_out$crit_load_kg_year) / 
+       df_out$is_load_kg_year)[index_annual] * 100, 1)
+  
+  df_out$min_efficiency[df_out$min_efficiency < 0] <- 0
   df_out
 }
 
@@ -202,7 +213,7 @@ add_hydrolic <- function(
     f_D = site_data[["f_D_plan"]]$Value, 
     Q_tol = Q_tolerable$planning, 
     q_rain = q_rain) 
-  df_out["share_of_currently_sealed"] <- df_out["max_area_plan_ha"] /
+  df_out["share_of_status_quo"] <- df_out["max_area_plan_ha"] /
     site_data$area_con_plan$Value
   
   rbind(max_area_table, df_out)
