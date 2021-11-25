@@ -1,4 +1,6 @@
 
+#####some old plot-------------------
+
 area_max$plotx <- 1
 area_max[22,] <- NA
 area_max[22,1:3] <-  c("Hydraulik", "l/s", "Hydraulische Belastung")
@@ -20,5 +22,42 @@ text(x = area_max$plotx[-c(index, index_P)]+0.1, y = area_max$per_cent_of_curren
      labels = area_max$Group[-c(index, index_P)], pos = 4, cex = 0.7)
 text(x = area_max$plotx[index_P]+0.1, y = area_max$per_cent_of_current[index_P]-3,
      labels = area_max$Group[index_P], pos = 4, cex = 0.7)
+
+dev.off()
+
+#####minimal mixing ratio---------------------------
+#get thresholds of r2q substances
+x_thresholds <- r2q::get_thresholds(LAWA_type = 2)
+
+#get OgRe data for r2q substances
+OgRe_data <- read.table(file = system.file("extdata/OgRe_data/OgRe_drain.csv", 
+                                           package = "r2q"), 
+                        sep = ";", dec = ".", header = TRUE, as.is = TRUE)
+
+index <- which(OgRe_data$VariableName %in% x_thresholds$Substance)
+
+OgRe_data_r2q <- OgRe_data[index,]
+
+#calculate minimal mixing ratios
+OgRe_data_r2q$mixing_ratio <- NA
+counter <- 0
+for (substance in x_thresholds$Substance) {
+    counter <- counter + 1
+    index <- which(OgRe_data_r2q$VariableName == substance)
+    
+    OgRe_data_r2q$mixing_ratio[index] <- OgRe_data_r2q$DataValue[index] / x_thresholds$threshold[counter]
+
+} 
+
+png(filename= file.path("inst/extdata/plots", "min_mix_ratio.png"), 
+    width=14, height=10, units="cm", res=600)
+
+kwb.plot::setMargins(left=5, top = 2, bottom = 10)
+
+boxplot(log(OgRe_data_r2q$mixing_ratio) ~ OgRe_data_r2q$VariableName, 
+        las = 2, ylab = "log(minimal mixing ratio)", xlab = "", 
+        cex.axis = 0.7, cex.lab = 0.8)
+
+abline(h = 0, col = "red")
 
 dev.off()
