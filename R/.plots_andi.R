@@ -59,6 +59,12 @@ boxplot(OgRe_data_r2q$mixing_ratio ~ OgRe_data_r2q$VariableName,
         cex.axis = 0.7, cex.lab = 0.8, outline = FALSE, 
         whisklty = 0, staplelty = 0, ylim=c(-3,32))
 
+sub_means <- tapply(X = OgRe_data_r2q$mixing_ratio, INDEX = OgRe_data_r2q$VariableName, FUN = mean)
+
+points(sub_means, pch = 5, cex = 0.6)
+
 abline(h = 1, col = "red")
 
 dev.off()
+
+
