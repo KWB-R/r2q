@@ -45,7 +45,7 @@ for (substance in x_thresholds$Substance) {
     counter <- counter + 1
     index <- which(OgRe_data_r2q$VariableName == substance)
     
-    OgRe_data_r2q$mixing_ratio[index] <- OgRe_data_r2q$DataValue[index] / x_thresholds$threshold[counter]
+    OgRe_data_r2q$mixing_ratio[index] <- OgRe_data_r2q$DataValue[index] / x_thresholds$threshold[counter] - 1
 
 } 
 
@@ -54,10 +54,11 @@ png(filename= file.path("inst/extdata/plots", "min_mix_ratio.png"),
 
 kwb.plot::setMargins(left=5, top = 2, bottom = 10)
 
-boxplot(log(OgRe_data_r2q$mixing_ratio) ~ OgRe_data_r2q$VariableName, 
-        las = 2, ylab = "log(minimal mixing ratio)", xlab = "", 
-        cex.axis = 0.7, cex.lab = 0.8)
+boxplot(OgRe_data_r2q$mixing_ratio ~ OgRe_data_r2q$VariableName, 
+        las = 2, ylab = "minimal mixing ratio", xlab = "", 
+        cex.axis = 0.7, cex.lab = 0.8, outline = FALSE, 
+        whisklty = 0, staplelty = 0, ylim=c(-3,32))
 
-abline(h = 0, col = "red")
+abline(h = 1, col = "red")
 
 dev.off()
