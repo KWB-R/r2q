@@ -183,71 +183,79 @@ Longitudes and Lattidudes in WGS84 can be converted into ETRS89 here:
 https://epsg.io/transform#s_srs=4326&amp;t_srs=3034</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>  
-<span class='co'># Example default values Herne</span>
-<span class='va'>herne</span> <span class='op'>&lt;-</span> <span class='fu'>r2q</span><span class='fu'>::</span><span class='fu'>get_KOSTRA</span><span class='op'>(</span>coord_vector <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3813634.44</span>, <span class='fl'>2753912.5</span><span class='op'>)</span>, 
-duration_string <span class='op'>=</span> <span class='fl'>1080</span>, 
-location_name <span class='op'>=</span> <span class='st'>"Herne"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Reading layer `StatRR_KOSTRA-DWD-2010R_D1080' from data source 
-#&gt;   `/Users/runner/work/_temp/Library/r2q/extdata/KOSTRA/GIS_KOSTRA-DWD-2010R_D1080' 
-#&gt;   using driver `ESRI Shapefile'
-#&gt; Simple feature collection with 8453 features and 10 fields
-#&gt; Geometry type: POLYGON
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 3710675 ymin: 2271848 xmax: 4354525 ymax: 3149248
-#&gt; Projected CRS: ETRS89-extended / LCC Europe</div><div class='img'><img src='get_KOSTRA-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>herne</span><span class='op'>$</span><span class='va'>plot</span>
-</div><div class='img'><img src='get_KOSTRA-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>herne</span><span class='op'>$</span><span class='va'>data</span>
-</div><div class='output co'>#&gt;    Jaehrlichkeit              Kategorie      Wert     Unit
-#&gt; 1            1 a Bemessungsniederschlag 31.600000       mm
-#&gt; 2            2 a Bemessungsniederschlag 39.100000       mm
-#&gt; 3            3 a Bemessungsniederschlag 43.500000       mm
-#&gt; 4            5 a Bemessungsniederschlag 49.000000       mm
-#&gt; 5           10 a Bemessungsniederschlag 56.600000       mm
-#&gt; 6           20 a Bemessungsniederschlag 64.100000       mm
-#&gt; 7           30 a Bemessungsniederschlag 68.500000       mm
-#&gt; 8           50 a Bemessungsniederschlag 74.000000       mm
-#&gt; 9          100 a Bemessungsniederschlag 81.500000       mm
-#&gt; 10           1 a            Regenspende  4.876543 L/(s*ha)
-#&gt; 11           2 a            Regenspende  6.033951 L/(s*ha)
-#&gt; 12           3 a            Regenspende  6.712963 L/(s*ha)
-#&gt; 13           5 a            Regenspende  7.561728 L/(s*ha)
-#&gt; 14          10 a            Regenspende  8.734568 L/(s*ha)
-#&gt; 15          20 a            Regenspende  9.891975 L/(s*ha)
-#&gt; 16          30 a            Regenspende 10.570988 L/(s*ha)
-#&gt; 17          50 a            Regenspende 11.419753 L/(s*ha)
-#&gt; 18         100 a            Regenspende 12.577160 L/(s*ha)</div><div class='input'>  
-<span class='co'># Example 10 min for Berlin</span>
-<span class='va'>berlin</span> <span class='op'>&lt;-</span> <span class='fu'>get_KOSTRA</span><span class='op'>(</span>coord_vector <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4217676.98</span>, <span class='fl'>2862423.69</span><span class='op'>)</span>,
-duration_string <span class='op'>=</span> <span class='fl'>10</span>, location_name <span class='op'>=</span> <span class='st'>"Berlin"</span>, plot <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Reading layer `StatRR_KOSTRA-DWD-2010R_D0010' from data source 
-#&gt;   `/Users/runner/work/_temp/Library/r2q/extdata/KOSTRA/GIS_KOSTRA-DWD-2010R_D0010' 
-#&gt;   using driver `ESRI Shapefile'
-#&gt; Simple feature collection with 8453 features and 10 fields
-#&gt; Geometry type: POLYGON
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 3710675 ymin: 2271848 xmax: 4354525 ymax: 3149248
-#&gt; Projected CRS: ETRS89-extended / LCC Europe</div><div class='img'><img src='get_KOSTRA-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>berlin</span><span class='op'>$</span><span class='va'>plot</span>
-</div><div class='img'><img src='get_KOSTRA-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>berlin</span><span class='op'>$</span><span class='va'>data</span>
-</div><div class='output co'>#&gt;    Jaehrlichkeit              Kategorie     Wert     Unit
-#&gt; 1            1 a Bemessungsniederschlag   8.7000       mm
-#&gt; 2            2 a Bemessungsniederschlag  10.9000       mm
-#&gt; 3            3 a Bemessungsniederschlag  12.2000       mm
-#&gt; 4            5 a Bemessungsniederschlag  13.9000       mm
-#&gt; 5           10 a Bemessungsniederschlag  16.2000       mm
-#&gt; 6           20 a Bemessungsniederschlag  18.4000       mm
-#&gt; 7           30 a Bemessungsniederschlag  19.7000       mm
-#&gt; 8           50 a Bemessungsniederschlag  21.4000       mm
-#&gt; 9          100 a Bemessungsniederschlag  23.6000       mm
-#&gt; 10           1 a            Regenspende 145.0000 L/(s*ha)
-#&gt; 11           2 a            Regenspende 181.6667 L/(s*ha)
-#&gt; 12           3 a            Regenspende 203.3333 L/(s*ha)
-#&gt; 13           5 a            Regenspende 231.6667 L/(s*ha)
-#&gt; 14          10 a            Regenspende 270.0000 L/(s*ha)
-#&gt; 15          20 a            Regenspende 306.6667 L/(s*ha)
-#&gt; 16          30 a            Regenspende 328.3333 L/(s*ha)
-#&gt; 17          50 a            Regenspende 356.6667 L/(s*ha)
-#&gt; 18         100 a            Regenspende 393.3333 L/(s*ha)</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'>  </span>
+<span class='r-in'><span class='co'># Example default values Herne</span></span>
+<span class='r-in'><span class='va'>herne</span> <span class='op'>&lt;-</span> <span class='fu'>r2q</span><span class='fu'>::</span><span class='fu'>get_KOSTRA</span><span class='op'>(</span>coord_vector <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3813634.44</span>, <span class='fl'>2753912.5</span><span class='op'>)</span>, </span>
+<span class='r-in'>duration_string <span class='op'>=</span> <span class='fl'>1080</span>, </span>
+<span class='r-in'>location_name <span class='op'>=</span> <span class='st'>"Herne"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Reading layer `StatRR_KOSTRA-DWD-2010R_D1080' from data source </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   `/Users/runner/work/_temp/Library/r2q/extdata/KOSTRA/GIS_KOSTRA-DWD-2010R_D1080' </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   using driver `ESRI Shapefile'</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Simple feature collection with 8453 features and 10 fields</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Geometry type: POLYGON</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Dimension:     XY</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bounding box:  xmin: 3710675 ymin: 2271848 xmax: 4354525 ymax: 3149248</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Projected CRS: ETRS89-extended / LCC Europe</span>
+<span class='r-plt img'><img src='get_KOSTRA-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='va'>herne</span><span class='op'>$</span><span class='va'>plot</span></span>
+<span class='r-plt img'><img src='get_KOSTRA-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='va'>herne</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Jaehrlichkeit              Kategorie      Wert     Unit</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1            1 a Bemessungsniederschlag 31.600000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2            2 a Bemessungsniederschlag 39.100000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3            3 a Bemessungsniederschlag 43.500000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4            5 a Bemessungsniederschlag 49.000000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5           10 a Bemessungsniederschlag 56.600000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6           20 a Bemessungsniederschlag 64.100000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7           30 a Bemessungsniederschlag 68.500000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8           50 a Bemessungsniederschlag 74.000000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9          100 a Bemessungsniederschlag 81.500000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10           1 a            Regenspende  4.876543 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11           2 a            Regenspende  6.033951 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12           3 a            Regenspende  6.712963 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13           5 a            Regenspende  7.561728 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14          10 a            Regenspende  8.734568 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15          20 a            Regenspende  9.891975 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16          30 a            Regenspende 10.570988 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17          50 a            Regenspende 11.419753 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18         100 a            Regenspende 12.577160 L/(s*ha)</span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># Example 10 min for Berlin</span></span>
+<span class='r-in'><span class='va'>berlin</span> <span class='op'>&lt;-</span> <span class='fu'>get_KOSTRA</span><span class='op'>(</span>coord_vector <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4217676.98</span>, <span class='fl'>2862423.69</span><span class='op'>)</span>,</span>
+<span class='r-in'>duration_string <span class='op'>=</span> <span class='fl'>10</span>, location_name <span class='op'>=</span> <span class='st'>"Berlin"</span>, plot <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Reading layer `StatRR_KOSTRA-DWD-2010R_D0010' from data source </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   `/Users/runner/work/_temp/Library/r2q/extdata/KOSTRA/GIS_KOSTRA-DWD-2010R_D0010' </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   using driver `ESRI Shapefile'</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Simple feature collection with 8453 features and 10 fields</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Geometry type: POLYGON</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Dimension:     XY</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bounding box:  xmin: 3710675 ymin: 2271848 xmax: 4354525 ymax: 3149248</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Projected CRS: ETRS89-extended / LCC Europe</span>
+<span class='r-plt img'><img src='get_KOSTRA-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='va'>berlin</span><span class='op'>$</span><span class='va'>plot</span></span>
+<span class='r-plt img'><img src='get_KOSTRA-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='va'>berlin</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Jaehrlichkeit              Kategorie     Wert     Unit</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1            1 a Bemessungsniederschlag   8.7000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2            2 a Bemessungsniederschlag  10.9000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3            3 a Bemessungsniederschlag  12.2000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4            5 a Bemessungsniederschlag  13.9000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5           10 a Bemessungsniederschlag  16.2000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6           20 a Bemessungsniederschlag  18.4000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7           30 a Bemessungsniederschlag  19.7000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8           50 a Bemessungsniederschlag  21.4000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9          100 a Bemessungsniederschlag  23.6000       mm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10           1 a            Regenspende 145.0000 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11           2 a            Regenspende 181.6667 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12           3 a            Regenspende 203.3333 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13           5 a            Regenspende 231.6667 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14          10 a            Regenspende 270.0000 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15          20 a            Regenspende 306.6667 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16          30 a            Regenspende 328.3333 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17          50 a            Regenspende 356.6667 L/(s*ha)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18         100 a            Regenspende 393.3333 L/(s*ha)</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
