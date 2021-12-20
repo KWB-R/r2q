@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,12 +39,6 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -79,7 +75,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/KWB-R/r2q/">
+  <a href="https://github.com/KWB-R/r2q/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -98,19 +94,19 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Interactive Dashboard</h1>
-                        <h4 class="author">Wolfgang Seis</h4>
+                        <h4 data-toc-skip class="author">Wolfgang Seis</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/KWB-R/r2q/blob/master/vignettes/dashboard.Rmd"><code>vignettes/dashboard.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/KWB-R/r2q/blob/HEAD/vignettes/dashboard.Rmd" class="external-link"><code>vignettes/dashboard.Rmd</code></a></small>
       <div class="hidden name"><code>dashboard.Rmd</code></div>
 
     </div>
 
     
     
-<div id="install-r-package-r2q" class="section level3">
-<h3 class="hasAnchor">
-<a href="#install-r-package-r2q" class="anchor"></a>Install R package r2q</h3>
+<div class="section level3">
+<h3 id="install-r-package-r2q">Install R package r2q<a class="anchor" aria-label="anchor" href="#install-r-package-r2q"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">### Optionally: specify GitHub Personal Access Token (GITHUB_PAT)</span>
 <span class="co">### See here why this might be important for you:</span>
@@ -119,18 +115,18 @@
 <span class="co"># Sys.setenv(GITHUB_PAT = "mysecret_access_token")</span>
 
 <span class="co"># Install package "remotes" from CRAN</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="co"># Install KWB package 'r2q' from GitHub</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"KWB-R/r2q"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"KWB-R/r2q"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="run-dashboard-locally" class="section level3">
-<h3 class="hasAnchor">
-<a href="#run-dashboard-locally" class="anchor"></a>Run dashboard locally</h3>
+<div class="section level3">
+<h3 id="run-dashboard-locally">Run dashboard locally<a class="anchor" aria-label="anchor" href="#run-dashboard-locally"></a>
+</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/run.html">run</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"dashboard/flexdashboard.Rmd"</span>, 
+<code class="sourceCode R"><span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/run.html" class="external-link">run</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"dashboard/flexdashboard.Rmd"</span>, 
                                    package <span class="op">=</span> <span class="st">"r2q"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
@@ -144,11 +140,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Wolfgang Seis, <a href="https://github.com/amatzi">Andreas Matzinger</a>, <a href="https://www.kompetenz-wasser.de/en/project/r2q/">R2Q</a>.</p>
+  <p></p>
+<p>Developed by Wolfgang Seis, <a href="https://github.com/amatzi" class="external-link">Andreas Matzinger</a>, <a href="https://www.kompetenz-wasser.de/en/project/r2q/" class="external-link">R2Q</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -156,6 +154,8 @@
 
   
 
+
+  
 
   </body>
 </html>
