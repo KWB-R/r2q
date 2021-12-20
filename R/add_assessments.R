@@ -206,7 +206,7 @@ add_hydrolic <- function(
   df_out["threshold"] <- Q_tolerable$planning
   df_out["threshold_type"] <- "acute" 
   df_out["max_area_catch_ha"] <- get_allowed_area(
-    f_D = site_data[["f_D_plan"]]$Value, 
+    f_D = site_data[["f_D_catch"]]$Value, 
     Q_tol = Q_tolerable$catchment, 
     q_rain = q_rain)
   df_out["max_area_plan_ha"] = get_allowed_area(
