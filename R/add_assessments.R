@@ -187,7 +187,7 @@ add_critical_loads <- function(
 #' 
 #' @export
 #' 
-add_hydrolic <- function(
+add_hydrology <- function(
   site_data, max_area_table, q_rain
 ){
   
@@ -198,7 +198,7 @@ add_hydrolic <- function(
   # tolerable discharge
   Q_tolerable <- calculate_tolerable_discharge(
     site_data = site_data,
-    verbose = F)
+    verbose = T)
   
   df_out["Parameter"] <- "Discharge"
   df_out["Unit"] <- "L/s"
