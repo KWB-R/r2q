@@ -86,6 +86,8 @@ discharge, using the average river flow or entered manualle.</p>
   <span class="va">area_catch</span>,
   <span class="va">river_cross_section</span>,
   <span class="va">river_length</span>,
+  <span class="va">x_coordinate</span>,
+  <span class="va">y_coordinate</span>,
   Hq_pnat1_catch <span class="op">=</span> <span class="cn">NULL</span>,
   slope <span class="op">=</span> <span class="fl">0.1</span>,
   use_p1nat <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -103,6 +105,9 @@ discharge, using the average river flow or entered manualle.</p>
 in m2</p></dd>
 <dt>river_length</dt>
 <dd><p>The length of the affected urban river stretch in m</p></dd>
+<dt>x_coordinate, y_coordinate</dt>
+<dd><p>coordinates in ETRS89.
+See Datails for more information.</p></dd>
 <dt>Hq_pnat1_catch</dt>
 <dd><p>the natural catchment discharge for a yearly rain event
 in L/(s*km2). If NULL it will be estimated by slope and area of the catchment</p></dd>
@@ -126,13 +131,15 @@ Null, mins is used and overwrites the parameter "use_p1nat".</p></dd>
     <p>A Vector with the calculated duration of precipitation in minutes and the
 rain event based on KOSTRA in L/(s*ha)</p>
     </div>
-
-    <div id="ref-examples">
-    <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-</code></pre></div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>The KOSTRA Data is available for a grid of x x x km. The location
+is given in coordinates in the ETRS89 system
+(For information see: https://epsg.io/3034)
+Longitudes and Lattidudes in WGS84 can be converted into ETRS89 here:
+https://epsg.io/transform#s_srs=4326&amp;t_srs=3034</p>
     </div>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

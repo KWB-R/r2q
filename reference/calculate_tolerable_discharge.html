@@ -81,13 +81,12 @@ rain event</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculate_tolerable_discharge</span><span class="op">(</span>
-  area_catch <span class="op">=</span> <span class="fl">1</span>,
+  area_catch <span class="op">=</span> <span class="fl">10</span>,
   area_con_catch <span class="op">=</span> <span class="fl">1</span>,
   area_plan <span class="op">=</span> <span class="fl">0</span>,
   slope_catch <span class="op">=</span> <span class="fl">0.1</span>,
   Hq1pnat_catch <span class="op">=</span> <span class="cn">NULL</span>,
   Hq2pnat_catch <span class="op">=</span> <span class="cn">NULL</span>,
-  site_data <span class="op">=</span> <span class="cn">NULL</span>,
   verbose <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -109,9 +108,6 @@ event in L/(s*km²) (Defautl is NULL)</p></dd>
 <dt>Hq2pnat_catch</dt>
 <dd><p>natural average catchment discharge for a bienneal
 rain event in L/(s*km²) (Defautl is NULL)</p></dd>
-<dt>site_data</dt>
-<dd><p>site data loaded by function "load_site_data". If
-defined, this overwrites all other values.</p></dd>
 <dt>verbose</dt>
 <dd><p>if TRUE returns results as informative messages,
 If FALSE only return numeric value for planning area.</p></dd>
@@ -125,13 +121,6 @@ calculation for the tolerable discharges. The definition of x can be found
 in guideline DWA-A 102-3</p>
     </div>
 
-    <div id="ref-examples">
-    <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-</code></pre></div>
-    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
