@@ -2,7 +2,7 @@
 
 export("%>%")
 export(add_critical_loads)
-export(add_hydrolic)
+export(add_hydrology)
 export(add_max_areas)
 export(calculate_surface_discharge)
 export(calculate_tolerable_discharge)

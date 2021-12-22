@@ -39,7 +39,8 @@ get_Hq1_pnat <- function(slope , area_catch)
 #' @param Hq1_pnat potential annual natural discharge flow (unit l*s^-1 km²^-1)
 #' @param Hq2_pnat potential biennial natural discharge flow (unit l*s^-1 km²^-1)
 #'
-#' @return dimensionless factor regulating tolerable additional anthropogenic discharge
+#' @return 
+#' dimensionless factor regulating tolerable additional anthropogenic discharge
 #' @export
 #'
 get_x <- function(Hq1_pnat, Hq2_pnat) {
@@ -49,7 +50,7 @@ get_x <- function(Hq1_pnat, Hq2_pnat) {
   }
     
   else{  
-    Hq2_pnat / Hq1_pnat-1
+    Hq2_pnat / Hq1_pnat - 1
   }
 }
 
@@ -57,11 +58,12 @@ get_x <- function(Hq1_pnat, Hq2_pnat) {
 #'
 #' @param Hq1pnat_catch natural discharge of cathcment area (area_catch) 
 #' in L/(s*km²)
-#' @param x default: r2q::get_x()
-#' @param area_con_catch connected area of planning area in km²
-#' @param area_catch catchment area until point of discharge in km²
+#' @param x dimensionless factor regulating tolerable additional anthropogenic 
+#' discharge. default is 0.1
+#' @param area_con_catch connected area of planning area in km2
+#' @param area_catch complete catchment area in km2 upstream of point of discharge 
 #'
-#' @return tolerable discharged cumulative flow of planning area in m³/s
+#' @return tolerable discharged flow of planning area in L/s
 #' @export
 get_q_max <- function(
   Hq1pnat_catch, x = 0.1, area_con_catch, area_catch){
@@ -140,20 +142,21 @@ calculate_tolerable_discharge <- function(
   # Calculate x
   df_out$x <- get_x(Hq1_pnat = Hq1pnat_catch, Hq2_pnat = Hq2pnat_catch)
   
-  # Calculate tolerable annual discharge flow in l/s
+  # Calculate tolerable discharge  of yearly event in l/s from the planning area
   df_out$catchment <- 
     get_q_max(Hq1pnat = Hq1pnat_catch,
                     x = df_out$x,
                     area_con_catch = area_con_catch,
                     area_catch = area_catch)
   
-  df_out$planning <- df_out$catchment * area_plan / area_con_catch
+  df_out$planning <- df_out$catchment * area_plan / area_catch
   
   if(verbose){
     print(paste("Based on provided input data a tolerable annual discharge flow of",
                 as.character(df_out$catchment), "L/s was calculated for the Catchment.",
                 as.character("For the planning area this corresponds to"), 
                 as.character(round(df_out$planning, 2)), "L/s"))
+    df_out
   } else{
     df_out
   }
