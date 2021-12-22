@@ -35,9 +35,7 @@ Imports:
     readxl,
     rlang,
     sf,
-    stringr,
-    tidyr,
-    readr
+    tidyr
 Suggests: 
     covr,
     flexdashboard,

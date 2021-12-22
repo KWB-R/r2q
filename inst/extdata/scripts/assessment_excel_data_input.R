@@ -15,22 +15,30 @@ c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
 
 # yearly rain 
 # duration either calculated with natural catchment discharge
-rain <- r2q::get_rain(area_catch = siteData$area_catch$Value, 
-         river_cross_section = siteData$river_cross_section$Value,
-         river_length = siteData$river_length$Value)
+rain <- r2q::get_rain(
+  area_catch = siteData$area_catch$Value, 
+  river_cross_section = siteData$river_cross_section$Value,
+  river_length = siteData$river_length$Value, 
+  x_coordinate = siteData$x_coordinate$Value,
+  y_coordinate = siteData$y_coordinate$Value
+)
 
 # # Calculated by average river flow
-# rain <- get_rain(area_catch = siteData$area_catch$Value, 
-#                    river_cross_section = siteData$river_cross_section$Value,
-#                    river_length = siteData$river_length$Value, 
-#                    use_p1nat = FALSE, 
-#                    river_flow = siteData$Q_mean$Value)
+# rain <- get_rain(area_catch = siteData$area_catch$Value,
+#                  river_cross_section = siteData$river_cross_section$Value,
+#                  river_length = siteData$river_length$Value,
+#                  x_coordinate = siteData$x_coordinate$Value,
+#                  y_coordinate = siteData$y_coordinate$Value
+#                  use_p1nat = FALSE,
+#                  river_flow = siteData$Q_mean$Value)
 # 
-# # or manualy entered
-# rain <- get_rain(area_catch = siteData$area_catch$Value, 
-#                    river_cross_section = siteData$river_cross_section$Value,
-#                    river_length = siteData$river_length$Value, 
-#                    mins = 1080)
+# # or manually entered
+# rain <- get_rain(area_catch = siteData$area_catch$Value,
+#                  river_cross_section = siteData$river_cross_section$Value,
+#                  river_length = siteData$river_length$Value,
+#                  x_coordinate = siteData$x_coordinate$Value,
+#                  y_coordinate = siteData$y_coordinate$Value
+#                  mins = 1080)
 
 # combine data
 c_table <- r2q::combine_concentration_tables(
@@ -46,7 +54,7 @@ area_table <- r2q::add_max_areas(
   q_rain = rain["q_rain"],
   t_rain = rain["duration"])
 
-area_table <- r2q::add_hydrolic(site_data = siteData, 
+area_table <- r2q::add_hydrology(site_data = siteData, 
                            max_area_table = area_table, 
                            q_rain = rain["q_rain"])
 

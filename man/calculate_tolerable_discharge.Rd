@@ -5,13 +5,12 @@
 \title{Calculate tolerable discharge}
 \usage{
 calculate_tolerable_discharge(
-  area_catch = 1,
+  area_catch = 10,
   area_con_catch = 1,
   area_plan = 0,
   slope_catch = 0.1,
   Hq1pnat_catch = NULL,
   Hq2pnat_catch = NULL,
-  site_data = NULL,
   verbose = TRUE
 )
 }
@@ -31,9 +30,6 @@ event in L/(s*km²) (Defautl is NULL)}
 \item{Hq2pnat_catch}{natural average catchment discharge for a bienneal
 rain event in L/(s*km²) (Defautl is NULL)}
 
-\item{site_data}{site data loaded by function "load_site_data". If
-defined, this overwrites all other values.}
-
 \item{verbose}{if TRUE returns results as informative messages,
 If FALSE only return numeric value for planning area.}
 }
@@ -47,8 +43,4 @@ in guideline DWA-A 102-3
 \description{
 Uses the site data to calculate a natural stormwater run-off for a yearly
 rain event
-}
-\examples{
-
-
 }

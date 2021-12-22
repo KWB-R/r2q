@@ -8,6 +8,8 @@ get_rain(
   area_catch,
   river_cross_section,
   river_length,
+  x_coordinate,
+  y_coordinate,
   Hq_pnat1_catch = NULL,
   slope = 0.1,
   use_p1nat = TRUE,
@@ -22,6 +24,9 @@ get_rain(
 in m2}
 
 \item{river_length}{The length of the affected urban river stretch in m}
+
+\item{x_coordinate, y_coordinate}{coordinates in ETRS89.
+See Datails for more information.}
 
 \item{Hq_pnat1_catch}{the natural catchment discharge for a yearly rain event
 in L/(s*km2). If NULL it will be estimated by slope and area of the catchment}
@@ -49,6 +54,10 @@ The rate of the yearly rain event depends on the prescribed duration. In this
 function the duration is either calculated using the natural catchment
 discharge, using the average river flow or entered manualle.
 }
-\examples{
-
+\details{
+The KOSTRA Data is available for a grid of x x x km. The location
+is given in coordinates in the ETRS89 system
+(For information see: https://epsg.io/3034)
+Longitudes and Lattidudes in WGS84 can be converted into ETRS89 here:
+https://epsg.io/transform#s_srs=4326&t_srs=3034
 }

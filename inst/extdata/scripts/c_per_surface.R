@@ -38,6 +38,17 @@ sur <- data.frame("type" = c("total", "roof", "street", "yard",
                             259,
                             rep(NA, 6)))
 
+sur <- rbind(sur, 
+      data.frame("type" = rep("street", 4),
+                 "subtype" = c("veryLow", "low", "medium", "high"),
+                 "parameter" = rep("length_relative", 4),
+                 "unit" = rep("%", 4),
+                 "ALT" = c(0, 47.3, 47.3, 5.3),
+                 "NEU" = c(0, 46.1, 53.9, 0),
+                 "EFH" = c(17.6, 53.7, 28.6, 0),
+                 "GEW" = c(0, 31, 24.1, 44.9),
+                 "STR" = c(0, 0, 0, 100)))
+
 OgRe_conc <- read.table(
   file = file.path("inst/extdata/OgRe_data/annual_mean_conc.csv"), 
   header = TRUE, sep = ";", dec = ".", as.is = TRUE)
@@ -169,6 +180,7 @@ if(FALSE){
   
   flow_share <- sur[sur$type == "street" & sur$parameter == "flow_abimo" ,
       c("ALT", "NEU", "EFH", "GEW", "STR")] / total_flow
+  flow_share["STR"] <- 1
   
   kfz <- sur[sur$type == "KFZ" ,c("ALT", "NEU", "EFH", "GEW", "STR")] * flow_share
   kfz["STR"] <- sur[sur$type == "KFZ" ,c("STR")] # is the same becausw flow is 100% street
@@ -181,6 +193,7 @@ if(FALSE){
   dfc$lowMean <- (dfc$NEU + dfc$EFH) / 2
   dfc$midMean <- (dfc$ALT + dfc$GEW) / 2
   dfc$highMean <- (dfc$STR) / 1
+  
   
   for(i in 1:nrow(dfc)){
     xlim <- c(0.5, 3.5)
@@ -202,6 +215,39 @@ if(FALSE){
     abline(h = dfc$threshold[i], col = "orange", lwd = 2)
     dev.off()
   }
+  
+  i <- 1
+  for(substance in dfc$Substance[-1]){
+    i <- i + 1
+    print(substance)
+    png(filename = paste0(
+      "C:/Users/mzamzo/Documents/R2Q/output/street_influence/kfz_flow", 
+      substr(substance, start = 1, stop = 7), ".png"), 
+      width = 6, height = 6, units = "in", res = 300)
+    
+    plot_street_depency(substance = substance, 
+                        OgRe_drain = OgRe_single, 
+                        v_x = log(unlist(kfz)), 
+                        plotMean = T, add_regression = T, add_confi = T)
+    dev.off()
+    
+    png(filename = paste0(
+      "C:/Users/mzamzo/Documents/R2Q/output/street_influence/zero_back", 
+      substr(substance, start = 1, stop = 7), ".png"), 
+      width = 6, height = 6, units = "in", res = 300)
+    
+    plot_street_depency(
+      substance = substance, 
+      OgRe_drain = OgRe_single, 
+      v_x = log(unlist(sur[sur$type == "KFZ", c("ALT", "NEU", "EFH", "GEW", "STR")])), 
+      plotMean = T, add_regression = T, add_confi = T, 
+      assume_zero_background = T,
+      flow_share_street = unlist(flow_share))
+    dev.off()
+    
+  }
+  
+  
   
   # add categories 
   dfc$cat <- 1
@@ -299,19 +345,26 @@ if(FALSE){
     "GEW" = wo_street$GEW / (1 - x_zero["GEW"]))
   
   
+  rowMeans(polluted_roofs[polluted_roofs$Substance == "Mecoprop", 3:6])
   
   # Metal roofs ----------------------------------------------------------------
   # get Metal influence
-  total_flow_wo_street <- colSums(sur[sur$parameter == "flow_abimo" &
-                                        sur$type %in% c("roof", "yard"),
-                                      c("ALT", "NEU", "EFH", "GEW", "STR")])
+  # total_flow_wo_street <- colSums(sur[sur$parameter == "flow_abimo" &
+  #                                       sur$type %in% c("roof", "yard"),
+  #                                     c("ALT", "NEU", "EFH", "GEW", "STR")])
+  
+  total_flow <- colSums(sur[sur$parameter == "flow_abimo" ,
+                            c("ALT", "NEU", "EFH", "GEW", "STR")])
   
   metal_ha <- unlist(sur[sur$subtype == "Metall", c("ALT", "NEU", "EFH", "GEW")])
   metal_per_roof <- metal_ha / 
     unlist(sur[sur$subtype == "" & sur$type == "roof" &
                  sur$parameter == "area", c("ALT", "NEU", "EFH", "GEW")])
+  # roof_share <-  sur[sur$type == "roof" & sur$parameter == "flow_abimo" ,
+  #                    c("ALT", "NEU", "EFH", "GEW")] / total_flow_wo_street
+  
   roof_share <-  sur[sur$type == "roof" & sur$parameter == "flow_abimo" ,
-                     c("ALT", "NEU", "EFH", "GEW")] / total_flow_wo_street
+                     c("ALT", "NEU", "EFH", "GEW")] / total_flow
   
   metal_share <- unlist(metal_per_roof * roof_share)
   metal_roof <- data.frame("Substance" = wo_street$Substance,
@@ -320,21 +373,34 @@ if(FALSE){
   for(substance in wo_street$Substance[-1]){
     i <- i + 1
     print(substance)
-    png(filename = paste0(
-      "C:/Users/mzamzo/Documents/R2Q/output/metalroof_influence/", 
-      substr(substance, start = 1, stop = 7), ".png"), 
-      width = 6, height = 6, units = "in", res = 300)
+    # png(filename = paste0(
+    #   "C:/Users/mzamzo/Documents/R2Q/output/metalroof_influence/", 
+    #   substr(substance, start = 1, stop = 7), ".png"), 
+    #   width = 6, height = 6, units = "in", res = 300)
     metal_roof$slope[i] <- 
       plot_metal_depency(substance = substance, OgRe_drain = OgRe_single,
-                         metal_share = metal_share, without_street = TRUE, 
+                         metal_share = metal_share, without_street = FALSE, 
                          street_share = street_share, 
                          plotMean = TRUE, add_regression = TRUE)
-    dev.off()
+    # dev.off()
   }
   metal_roof$apply <- 0
   metal_roof$apply[
     metal_roof$Substance %in% 
       c("Blei gelöst", "Cadmium gelöst", "Kupfer gelöst", "Nickel gelöst", "Zink gelöst")] <- 1
+  
+  wo_metal <- data.frame(
+    "Substance" = dfc$Substance,
+    "Unit" = dfc$Unit,
+    "Threshold" = dfc$threshold,
+    "ALT" = (dfc[,"ALT"] - metal_roof$slope * metal_share["ALT"] * metal_roof$apply) /
+      (1 -  metal_share["ALT"] * metal_roof$apply),
+    "NEU" = (dfc[,"NEU"] - metal_roof$slope * metal_share["NEU"] * metal_roof$apply) /
+      (1 -  metal_share["NEU"] * metal_roof$apply),
+    "EFH" = (dfc[,"EFH"] - metal_roof$slope * metal_share["EFH"] * metal_roof$apply) /
+      (1 -  metal_share["EFH"] * metal_roof$apply),
+    "GEW" = (dfc[,"GEW"] - metal_roof$slope * metal_share["GEW"] * metal_roof$apply) /
+      (1 -  metal_share["GEW"] * metal_roof$apply))
   
   wo_str_metal <- data.frame(
     "Substance" = dfc$Substance,
@@ -693,4 +759,129 @@ get_interval_limits <- function(x_k, lm_model, interval_type, p){
   
 }
 
-
+plot_street_depency <- function(
+  substance, 
+  OgRe_drain,
+  v_x,
+  plotMean = TRUE,
+  add_regression = TRUE,
+  add_confi = TRUE,
+  assume_zero_background = FALSE,
+  flow_share_street = NULL
+){
+  sub_df <- OgRe_drain %>% filter(VariableName %in% substance) 
+  
+  plot_single <- sub_df %>% 
+    mutate(DataValue = ifelse(CensorCode == "lt", 
+                              yes = DataValue / 2, 
+                              no = DataValue)) %>%
+    select(SampleID, SiteID, VariableName, DataValue) %>%
+    spread(key = SiteID, value = DataValue) %>%
+    select(VariableName, "ALT" = `1`, "NEU" = `2`, "EFH" = `4`, "GEW" = `5`, "STR" = `3`)
+  
+  
+  if(assume_zero_background){
+    plot_single[,2:6] <- t(apply(X = plot_single[,c("ALT", "NEU", "EFH", "GEW", "STR")], 
+                                 1, function(x){x / flow_share_street}))
+  }
+  
+  plot_mean <- colMeans(plot_single[,2:6], na.rm = T)
+  th <- c_threshold$threshold[c_threshold$Substance == substance]
+  
+  xmax <- max(v_x)
+  ymax <- max(c(unlist(plot_single[,2:6]), th), na.rm = TRUE)
+  plot(x = unlist(v_x), y = plot_mean, ylim = c(0,ymax), type = "n", 
+       xlim = c(0,xmax + 0.1 *xmax  ),
+       xlab = "KFZ-Rate pro Gesamtabfluss", 
+       ylab = paste0(substance, " - Konzentration"), xaxs = "i")
+  
+  if(add_regression){
+    # linear regression
+    reg_df <- do.call(rbind, lapply(c("ALT", "NEU", "EFH", "GEW", "STR"), function(ezg){
+      data.frame("x" = v_x[ezg], "y" = plot_single[[ezg]], 
+                 row.names = NULL)
+    }))
+    
+    reg_df <- reg_df[!is.na(reg_df$y),]
+    reg_mean <- summary(lm(plot_mean ~ v_x ))
+    reg <- lm(y ~ x, reg_df)
+    reg_stats <- summary(reg)
+    
+    if(is.na(reg$coefficients[2])){
+      add_confi <- FALSE
+      reg$coefficients[2] <- reg$coefficients[1]
+    } 
+    
+    if(add_confi){
+      # 95% Konfidenz-Interval
+      conf_limits <- sapply(X = seq(0, xmax + 0.1 * xmax, length.out = 1000), 
+                            get_interval_limits, lm_model = reg , 
+                            interval_type = "confidence", p = 0.05)
+      
+      polygon(
+        x = c(seq(0, xmax + 0.1 * xmax, length.out = 1000), 
+              rev(seq(0, xmax + 0.1 * xmax, length.out = 1000))), 
+        y = c(conf_limits[1,], rev(conf_limits[2,])), col = "gray80", 
+        border = F)
+      
+      legend(x = par("usr")[2] - 9*par("cxy")[1], y = par("usr")[4] + 2*par("cxy")[2] , 
+             xpd = TRUE,  bty = "n", fill = c("gray80"), 
+             legend = "95%-Konfidenzintervall", cex = 0.8)
+    }
+    
+    # add to plot
+    abline(reg, lwd = 2, lty = "dashed")
+    
+    text(x = 0, y = par("usr")[4] - 1*par("cxy")[2], 
+         labels = paste0("Intercept: ", signif(reg$coefficients[1], 2), 
+                         " (p = ",  signif(reg_stats$coefficients[1,4], 1), ")"), 
+         pos = 4, cex = 0.8)
+    if(nrow(reg_stats$coefficients) > 1){
+      text(x = 0, y = par("usr")[4] - 2*par("cxy")[2], 
+           labels = paste0("Slope: ", signif(reg$coefficients[2], 2), 
+                           " (p = ",  signif(reg_stats$coefficients[2,4], 1), ")",
+                           ", (Std.Error = ", 
+                           signif(reg_stats$coefficients[2,2], 2), ")"), 
+           pos = 4, cex = 0.8)
+    }
+    
+    text(x = 0, y = par("usr")[4] - 3*par("cxy")[2], 
+         labels = paste0("R²: ", round(reg_stats$adj.r.squared, 2)), 
+         pos = 4, cex = 0.8)
+    text(x = 0, y = par("usr")[4] - 4*par("cxy")[2], 
+         labels = paste0("R² (means used): ", round(reg_mean$adj.r.squared, 2)), 
+         pos = 4, cex = 0.8)
+  }
+  
+  # ALT
+  points(x = rep(v_x[1], nrow(plot_single)), 
+         y = plot_single$ALT, col = "brown", lwd = 2)
+  # NEU
+  points(x = rep(v_x[2], nrow(plot_single)), 
+         y = plot_single$NEU, col = "steelblue", lwd = 2)
+  # EFH
+  points(x = rep(v_x[3], nrow(plot_single)), 
+         y = plot_single$EFH, col = "green3", lwd = 2)
+  # GEW
+  points(x = rep(v_x[4], nrow(plot_single)), 
+         y = plot_single$GEW, col = "gray20", lwd = 2)
+  
+  # STR
+  points(x = rep(v_x[5], nrow(plot_single)), 
+         y = plot_single$STR, col = "orange", lwd = 2)
+  
+  if(plotMean){
+    points(x = v_x, y = plot_mean, cex = 1, pch = 23, 
+           bg = c("brown", "steelblue", "green3", "gray20", "orange"), 
+           col = "black", lwd = 1.5)
+  }
+  abline(h = th, col = "red", lwd = 2, lty = "dotted")
+  
+  legend(x = 0, y = par("usr")[4] + 2*par("cxy")[2] , 
+         xpd = TRUE, horiz = T, bty = "n",
+         pch = 1, col = c("brown", "steelblue", "green3", "gray20"), lwd = 2, 
+         legend = names(v_x), lty = 0, cex = 0.8)
+  
+  c("slope" = signif(reg$coefficients[2], 2),
+    "interc" = signif(reg$coefficients[1], 2))
+}

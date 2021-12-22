@@ -84,6 +84,8 @@ lin_interpolation <- function(x1, x2, y1, y2, x_is){
 #' @param river_cross_section The average river cross section in the catchment
 #' in m2
 #' @param river_length The length of the affected urban river stretch in m
+#' @param x_coordinate,y_coordinate coordinates in ETRS89. 
+#' See Datails for more information.
 #' @param Hq_pnat1_catch the natural catchment discharge for a yearly rain event
 #' in L/(s*km2). If NULL it will be estimated by slope and area of the catchment
 #' @param slope Average slope of the catchment in % (Default is 0.1)
@@ -97,16 +99,23 @@ lin_interpolation <- function(x1, x2, y1, y2, x_is){
 #' discharge or average river flow is used for precipitation duration. If not 
 #' Null, mins is used and overwrites the parameter "use_p1nat".
 #' 
+#' @details 
+#' The KOSTRA Data is available for a grid of x x x km. The location
+#' is given in coordinates in the ETRS89 system 
+#' (For information see: https://epsg.io/3034)
+#' Longitudes and Lattidudes in WGS84 can be converted into ETRS89 here:
+#' https://epsg.io/transform#s_srs=4326&t_srs=3034
+#' 
 #' 
 #' @return 
 #' A Vector with the calculated duration of precipitation in minutes and the 
 #' rain event based on KOSTRA in L/(s*ha)
 #' 
 #' @export
-#' @examples 
 #' 
 get_rain <- function(
-  area_catch, river_cross_section, river_length, Hq_pnat1_catch = NULL, 
+  area_catch, river_cross_section, river_length, x_coordinate, y_coordinate, 
+  Hq_pnat1_catch = NULL, 
   slope = 0.1, use_p1nat = TRUE, river_flow = NULL, mins = NULL
 ){
   possible_T <- c(5, 10, 15, 20, 30, 45, 60, 90, 120, 180, 240, 360, 
@@ -137,7 +146,7 @@ get_rain <- function(
   
   y <- sapply(x, function(xi){
     local_rain <- r2q::get_KOSTRA(
-      coord_vector = c(siteData$x_coordinate$Value, siteData$y_coordinate$Value), 
+      coord_vector = c(x_coordinate, y_coordinate), 
       duration_string = xi, location_name = "Herne", plot = F)
     
     local_rain$data$Wert[local_rain$data$Kategorie == "Regenspende" &

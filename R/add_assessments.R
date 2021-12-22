@@ -197,12 +197,18 @@ add_hydrology <- function(
   
   # tolerable discharge
   Q_tolerable <- calculate_tolerable_discharge(
-    site_data = site_data,
-    verbose = T)
+    area_catch = site_data[["area_catch"]]$Value, 
+    area_con_catch = site_data[["area_con_catch"]]$Value, 
+    area_plan = site_data[["area_plan"]]$Value, 
+    slope_catch = site_data[["slope_catch"]]$Value, 
+    Hq1pnat_catch = site_data[["Hq1pnat_catch"]]$Value, 
+    Hq2pnat_catch = site_data[["Hq2pnat_catch"]]$Value,
+    verbose = T
+  )
   
   df_out["Parameter"] <- "Discharge"
   df_out["Unit"] <- "L/s"
-  df_out["Group"] <- "hydrolic"
+  df_out["Group"] <- "hydrologic"
   df_out["threshold"] <- Q_tolerable$planning
   df_out["threshold_type"] <- "acute" 
   df_out["max_area_catch_ha"] <- get_allowed_area(

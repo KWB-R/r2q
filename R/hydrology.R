@@ -8,7 +8,6 @@
 #'
 #' @examples
 #' get_Hq1_pnat(slope = 0.1, area_catch = 5.62)
-
 get_Hq1_pnat <- function(slope , area_catch)
 {
   if(slope <= 0.2){
@@ -101,8 +100,6 @@ get_allowed_area <- function(f_D , Q_tol, q_rain){
 #' event in L/(s*km²) (Defautl is NULL)
 #' @param Hq2pnat_catch natural average catchment discharge for a bienneal 
 #' rain event in L/(s*km²) (Defautl is NULL)
-#' @param site_data site data loaded by function "load_site_data". If 
-#' defined, this overwrites all other values.
 #' @param verbose if TRUE returns results as informative messages, 
 #' If FALSE only return numeric value for planning area.
 #' 
@@ -114,21 +111,10 @@ get_allowed_area <- function(f_D , Q_tol, q_rain){
 #' in guideline DWA-A 102-3
 #' @export
 #'
-#' @examples
-#' 
-#' 
 calculate_tolerable_discharge <- function(
-  area_catch = 1, area_con_catch = 1, area_plan = 0, slope_catch = 0.1, 
-  Hq1pnat_catch = NULL, Hq2pnat_catch = NULL, site_data = NULL, verbose = TRUE
+  area_catch = 10, area_con_catch = 1, area_plan = 0, slope_catch = 0.1, 
+  Hq1pnat_catch = NULL, Hq2pnat_catch = NULL, verbose = TRUE
 ){
-  if(!is.null(site_data)){
-    Hq1pnat_catch <- site_data[["Hq1pnat_catch"]]$Value
-    slope_catch <- site_data[["slope_catch"]]$Value
-    Hq2pnat_catch <- site_data[["Hq2pnat_catch"]]$Value
-    area_con_catch <- site_data[["area_con_catch"]]$Value
-    area_catch <- site_data[["area_catch"]]$Value
-    area_plan <- site_data[["area_plan"]]$Value
-  }
   
   if(is.null(Hq1pnat_catch)){
     Hq1pnat_catch <- get_Hq1_pnat(slope = slope_catch, area_catch = area_catch)
@@ -178,8 +164,6 @@ calculate_tolerable_discharge <- function(
 #' A numeric: stormwater run-off from planning area in L/s
 #' @export
 #'
-#' @examples
-#' 
 calculate_surface_discharge <- function(
   area = 1,
   fD = 0.9,

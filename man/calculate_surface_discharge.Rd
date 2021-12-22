@@ -24,6 +24,3 @@ A numeric: stormwater run-off from planning area in L/s
 this function calculates the surface discharge either from single values of
 impervious area and runoff coefficent or from the input table surface_data
 }
-\examples{
-
-}
