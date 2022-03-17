@@ -51,8 +51,8 @@ combine_concentration_tables <- function(
 ){
   th <- threshold_table[,c("Substance", "Unit", "Group", 
                            "threshold", "threshold_type")]
-  st <- storm_table[, c("Substance", "Unit", "Mean")]
-  colnames(st)[3] <- "c_storm" 
+  st <- storm_table[, c("Substance", "Unit", "Mean", "Q95")]
+  colnames(st)[3:4] <- c("c_storm" , "c_strom95")
   ba <- background_table[,c("Substance", "Unit", "river", "Comment")]
   colnames(ba)[3:4] <- c("c_river", "river_value")
   
