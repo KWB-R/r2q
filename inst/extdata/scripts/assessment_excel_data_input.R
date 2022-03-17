@@ -8,8 +8,11 @@ c_river <- r2q::load_background_data(
   data.dir = "inst/extdata/Data_entry",
   filename = "Baukau.xlsx", default_for_na = TRUE)
 
+
+
 # load package data ------------------------------------------------------------
-c_storm <- r2q::get_stormwater_concentrations()
+# c_storm <- r2q::get_stormwater_concentrations()
+c_sotrm <- r2q::get_areaType_runoff(areaType_vector = siteData$areaType[1:4])
 
 c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
 
