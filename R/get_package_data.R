@@ -120,6 +120,34 @@ get_stormwater_concentrations <- function (substances = NULL)
   C_storm_average
 }
 
+#' This function loads the area type specific pollutant runoff concentration
+#' obtained by the OgRe Dataset and multiplies it with the proportion of the
+#' correspoding area type in the catchment. 
+#' 
+#' @param areaType_vector A Vector of proportions for residential_suburban, 
+#' residential_city, industry, street area types. The sum of the vector should
+#' be 1
+#' 
+#' @return
+#' A dataframe with the columns "Substance", "unit", "Mean" which is the 
+#' median value and "Q95" which is the 95th quantile.
+#' 
+#' @export
+#' 
+get_areaType_runoff <- function(areaType_vector =  c(0.4, 0.4, 0.2, 0)){   
+ 
+  conc <- read.csv(file = system.file("extdata/Runoff_conc/catch_conc.csv", 
+                                      package = "r2q"), 
+                   sep = ";", dec = ".", header = T)
+  
+  mm <- as.matrix(conc[,grep("_med$", colnames(conc))])
+  qm <- as.matrix(conc[,grep("_q95$", colnames(conc))])
+  
+  data.frame("Substance" = conc$Substance, 
+             "Unit" = conc$Unit, 
+             "Mean" = mm %*% areaType_vector,
+             "Q95" = qm %*% areaType_vector)
+}
 
 #' Get KOSTRA rain characteristics
 #' 
