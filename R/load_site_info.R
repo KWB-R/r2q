@@ -48,19 +48,26 @@ load_site_data <- function(
   # exclude all the NA values --> Either headings or not obligatory
   del <- which(sapply(siteData, function(x){is.na(x["Value"])}))
   siteData <- siteData[-del]
+  
+  siteData[["areaType"]] <- 
+    load_areaTypes(data.dir = data.dir, filename = filename)
+  
+  siteData
 }
 
-#' Loading all details about planing area surface types
+#' Loading all details about catchment area types
 #' 
-#' this functions loads the data from the sheet "surface_data" within the data
+#' this functions loads the data from the sheet "surface_areaType" within the data
 #' entry excel file 
 #'
 #' @param data.dir The directory of the entry data table.
 #' @param filename Name of the R2Q-Excel File including ".xlsx".
 #' 
 #' @return 
-#' A data frame with all surface subtypes, the covered area in ha and the 
-#' corresponding runoff coefficient
+#' A vector of length 5. Entries 1 to 4 describe the proportion of the area 
+#' types "residential_suburban", "residential_city", "industry" and (high-
+#' traffic) "street". The proportion is referred only to the connected area.
+#' The 5th value is the overall proportion of connected area.
 #'
 #' @importFrom readxl read_excel
 #' @export
@@ -70,49 +77,37 @@ load_site_data <- function(
 #' data.dir = system.file("extdata/Data_entry", package = "r2q"), 
 #' filename = "Bsp_Herne.xlsx")
 #' 
-load_surface_data <- function(
-  data.dir,
-  filename
-){
+load_areaTypes <- function(data.dir, filename){
+  
   df_in <- readxl::read_excel(
     path = file.path(data.dir, filename),
-    sheet = "surface_data")
+    sheet = paste0("surface_areaType"))
   
-  planning_area <- df_in$Area_ha[1] # in ha
-  df_in <- df_in[-1,]
-  typeLines <- which(!is.na(df_in["Type"]))
+  if(sum(df_in$share_percent) != 100L)
+    stop("The specified catchment area does not sum up to 100 %")
   
-  list_out <- list()
-  for(i in 1:nrow(df_in)){
-    if(!(i %in% typeLines)){
-      TypeLine <- max(typeLines[typeLines < i])
-      if(!is.na(df_in[i,"Area_ha"])){
-        list_out[[df_in[["Subtype"]][i]]] <- 
-          data.frame(df_in[TypeLine,"Type"], 
-                     df_in[i,"Subtype"],
-                     df_in[i,"Area_ha"],
-                     df_in[i,"fD"])
-      } else if(!is.na(df_in[i,"Share_percent"])){
-        list_out[[df_in[["Subtype"]][i]]] <- 
-          data.frame(df_in[TypeLine,"Type"], 
-                     df_in[i,"Subtype"],
-                     df_in[TypeLine,"Area_ha"] * df_in[i, "Share_percent"] /100,
-                     df_in[i,"fD"])
-      } else {
-        stop("Neither area nor share provided for subtype ", df_in[i,2])
-      }
-    }
-  }
-  df_out <- do.call(rbind, list_out)
+  no_connected <- mean(df_in$connected_percent/100)
+  df_in$share_percent <- df_in$share_percent/100 * 
+    df_in$connected_percent/100 /
+    no_connected
   
-  if(sum(df_out$Area_ha) != planning_area){
-    warning("The surface subtypes definied in Excelsheet 'surface_data' do not 
-    sum up to defined total area of the planning area.
-    Sum is ", sum(df_out$Area_ha), " ha, speficied planning area is ", 
-            planning_area, " ha")
-  }
-  df_out
+  # the given area types updated by the traffic information
+  areas <- c("residential_suburban", "residential_city", "industry")
+  shares <- sapply(areas, function(x){
+    nRow <- which(df_in$Area == x)
+    if(length(nrow) == 0L)
+      stop(x, " is missing in Excel sheet")
+    share <- df_in$share_percent[nRow]
+    traffic_adaption(inital_share = share, traffic = df_in$traffic[nRow])
+  })
+  
+  # street
+  s_share <- 1L - sum(shares)
+  
+  c(shares, "street" = s_share, "connected" = 1 - no_connected)
 }
+
+
 
 #' Loading local background concentration
 #' 
