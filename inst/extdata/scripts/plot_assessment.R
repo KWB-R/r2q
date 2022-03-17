@@ -20,44 +20,6 @@ if(FALSE){
                 include_weak_constratints = FALSE, 
                 language = "german")
   
-  ######################## alt
-  
-  plot_max_area(plot_table = plot_table,
-                site_data = siteData, 
-                area = "planning",
-                language = "german", 
-                include_weak_constratints = TRUE, 
-                relative = TRUE, 
-                plot_status_quo = TRUE)
-  
-  r <- is.finite(plot_table$crit_load_g_event) | is.finite(plot_table$crit_load_kg_year)
-  plot_table <- plot_table[r,]
-  
-  tox_related_crit_load <- plot_table$crit_load_g_event / plot_table$threshold
-  tox_related_is_load <- plot_table$is_load_g_event / plot_table$threshold
-  
-  # Achseneinheit eigentlich m³ -> Was soll das bedeuten? Benötigtes Wasservolumen
-  # zum Verdünnen um den Grenzwert einzuhalten? -> JA. und wenn eine Substanz
-  # in dem Diagramm weiter oben rechts in die Ecke wandert heißt das entweder
-  # die Substanz ist sehr toxisch oder die Fracht ist sehr groß (man braucht
-  # viel Wasser zum Verdünnen)
-  xymax <- max(tox_related_crit_load , tox_related_is_load, na.rm = T)
-  plot(x = tox_related_crit_load, y = tox_related_is_load, 
-       xlim = c(0, xymax), ylim = c(0, xymax), pch = 19, cex = 1,
-       ylab = "Tox related load", xlab = "Tox related critical Load")
-  text(x = tox_related_crit_load, y = tox_related_is_load, 
-       labels = plot_table$Parameter, cex = 0.8, pos = 4)
-  
-  abline(a = 0, b = 1)
-  
-  tox_related_crit_load <- plot_table$crit_load_kg_year / plot_table$threshold
-  tox_related_is_load <- plot_table$is_load_kg_year / plot_table$threshold
-  
-  points(x = tox_related_crit_load, y = tox_related_is_load,
-         pch = 17, cex = 1)
-  text(x = tox_related_crit_load, y = tox_related_is_load, 
-       labels = plot_table$Parameter, cex = 0.8, pos = 4)
-
   
 }
 
