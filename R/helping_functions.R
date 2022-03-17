@@ -86,3 +86,33 @@ combine_concentration_tables <- function(
     df_out
   }
 }
+
+#' Reduce the proportion of one area type according to the traffic
+#' 
+#' 
+#' 
+#' @param initial_share Proportion between 0 and 1 for one type of area
+#' @param traffic Can either be "high" or "very_high"
+#' 
+#' @details 
+#' A standard amount of traffic is already included in the area types.
+#' However, more traffics (-> more high-traffic streets) can be added. 5 % and 
+#' 10 % of the proportion of the area type are substracted if the traffic is 
+#' specified as "high" and "very_high", respecitvely.
+#' 
+#' @return
+#' Returns the updated propordtion of the area type.
+#' 
+#' @export
+#' 
+traffic_adaption <- function(inital_share, traffic = "default"){
+  shift <- if(traffic == "high"){
+    0.05 * inital_share
+  } else if(traffic == "very_high"){
+    0.1 * inital_share
+  } else {
+    0
+  }
+  
+  inital_share - shift
+}
