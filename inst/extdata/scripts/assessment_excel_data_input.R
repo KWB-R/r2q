@@ -12,7 +12,7 @@ c_river <- r2q::load_background_data(
 
 # load package data ------------------------------------------------------------
 # c_storm <- r2q::get_stormwater_concentrations()
-c_sotrm <- r2q::get_areaType_runoff(areaType_vector = siteData$areaType[1:4])
+c_storm <- r2q::get_areaType_runoff(areaType_vector = siteData$areaType[1:4])
 
 c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
 

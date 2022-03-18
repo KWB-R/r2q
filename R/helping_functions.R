@@ -52,7 +52,7 @@ combine_concentration_tables <- function(
   th <- threshold_table[,c("Substance", "Unit", "Group", 
                            "threshold", "threshold_type")]
   st <- storm_table[, c("Substance", "Unit", "Mean", "Q95")]
-  colnames(st)[3:4] <- c("c_storm" , "c_strom95")
+  colnames(st)[3:4] <- c("c_storm" , "c_storm95")
   ba <- background_table[,c("Substance", "Unit", "river", "Comment")]
   colnames(ba)[3:4] <- c("c_river", "river_value")
   
@@ -74,17 +74,13 @@ combine_concentration_tables <- function(
   
   substances_deleted <- df_out$Substance[del]
   wrong_unit <- substances_deleted[substances_deleted %in% complete_substances]
-  if(length(wrong_unit) > 0){
+  if(length(wrong_unit) > 0L){
     warning("Substances ", wrong_unit, "were entered in wrong unit and are ",
             "excluded from further calculation. To see the right unit, please",
             " check the treshold or stormwater concentration table.")
-  }
-  
-  if(onlyComplete){
     df_out[-del,]
-  } else {
-    df_out
   }
+    df_out
 }
 
 #' Reduce the proportion of one area type according to the traffic

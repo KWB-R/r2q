@@ -8,7 +8,6 @@ OgRe_single <- read.table(file = system.file("extdata/OgRe_data/OgRe_drain.csv",
 df <- OgRe_single[OgRe_single$VariableName %in% c_threshold$Substance,]
 
 subs <- levels(as.factor(df$VariableName))
-subs <- levels(as.factor(df$VariableName))
 # 4 is "Einfamilienhaus", 1 is "Altbau", 2 is "Neubau", 5 is "Gewerbe", 6 is "Straße"
 sites <- list(c(4), c(1,2), c(5), c(3))
 
