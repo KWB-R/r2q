@@ -33,6 +33,6 @@ R2Q-Excel file for data entry
 \examples{
 load_site_data(
 data.dir = system.file("extdata/Data_entry", package = "r2q"), 
-filename = "Bsp_Herne.xlsx")
+filename = "Baukau.xlsx")
 
 }

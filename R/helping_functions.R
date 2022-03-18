@@ -105,14 +105,14 @@ combine_concentration_tables <- function(
 #' 
 #' @export
 #' 
-traffic_adaption <- function(inital_share, traffic = "default"){
+traffic_adaption <- function(initial_share, traffic = "default"){
   shift <- if(traffic == "high"){
-    0.05 * inital_share
+    0.05 * initial_share
   } else if(traffic == "very_high"){
-    0.1 * inital_share
+    0.1 * initial_share
   } else {
     0
   }
   
-  inital_share - shift
+  initial_share - shift
 }

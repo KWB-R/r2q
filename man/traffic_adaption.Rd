@@ -4,12 +4,12 @@
 \alias{traffic_adaption}
 \title{Reduce the proportion of one area type according to the traffic}
 \usage{
-traffic_adaption(inital_share, traffic = "default")
+traffic_adaption(initial_share, traffic = "default")
 }
 \arguments{
-\item{traffic}{Can either be "high" or "very_high"}
-
 \item{initial_share}{Proportion between 0 and 1 for one type of area}
+
+\item{traffic}{Can either be "high" or "very_high"}
 }
 \value{
 Returns the updated propordtion of the area type.

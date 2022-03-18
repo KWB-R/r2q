@@ -4,7 +4,7 @@
 \alias{calculate_surface_discharge}
 \title{calculate surface discharge from planning area}
 \usage{
-calculate_surface_discharge(area = 1, fD = 0.9, q_rain, surface_Data = NULL)
+calculate_surface_discharge(area = 1, fD = 0.9, q_rain)
 }
 \arguments{
 \item{area}{Impervious area in ha}
@@ -12,10 +12,6 @@ calculate_surface_discharge(area = 1, fD = 0.9, q_rain, surface_Data = NULL)
 \item{fD}{Runoff coefficient of impervious area}
 
 \item{q_rain}{Amount of rain in L / (s*ha)}
-
-\item{surface_Data}{loaded surface data
-(created by \code{\link{load_surface_data}}). If defined, this overwrites
-the values of "area" and "fD"}
 }
 \value{
 A numeric: stormwater run-off from planning area in L/s

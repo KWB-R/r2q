@@ -24,6 +24,6 @@ entry excel file
 \examples{
 load_site_data(
 data.dir = system.file("extdata/Data_entry", package = "r2q"), 
-filename = "Bsp_Herne.xlsx")
+filename = "Baukau.xlsx")
 
 }

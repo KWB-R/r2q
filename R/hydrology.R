@@ -156,9 +156,6 @@ calculate_tolerable_discharge <- function(
 #' @param q_rain Amount of rain in L / (s*ha)
 #' @param area Impervious area in ha
 #' @param fD Runoff coefficient of impervious area
-#' @param surface_Data loaded surface data 
-#' (created by \code{\link{load_surface_data}}). If defined, this overwrites
-#' the values of "area" and "fD"
 #'
 #' @return 
 #' A numeric: stormwater run-off from planning area in L/s
@@ -167,8 +164,7 @@ calculate_tolerable_discharge <- function(
 calculate_surface_discharge <- function(
   area = 1,
   fD = 0.9,
-  q_rain,
-  surface_Data = NULL
+  q_rain
 ){
   if(!is.null(surface_Data)){
     area <- surface_Data$Area_ha

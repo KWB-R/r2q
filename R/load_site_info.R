@@ -17,7 +17,7 @@
 #' @examples 
 #' load_site_data(
 #' data.dir = system.file("extdata/Data_entry", package = "r2q"), 
-#' filename = "Bsp_Herne.xlsx")
+#' filename = "Baukau.xlsx")
 #' 
 load_site_data <- function(
   data.dir,
@@ -75,7 +75,7 @@ load_site_data <- function(
 #' @examples
 #' load_site_data(
 #' data.dir = system.file("extdata/Data_entry", package = "r2q"), 
-#' filename = "Bsp_Herne.xlsx")
+#' filename = "Baukau.xlsx")
 #' 
 load_areaTypes <- function(data.dir, filename){
   
@@ -98,7 +98,7 @@ load_areaTypes <- function(data.dir, filename){
     if(length(nrow) == 0L)
       stop(x, " is missing in Excel sheet")
     share <- df_in$share_percent[nRow]
-    traffic_adaption(inital_share = share, traffic = df_in$traffic[nRow])
+    traffic_adaption(initial_share = share, traffic = df_in$traffic[nRow])
   })
   
   # street
@@ -131,7 +131,7 @@ load_areaTypes <- function(data.dir, filename){
 #' @examples 
 #' load_site_data(
 #' data.dir = system.file("extdata/Data_entry", package = "r2q"), 
-#' filename = "Bsp_Herne.xlsx")
+#' filename = "Baukau.xlsx")
 #' 
 load_background_data <- function(
   data.dir,

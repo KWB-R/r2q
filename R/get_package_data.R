@@ -8,8 +8,8 @@
 #' @param LAWA_type lake or river type as described in German OGewV. 
 #' Only main type sould be indicated (e.g. insert 11 for river type 11.1 or 11 K). 
 #' If unknown, "default" will return typical values valid for a range of SUW.
-#' 
 #' @return data.frame with acute and annual substance threshold, suitable for a given SUW body
+#' @importFrom utils read.table
 #' @export
 get_thresholds <- function (
   SUW_type = "river",
@@ -133,10 +133,10 @@ get_stormwater_concentrations <- function (substances = NULL)
 #' median value and "Q95" which is the 95th quantile.
 #' 
 #' @export
-#' 
+#' @importFrom utils read.table
 get_areaType_runoff <- function(areaType_vector =  c(0.4, 0.4, 0.2, 0)){   
  
-  conc <- read.csv(file = system.file("extdata/Runoff_conc/catch_conc.csv", 
+  conc <- read.table(file = system.file("extdata/Runoff_conc/catch_conc.csv", 
                                       package = "r2q"), 
                    sep = ";", dec = ".", header = T)
   
