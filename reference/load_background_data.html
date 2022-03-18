@@ -111,8 +111,293 @@ default values are used this is documented in the "comment" column.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="load_site_data.html">load_site_data</a></span><span class="op">(</span></span>
 <span class="r-in">data.dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/Data_entry"</span>, package <span class="op">=</span> <span class="st">"r2q"</span><span class="op">)</span>, </span>
-<span class="r-in">filename <span class="op">=</span> <span class="st">"Bsp_Herne.xlsx"</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Sheet 'surface_areaType' not found</span>
+<span class="r-in">filename <span class="op">=</span> <span class="st">"Baukau.xlsx"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $City_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $City_name$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $City_name$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Herne"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $City_name$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Name of the location"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $City_name$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $x_coordinate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $x_coordinate$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $x_coordinate$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3813634</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $x_coordinate$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x value in ETRS 89 - Coordinate System"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $x_coordinate$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $y_coordinate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $y_coordinate$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $y_coordinate$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2753912</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $y_coordinate$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "y value in ETRS 89 - Coordinate System"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $y_coordinate$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SUW_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SUW_name$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SUW_name$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Ostbach"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SUW_name$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Name of surface water body"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SUW_name$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SUW_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SUW_type$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SUW_type$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "river"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SUW_type$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "river or lake?"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SUW_type$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $LAWA_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $LAWA_type$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $LAWA_type$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $LAWA_type$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "LAWA type of surface water body"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $LAWA_type$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Q_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Q_mean$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "m3/s"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Q_mean$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Q_mean$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Average annual river runoff MQ"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Q_mean$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $river_cross_section</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $river_cross_section$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "m2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $river_cross_section$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $river_cross_section$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "average river cross section"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $river_cross_section$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $river_length</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $river_length$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "m"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $river_length$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $river_length$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "length of affected urban river stretch"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $river_length$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $impact_time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $impact_time$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "min"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $impact_time$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $impact_time$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "flow_time rounded to next rain duration class"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $impact_time$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rain_year</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rain_year$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mm/yr"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rain_year$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 822</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rain_year$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "annual rainfall [mm/yr]"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rain_year$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_catch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_catch$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "km2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_catch$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_catch$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "river catchment area"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_catch$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_con_catch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_con_catch$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "km2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_con_catch$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.651</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_con_catch$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "connected impervious area in river catchment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_con_catch$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $f_D_catch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $f_D_catch$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $f_D_catch$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $f_D_catch$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Average runoff coefficient of impervious area of river catchment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $f_D_catch$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Hq1pnat_catch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Hq1pnat_catch$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "l/(s*kmì)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Hq1pnat_catch$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Hq1pnat_catch$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Natural run-off of urban area (\"area_catch\") for a yearly rain event"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Hq1pnat_catch$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $separate_catch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $separate_catch$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "%"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $separate_catch$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $separate_catch$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "share of impervious area connected to SUW via separate sewer system"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $separate_catch$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $slope_catch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $slope_catch$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "%"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $slope_catch$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $slope_catch$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Average slope of the catchment area"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $slope_catch$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_plan</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_plan$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "km2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_plan$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.556295</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_plan$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "planing area"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_plan$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_con_plan</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_con_plan$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "km2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_con_plan$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.548919</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_con_plan$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "connected impervious area in planing area"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $area_con_plan$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $f_D_plan</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $f_D_plan$Unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $f_D_plan$Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $f_D_plan$Explanation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Average runoff coefficient of impervious area of planing area"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $f_D_plan$Obligatory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $areaType</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> residential_suburban     residential_city             industry </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         4.000000e-01         4.000000e-01         2.000000e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               street            connected </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        -2.220446e-16         3.000000e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

@@ -80,7 +80,7 @@ impervious area and runoff coefficent or from the input table surface_data</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculate_surface_discharge</span><span class="op">(</span>area <span class="op">=</span> <span class="fl">1</span>, fD <span class="op">=</span> <span class="fl">0.9</span>, <span class="va">q_rain</span>, surface_Data <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculate_surface_discharge</span><span class="op">(</span>area <span class="op">=</span> <span class="fl">1</span>, fD <span class="op">=</span> <span class="fl">0.9</span>, <span class="va">q_rain</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -91,10 +91,6 @@ impervious area and runoff coefficent or from the input table surface_data</p>
 <dd><p>Runoff coefficient of impervious area</p></dd>
 <dt>q_rain</dt>
 <dd><p>Amount of rain in L / (s*ha)</p></dd>
-<dt>surface_Data</dt>
-<dd><p>loaded surface data
-(created by <code>load_surface_data</code>). If defined, this overwrites
-the values of "area" and "fD"</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
