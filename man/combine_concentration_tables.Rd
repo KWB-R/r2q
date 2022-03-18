@@ -9,7 +9,7 @@ combine_concentration_tables(
   threshold_table,
   storm_table,
   background_table,
-  onlyComplete = TRUE
+  onlyComplete = FALSE
 )
 }
 \arguments{

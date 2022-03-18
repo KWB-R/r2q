@@ -47,8 +47,7 @@ rain <- r2q::get_rain(
 c_table <- r2q::combine_concentration_tables(
   threshold_table = c_threshold, 
   storm_table = c_storm, 
-  background_table = c_river, 
-  onlyComplete = T)
+  background_table = c_river)
 
 # process ----------------------------------------------------------------------
 area_table <- r2q::add_max_areas(

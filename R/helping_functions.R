@@ -47,7 +47,7 @@ combine_concentration_tables <- function(
   threshold_table, 
   storm_table, 
   background_table,
-  onlyComplete = TRUE
+  onlyComplete = FALSE
 ){
   th <- threshold_table[,c("Substance", "Unit", "Group", 
                            "threshold", "threshold_type")]
@@ -59,28 +59,21 @@ combine_concentration_tables <- function(
   df_out <- Reduce(merge_by_pollutant, list(th, st, ba))
   
   # Substances with complete data sets 
-  check <- data.frame(
-    "allSubstances" = unique(c(th$Substance, ba$Substance, st$Substance)))
-  check$th <- sapply(check$allSubstances, function(x){x %in% th$Substance})
-  check$ba <- sapply(check$allSubstances, function(x){x %in% ba$Substance})
-  check$st <- sapply(check$allSubstances, function(x){x %in% st$Substance})
-  complete_substances <- check$allSubstances[rowSums(check[,2:4]) == 3]
+  missing <- df_out$Substance[
+    apply(X = df_out[,c("threshold", "c_storm", "c_river")], 1, function(x){
+    any(is.na(x))})]
   
-  # At least one concentration is missing in a row
-  # (-> either because not measured or wrong unit)
-  del <- which(is.na(df_out$threshold) | 
-                 is.na(df_out$c_storm) | 
-                 is.na(df_out$c_river))
-  
-  substances_deleted <- df_out$Substance[del]
-  wrong_unit <- substances_deleted[substances_deleted %in% complete_substances]
-  if(length(wrong_unit) > 0L){
-    warning("Substances ", wrong_unit, "were entered in wrong unit and are ",
-            "excluded from further calculation. To see the right unit, please",
-            " check the treshold or stormwater concentration table.")
-    df_out[-del,]
+  if(length(missing)){
+    warning("Threshold value, stormwater concentration and/or river water ", 
+            "concentration is either missing or in an incorrect unit for: ", 
+            missing, ". If you want to continue without run this function with", 
+            " 'onlyComplete = TRUE'.")
+    if(onlyComplete){
+      df_out[-which(df_out$Substance == missing),]
+    }
   }
-    df_out
+  
+  df_out
 }
 
 #' Reduce the proportion of one area type according to the traffic
