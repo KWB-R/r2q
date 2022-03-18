@@ -94,28 +94,26 @@ max_area_steady_state <- function(
   Q_rain,
   substance_i = NULL
 ){
-  to_high <- Ci_river > Ci_threshold
+  too_high <- Ci_river > Ci_threshold
   no_hazard <- Ci_storm <= Ci_threshold
   
-  if (to_high) {
+  if (too_high) {
     print(paste0(substance_i, ": Background river concentration exceeds threshold."))
-    max_sealed_area<- -Inf
+    S_con_ezg<- -Inf # will be overwritten if substance is no hazard (see below)
   }
   
   if (no_hazard) {
     print(paste0(substance_i, ": Stormwater concentration is lower as threshold.", 
                  "This parameter does not limit connected, impervious area"))
-    max_sealed_area <- Inf
+    S_con_ezg <- Inf
   } 
   
-  if (!(any(to_high, no_hazard))) {
+  if (!(any(too_high, no_hazard))) {
     pot_input <- Q_river * (Ci_threshold - Ci_river) # potential input in µg/a
     Q_runoff_max <- pot_input / (Ci_storm - Ci_threshold) # maximum runoff in m³/a
-    Q_runoff_year <- (Q_rain * coeff_runoff / 1000 * 1e+06) # yearly runoff in m³/(km²*a)
-    # proportion from allowed to the yearly rain reaching the water body
-    max_sealed_area <- Q_runoff_max / Q_runoff_year # km²
+    S_con_ezg <- Q_runoff_max / (10 * Q_rain * coeff_runoff) # maximal connectable area in ha
   }
-  max_sealed_area
+  S_con_ezg
 }
 
 
