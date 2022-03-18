@@ -70,6 +70,9 @@
     <loc>/reference/get_allowed_area.html</loc>
   </url>
   <url>
+    <loc>/reference/get_areaType_runoff.html</loc>
+  </url>
+  <url>
     <loc>/reference/get_default_background.html</loc>
   </url>
   <url>
@@ -94,13 +97,13 @@
     <loc>/reference/lin_interpolation.html</loc>
   </url>
   <url>
+    <loc>/reference/load_areaTypes.html</loc>
+  </url>
+  <url>
     <loc>/reference/load_background_data.html</loc>
   </url>
   <url>
     <loc>/reference/load_site_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/load_surface_data.html</loc>
   </url>
   <url>
     <loc>/reference/max_area.html</loc>
@@ -119,5 +122,8 @@
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>/reference/traffic_adaption.html</loc>
   </url>
 </urlset>
