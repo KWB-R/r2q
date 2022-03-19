@@ -96,12 +96,54 @@ combine_concentration_tables <- function(
 #' 
 traffic_adaption <- function(initial_share, traffic = "default"){
   shift <- if(traffic == "high"){
-    0.05 * initial_share
-  } else if(traffic == "very_high"){
     0.1 * initial_share
+  } else if(traffic == "very_high"){
+    0.2 * initial_share
   } else {
     0
   }
   
   initial_share - shift
+}
+
+#' Check Pollutant Impact
+#' 
+#' Checks if the pollutant i is a constraint for the connected area
+#' 
+#' @param Ci_river Background concentration for substance i. Concentration unit 
+#' must fit to Ci_threshold and Ci_storm.
+#' @param Ci_threshold Threshold value for substance i. Concentration unit 
+#' must fit to Ci_river and Ci_storm.
+#' @param Ci_storm Concentration in stormwater run-off for substance i. Concentration unit 
+#' must fit to Ci_threshold and Ci_river.
+#' @param pollutant_name String defining the name of the Pollutant
+#' 
+#' @return 
+#' Inf if the pollutant is no constraint, -Inf if the pollutant should not be
+#' discharged at all, and TRUE if the tolerable load can be calculated
+#' 
+#' @export
+#' 
+check_pollutant_impact <- function(Ci_river, Ci_threshold, Ci_storm, pollutant_name = ""){
+  
+  too_high <- Ci_river > Ci_threshold
+  no_hazard <- Ci_storm <= Ci_threshold
+  
+  if (too_high) {
+    print(paste0(pollutant_name, 
+                 ": Background river concentration exceeds threshold."))
+    max_sealed_area <- -Inf
+  }
+  
+  if (no_hazard) {
+    print(paste0(pollutant_name, 
+                 ": Stormwater concentration is <= threshold. This parameter", 
+                 " does not limit connected, impervious area"))
+    max_sealed_area <- Inf
+  } 
+  if (!(any(too_high, no_hazard))) {
+    max_sealed_area <- TRUE
+  }
+  
+  max_sealed_area
 }

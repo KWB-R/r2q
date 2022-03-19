@@ -108,8 +108,8 @@ lin_interpolation <- function(x1, x2, y1, y2, x_is){
 #' 
 #' 
 #' @return 
-#' A Vector with the calculated duration of precipitation in minutes and the 
-#' rain event based on KOSTRA in L/(s*ha)
+#' A vector with the duration of precipitation in minutes and the intensity of
+#' the rain event in L/(s*ha) based on KOSTRA
 #' 
 #' @export
 #' 

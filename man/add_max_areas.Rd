@@ -8,14 +8,14 @@ add_max_areas(
   combined_concentration_table,
   site_data,
   q_rain,
-  t_rain = site_data[["impact_time"]]$Value * 60
+  t_rain = rain[1] * 60
 )
 }
 \arguments{
 \item{combined_concentration_table}{The table created by function
 "combine_concentration_tables"}
 
-\item{site_data}{The site specific data loaded with function "loda_site_data"}
+\item{site_data}{The site specific data loaded with function "load_site_data"}
 
 \item{q_rain}{Average rain intensity in L/(s*ha)}
 
