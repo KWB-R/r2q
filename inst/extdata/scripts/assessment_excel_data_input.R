@@ -12,7 +12,7 @@ c_river <- r2q::load_background_data(
 
 # load package data ------------------------------------------------------------
 # c_storm <- r2q::get_stormwater_concentrations()
-c_storm <- r2q::get_areaType_runoff(areaType_vector = siteData$areaType[1:4])
+c_storm <- r2q::get_areaType_runoff(areaType_vector = siteData$areaType$Mix_flow / 100)
 
 c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
 
@@ -54,7 +54,7 @@ area_table <- r2q::add_max_areas(
   combined_concentration_table = c_table, 
   site_data = siteData, 
   q_rain = rain["q_rain"],
-  t_rain = rain["duration"])
+  t_rain = rain["duration"] * 60)
 
 area_table <- r2q::add_hydrology(site_data = siteData, 
                            max_area_table = area_table, 
