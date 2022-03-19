@@ -26,16 +26,17 @@ must fit to Ci_threshold and Ci_river.}
 
 \item{coeff_runoff}{runoff coefficient of connected impervious area}
 
-\item{q_rain}{Amount of rain amount in L/(s*m²)}
+\item{q_rain}{Amount of rain amount in L/(s*ha)}
 
 \item{t_rain}{duration of the rain in seconds}
 
-\item{Area}{impervious, connected area in m2}
+\item{Area}{impervious, connected area in ha}
 
 \item{V_river}{volume of the river in m³}
 }
 \value{
-dynamic concentration after time delta_t in mg/L
+dynamic concentration after time t in the unit of the input
+concentrations
 }
 \description{
 based on mixed reactor approach

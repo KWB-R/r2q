@@ -10,8 +10,7 @@ max_area_steady_state(
   Ci_threshold,
   Ci_storm,
   coeff_runoff,
-  Q_rain,
-  substance_i = NULL
+  Q_rain
 )
 }
 \arguments{
@@ -29,9 +28,6 @@ must fit to Ci_threshold and Ci_river.}
 \item{coeff_runoff}{Run-off coefficient of connected impervious area}
 
 \item{Q_rain}{Annual amount of rain amount in mm/a}
-
-\item{substance_i}{the substance name is only used for messages,
-not for calculation}
 }
 \value{
 maximal connected impervious area in km2

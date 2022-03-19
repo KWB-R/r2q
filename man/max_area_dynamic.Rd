@@ -13,7 +13,8 @@ max_area_dynamic(
   q_rain,
   t_rain,
   river_length,
-  river_cross_section
+  river_cross_section,
+  catchment_area = 100
 )
 }
 \arguments{
@@ -37,13 +38,20 @@ must fit to Ci_threshold and Ci_river.}
 \item{river_length}{length of impacted urban river stretch in m}
 
 \item{river_cross_section}{average cross section of river in m2}
+
+\item{catchment_area}{Catchment area in ha}
 }
 \value{
-maximal connected impervious area in km2
+maximal connected impervious area in ha
 }
 \description{
 based on concentration thresholds
 based on DWA A102 approach (as far as applicable)
 suggested for acute impacts if steady state concentration can not be assumed
 , i.e. if inlets are distributed along the river stretch
+}
+\details{
+The catchment_area is used as initial value for the optimisation algorithm.
+The default 100 ha should be sufficient for most problems. In that case
+the optimal solution between 0 and 1 000 km²
 }

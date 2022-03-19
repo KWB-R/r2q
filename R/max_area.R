@@ -79,8 +79,6 @@ max_area <- function (
 #' must fit to Ci_threshold and Ci_river.
 #' @param coeff_runoff Run-off coefficient of connected impervious area 
 #' @param Q_rain Annual amount of rain amount in mm/a
-#' @param substance_i the substance name is only used for messages, 
-#' not for calculation
 #' 
 #' @return maximal connected impervious area in km2
 #' @export
@@ -91,29 +89,13 @@ max_area_steady_state <- function(
   Ci_threshold, 
   Ci_storm, 
   coeff_runoff, 
-  Q_rain,
-  substance_i = NULL
+  Q_rain
 ){
-  too_high <- Ci_river > Ci_threshold
-  no_hazard <- Ci_storm <= Ci_threshold
+  pot_input <- Q_river * (Ci_threshold - Ci_river) # potential input in µg/a
+  Q_runoff_max <- pot_input / (Ci_storm - Ci_threshold) # maximum runoff in m³/a
+  S_con_ezg <- Q_runoff_max / (10 * Q_rain * coeff_runoff) # maximal connectable area in ha
   
-  if (too_high) {
-    print(paste0(substance_i, ": Background river concentration exceeds threshold."))
-    S_con_ezg<- -Inf # will be overwritten if substance is no hazard (see below)
-  }
-  
-  if (no_hazard) {
-    print(paste0(substance_i, ": Stormwater concentration is lower as threshold.", 
-                 "This parameter does not limit connected, impervious area"))
-    S_con_ezg <- Inf
-  } 
-  
-  if (!(any(too_high, no_hazard))) {
-    pot_input <- Q_river * (Ci_threshold - Ci_river) # potential input in µg/a
-    Q_runoff_max <- pot_input / (Ci_storm - Ci_threshold) # maximum runoff in m³/a
-    S_con_ezg <- Q_runoff_max / (10 * Q_rain * coeff_runoff) # maximal connectable area in ha
-  }
-  S_con_ezg
+  unname(S_con_ezg)
 }
 
 
@@ -136,8 +118,13 @@ max_area_steady_state <- function(
 #' @param t_rain duration of rain in s 
 #' @param river_length length of impacted urban river stretch in m
 #' @param river_cross_section average cross section of river in m2
+#' @param catchment_area Catchment area in ha 
 #' 
-#' @return maximal connected impervious area in km2
+#' @details 
+#' The catchment_area is used as initial value for the optimisation algorithm. 
+#' The default 100 ha should be sufficient for most problems. In that case
+#' the optimal solution between 0 and 1 000 km²
+#' @return maximal connected impervious area in ha
 #' @export
 #' @importFrom stats optimize
 max_area_dynamic <- function(
@@ -149,47 +136,31 @@ max_area_dynamic <- function(
   q_rain, 
   t_rain, 
   river_length, 
-  river_cross_section
+  river_cross_section,
+  catchment_area = 100
 ){
-  to_high <- Ci_river > Ci_threshold
-  no_hazard <- Ci_storm <= Ci_threshold
   
-  if (to_high) {
-    print("Background river concentration exceeds threshold.")
-    max_sealed_area <- 0
+  V_river <- river_length * river_cross_section # river water volume in m³ along catchment
+
+  Amax_ini <- catchment_area
+
+  own_fn <- function(a) {
+    abs(mixed_reactor_C(Area = a, 
+                        Q_river = Q_river, 
+                        Ci_river = Ci_river,
+                        Ci_storm = Ci_storm, 
+                        coeff_runoff = coeff_runoff, 
+                        q_rain = q_rain, 
+                        t_rain = t_rain, 
+                        V_river = V_river) - 
+          Ci_threshold)
   }
   
-  if (no_hazard) {
-    print("Stormwater concentration is <= threshold. This parameter does not limit connected, impervious area")
-    max_sealed_area <- Inf
-  } 
+  opt_result <- stats::optimize(f = own_fn, interval = c(0, Amax_ini * 10000))
+  # first value is the Area where the concentration difference (second value) is
+  # minimal
+  as.numeric(opt_result[1])
   
-  if (!(any(to_high, no_hazard))) {
-    V_river <- river_length * river_cross_section # river water volume in m³
-    # this is only to get a starting point in m² for the optimization algorithm
-    Amax_ini <- max_area_steady_state(Q_river = Q_river, # max_sealed_area in m²/km²
-                                      Ci_river = Ci_river, 
-                                      Ci_threshold = Ci_threshold, 
-                                      Ci_storm = Ci_storm, 
-                                      coeff_runoff = coeff_runoff, 
-                                      Q_rain = q_rain) * 1e+06 
-    own_fn <- function(a) {
-      abs(mixed_reactor_C(Area = a, 
-                          Q_river = Q_river, 
-                          Ci_river = Ci_river,
-                          Ci_storm = Ci_storm, 
-                          coeff_runoff = coeff_runoff, 
-                          q_rain = q_rain, 
-                          t_rain = t_rain, 
-                          V_river = V_river) - 
-            Ci_threshold)
-    }
-    
-    opt_result <- stats::optimize(f = own_fn, interval = c(Amax_ini, 
-                                                           Amax_ini * 1e+06))
-    max_sealed_area <- as.numeric(opt_result[1])/1e+06
-  }
-  max_sealed_area
 }
 
 
@@ -203,12 +174,13 @@ max_area_dynamic <- function(
 #' @param Ci_storm Concentration in stormwater run-off for substance i. Concentration unit 
 #' must fit to Ci_threshold and Ci_river.
 #' @param coeff_runoff runoff coefficient of connected impervious area 
-#' @param q_rain Amount of rain amount in L/(s*m²)
+#' @param q_rain Amount of rain amount in L/(s*ha)
 #' @param t_rain duration of the rain in seconds
-#' @param Area impervious, connected area in m2
+#' @param Area impervious, connected area in ha
 #' @param V_river volume of the river in m³
 #' 
-#' @return dynamic concentration after time delta_t in mg/L
+#' @return dynamic concentration after time t in the unit of the input 
+#' concentrations
 #' @export
 #' 
 mixed_reactor_C <- function (
@@ -232,7 +204,6 @@ mixed_reactor_C <- function (
   Ci_steady <- (Q_river * Ci_river + Q_runoff * Ci_storm) / Q_total
   
   # concentration at time t (t is the duration of the rain)
-  c_t <- Ci_steady + (Ci_river - Ci_steady) * exp(- Q_total / V_river * t_rain) 
+  Ci_steady + (Ci_river - Ci_steady) * exp(- Q_total / V_river * t_rain) 
   
-  c_t
 }
