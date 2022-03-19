@@ -42,7 +42,7 @@ load_site_data <- function(
   if(all(is.na(c(siteData[["slope_catch"]]$Value,
                  siteData[["Hq1pnat_catch"]]$Value)))){
     stop("Hydrolic calculation not possible as information of slope and", 
-         " Hq1pnat missing. At least one parameter must be provided")
+         " Hq1pnat are missing. At least one parameter must be provided.")
   }
   
   # exclude all the NA values --> Either headings or not obligatory
@@ -86,25 +86,35 @@ load_areaTypes <- function(data.dir, filename){
   if(sum(df_in$share_percent) != 100L)
     stop("The specified catchment area does not sum up to 100 %")
   
-  no_connected <- mean(df_in$connected_percent/100)
-  df_in$share_percent <- df_in$share_percent/100 * 
+
+  # connecetd area in average
+  connected <- sum(df_in$share_percent/100 * df_in$connected_percent/100)
+  # the effective composition of area type 
+  df_in$effective <- df_in$share_percent/100 * 
     df_in$connected_percent/100 /
-    no_connected
+    connected * 100
   
   # the given area types updated by the traffic information
   areas <- c("residential_suburban", "residential_city", "industry")
-  shares <- sapply(areas, function(x){
+  shares <- round(sapply(areas, function(x){
     nRow <- which(df_in$Area == x)
     if(length(nrow) == 0L)
       stop(x, " is missing in Excel sheet")
-    share <- df_in$share_percent[nRow]
+    share <- df_in$effective[nRow]
     traffic_adaption(initial_share = share, traffic = df_in$traffic[nRow])
-  })
+  }), 2)
   
+  df_in$Mix_area <- shares
   # street
-  s_share <- 1L - sum(shares)
+  s_share <- 100L - sum(shares)
+  df_out <- rbind(df_in, data.frame("Area" = "street", "fD" = 1, "share_percent" = NA, 
+                          "traffic" = NA, "connected_percent" = NA, 
+                          "effective" = NA, "Mix_area" = s_share))
   
-  c(shares, "street" = s_share, "connected" = 1 - no_connected)
+  df_out$Mix_flow <- (df_out$fD * df_out$Mix_area) / 
+    sum(df_out$fD * df_out$Mix_area) * 100
+  
+  df_out
 }
 
 
