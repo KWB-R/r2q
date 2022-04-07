@@ -31,7 +31,7 @@ must fit to Ci_threshold and Ci_river.}
 
 \item{coeff_runoff}{runoff coefficient of connected impervious area}
 
-\item{q_rain}{rain amount in mm/(m2*s)}
+\item{q_rain}{rain amount in mm/(ha*s)}
 
 \item{t_rain}{duration of rain in s}
 
@@ -39,7 +39,7 @@ must fit to Ci_threshold and Ci_river.}
 
 \item{river_cross_section}{average cross section of river in m2}
 
-\item{catchment_area}{Catchment area in ha}
+\item{catchment_area}{Catchment area in ha.}
 }
 \value{
 maximal connected impervious area in ha

@@ -51,16 +51,15 @@ combine_concentration_tables <- function(
 ){
   th <- threshold_table[,c("Substance", "Unit", "Group", 
                            "threshold", "threshold_type")]
-  st <- storm_table[, c("Substance", "Unit", "Mean", "Q95")]
-  colnames(st)[3:4] <- c("c_storm" , "c_storm95")
+  st <- storm_table
   ba <- background_table[,c("Substance", "Unit", "river", "Comment")]
   colnames(ba)[3:4] <- c("c_river", "river_value")
   
-  df_out <- Reduce(merge_by_pollutant, list(th, st, ba))
+  df_out <- Reduce(merge_by_pollutant, list(th, ba, st))
   
-  # Substances with complete data sets 
+  # Substances with incomplete data sets 
   missing <- df_out$Substance[
-    apply(X = df_out[,c("threshold", "c_storm", "c_river")], 1, function(x){
+    apply(X = df_out[,c("threshold", "mix_med", "c_river")], 1, function(x){
     any(is.na(x))})]
   
   if(length(missing)){
@@ -76,35 +75,7 @@ combine_concentration_tables <- function(
   df_out
 }
 
-#' Reduce the proportion of one area type according to the traffic
-#' 
-#' 
-#' 
-#' @param initial_share Proportion between 0 and 1 for one type of area
-#' @param traffic Can either be "high" or "very_high"
-#' 
-#' @details 
-#' A standard amount of traffic is already included in the area types.
-#' However, more traffics (-> more high-traffic streets) can be added. 5 % and 
-#' 10 % of the proportion of the area type are substracted if the traffic is 
-#' specified as "high" and "very_high", respecitvely.
-#' 
-#' @return
-#' Returns the updated propordtion of the area type.
-#' 
-#' @export
-#' 
-traffic_adaption <- function(initial_share, traffic = "default"){
-  shift <- if(traffic == "high"){
-    0.1 * initial_share
-  } else if(traffic == "very_high"){
-    0.2 * initial_share
-  } else {
-    0
-  }
-  
-  initial_share - shift
-}
+
 
 #' Check Pollutant Impact
 #' 
@@ -116,7 +87,6 @@ traffic_adaption <- function(initial_share, traffic = "default"){
 #' must fit to Ci_river and Ci_storm.
 #' @param Ci_storm Concentration in stormwater run-off for substance i. Concentration unit 
 #' must fit to Ci_threshold and Ci_river.
-#' @param pollutant_name String defining the name of the Pollutant
 #' 
 #' @return 
 #' Inf if the pollutant is no constraint, -Inf if the pollutant should not be
@@ -124,21 +94,16 @@ traffic_adaption <- function(initial_share, traffic = "default"){
 #' 
 #' @export
 #' 
-check_pollutant_impact <- function(Ci_river, Ci_threshold, Ci_storm, pollutant_name = ""){
+check_pollutant_impact <- function(Ci_river, Ci_threshold, Ci_storm){
   
   too_high <- Ci_river > Ci_threshold
   no_hazard <- Ci_storm <= Ci_threshold
   
   if (too_high) {
-    print(paste0(pollutant_name, 
-                 ": Background river concentration exceeds threshold."))
     max_sealed_area <- -Inf
   }
   
   if (no_hazard) {
-    print(paste0(pollutant_name, 
-                 ": Stormwater concentration is <= threshold. This parameter", 
-                 " does not limit connected, impervious area"))
     max_sealed_area <- Inf
   } 
   if (!(any(too_high, no_hazard))) {

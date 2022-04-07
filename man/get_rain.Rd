@@ -46,8 +46,8 @@ discharge or average river flow is used for precipitation duration. If not
 Null, mins is used and overwrites the parameter "use_p1nat".}
 }
 \value{
-A Vector with the calculated duration of precipitation in minutes and the
-rain event based on KOSTRA in L/(s*ha)
+A vector with the duration of precipitation in minutes and the intensity of
+the rain event in L/(s*ha) based on KOSTRA
 }
 \description{
 The rate of the yearly rain event depends on the prescribed duration. In this

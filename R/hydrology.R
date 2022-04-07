@@ -82,7 +82,7 @@ get_q_max <- function(
 #' @export
 #'
 get_allowed_area <- function(f_D , Q_tol, q_rain){
-  (Q_tol) / (q_rain * f_D) 
+  unname((Q_tol) / (q_rain * f_D)) 
 }
 
 

@@ -6,12 +6,16 @@
 obtained by the OgRe Dataset and multiplies it with the proportion of the
 correspoding area type in the catchment.}
 \usage{
-get_areaType_runoff(areaType_vector = c(0.4, 0.4, 0.2, 0))
+get_areaType_runoff(
+  residential_suburban = 40,
+  residential_city = 40,
+  commercial = 20,
+  street = NULL
+)
 }
 \arguments{
-\item{areaType_vector}{A Vector of proportions for residential_suburban,
-residential_city, industry, street area types. The sum of the vector should
-be 1}
+\item{residential_suburban, residential_city, commercial, street}{Proportions
+of the landuse types in percent}
 }
 \value{
 A dataframe with the columns "Substance", "unit", "Mean" which is the

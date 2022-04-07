@@ -4,7 +4,7 @@
 \alias{check_pollutant_impact}
 \title{Check Pollutant Impact}
 \usage{
-check_pollutant_impact(Ci_river, Ci_threshold, Ci_storm, pollutant_name = "")
+check_pollutant_impact(Ci_river, Ci_threshold, Ci_storm)
 }
 \arguments{
 \item{Ci_river}{Background concentration for substance i. Concentration unit

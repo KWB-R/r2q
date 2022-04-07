@@ -14,7 +14,7 @@ max_area_steady_state(
 )
 }
 \arguments{
-\item{Q_river}{Annual river flow in m³/a}
+\item{Q_river}{Annual river flow in m³/s}
 
 \item{Ci_river}{Background concentration for substance i. Concentration unit
 must fit to Ci_threshold and Ci_storm.}

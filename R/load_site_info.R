@@ -52,6 +52,24 @@ load_site_data <- function(
   siteData[["areaType"]] <- 
     load_areaTypes(data.dir = data.dir, filename = filename)
   
+  # the average runoff_coefficient and average connected area 
+  # based on area type composition
+  siteData[["f_D_catch"]] <- list(
+    "Unit" = "-", 
+    "Value" = sum(
+    siteData$areaType[["fD"]] * siteData$areaType[["effective"]] / 100),
+    "Explanation" = "Area proportional average fD value of the connected area in the catchment")
+
+  
+  # "street" is excluded because the proportion of connected area has already been
+  # considered within the defined area type (-> see function: load_areaTypes)
+  siteData[["seperate_con_catch"]] <- list(
+    "Unit" = "-", 
+    "Value" = sum(
+      siteData$areaType[["seperate_sewer_percent"]] / 100 * 
+        siteData$areaType[["share_percent"]] / 100, na.rm = T),
+    "Explanation" = "Proportion of Area-type mix connected to seperate sewer system")
+  
   siteData
 }
 
@@ -79,45 +97,27 @@ load_site_data <- function(
 #' 
 load_areaTypes <- function(data.dir, filename){
   
-  df_in <- readxl::read_excel(
+  df_in <- data.frame(readxl::read_excel(
     path = file.path(data.dir, filename),
-    sheet = paste0("surface_areaType"))
+    sheet = paste0("connected_areaType")))
   
   if(sum(df_in$share_percent) != 100L)
-    stop("The specified catchment area does not sum up to 100 %")
+    stop("The specified area types do not sum up to 100 %")
   
-
   # connecetd area in average
-  connected <- sum(df_in$share_percent/100 * df_in$connected_percent/100)
-  # the effective composition of area type 
-  df_in$effective <- df_in$share_percent/100 * 
-    df_in$connected_percent/100 /
+  connected <- sum(df_in$share_percent/100 * df_in$seperate_sewer_percent/100)
+  # area types weighted by the proportion of seperate sewers 
+  df_in$effective <- df_in$share_percent / 100 * 
+    df_in$seperate_sewer_percent/100 /
     connected * 100
   
-  # the given area types updated by the traffic information
-  areas <- c("residential_suburban", "residential_city", "industry")
-  shares <- round(sapply(areas, function(x){
-    nRow <- which(df_in$Area == x)
-    if(length(nrow) == 0L)
-      stop(x, " is missing in Excel sheet")
-    share <- df_in$effective[nRow]
-    traffic_adaption(initial_share = share, traffic = df_in$traffic[nRow])
-  }), 2)
+  df_in$Mix_flow <- (df_in$fD * df_in$effective) / 
+    sum(df_in$fD * df_in$effective) * 100
   
-  df_in$Mix_area <- shares
-  # street
-  s_share <- 100L - sum(shares)
-  df_out <- rbind(df_in, data.frame("Area" = "street", "fD" = 1, "share_percent" = NA, 
-                          "traffic" = NA, "connected_percent" = NA, 
-                          "effective" = NA, "Mix_area" = s_share))
+  rownames(df_in) <- df_in$landuse
+  df_in[,-which(colnames(df_in) == "landuse")]
   
-  df_out$Mix_flow <- (df_out$fD * df_out$Mix_area) / 
-    sum(df_out$fD * df_out$Mix_area) * 100
-  
-  df_out
 }
-
-
 
 #' Loading local background concentration
 #' 
@@ -174,3 +174,4 @@ load_background_data <- function(
   }
   df_in
 }
+

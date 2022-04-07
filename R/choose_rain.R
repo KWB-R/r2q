@@ -145,7 +145,7 @@ get_rain <- function(
   x <- sorted_mins[c(order_mins- 1 , order_mins + 1)]
   
   y <- sapply(x, function(xi){
-    local_rain <- r2q::get_KOSTRA(
+    local_rain <- get_KOSTRA(
       coord_vector = c(x_coordinate, y_coordinate), 
       duration_string = xi, location_name = "Herne", plot = F)
     

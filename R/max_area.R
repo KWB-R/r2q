@@ -70,7 +70,7 @@ max_area <- function (
 #' if steady state concentration can be assumed or if inlets are 
 #' at one inlet point on the river stretch
 #'
-#' @param Q_river Annual river flow in m³/a
+#' @param Q_river Annual river flow in m³/s
 #' @param Ci_river Background concentration for substance i. Concentration unit 
 #' must fit to Ci_threshold and Ci_storm.
 #' @param Ci_threshold Threshold value for substance i. Concentration unit 
@@ -91,11 +91,13 @@ max_area_steady_state <- function(
   coeff_runoff, 
   Q_rain
 ){
+  Q_river <- Q_river * 3600 * 24 * 365.25 # from m3/s to m3/a
   pot_input <- Q_river * (Ci_threshold - Ci_river) # potential input in µg/a
   Q_runoff_max <- pot_input / (Ci_storm - Ci_threshold) # maximum runoff in m³/a
-  S_con_ezg <- Q_runoff_max / (10 * Q_rain * coeff_runoff) # maximal connectable area in ha
+  S_con_catch <- Q_runoff_max / (10 * Q_rain * coeff_runoff) # maximal connectable area in ha
   
-  unname(S_con_ezg)
+  
+  S_con_catch
 }
 
 
@@ -114,11 +116,11 @@ max_area_steady_state <- function(
 #' @param Ci_storm Concentration in stormwater run-off for substance i. Concentration unit 
 #' must fit to Ci_threshold and Ci_river.
 #' @param coeff_runoff runoff coefficient of connected impervious area 
-#' @param q_rain rain amount in mm/(m2*s)
+#' @param q_rain rain amount in mm/(ha*s)
 #' @param t_rain duration of rain in s 
 #' @param river_length length of impacted urban river stretch in m
 #' @param river_cross_section average cross section of river in m2
-#' @param catchment_area Catchment area in ha 
+#' @param catchment_area Catchment area in ha.
 #' 
 #' @details 
 #' The catchment_area is used as initial value for the optimisation algorithm. 
@@ -141,25 +143,29 @@ max_area_dynamic <- function(
 ){
   
   V_river <- river_length * river_cross_section # river water volume in m³ along catchment
-
-  Amax_ini <- catchment_area
-
-  own_fn <- function(a) {
-    abs(mixed_reactor_C(Area = a, 
-                        Q_river = Q_river, 
-                        Ci_river = Ci_river,
-                        Ci_storm = Ci_storm, 
-                        coeff_runoff = coeff_runoff, 
-                        q_rain = q_rain, 
-                        t_rain = t_rain, 
-                        V_river = V_river) - 
-          Ci_threshold)
-  }
   
-  opt_result <- stats::optimize(f = own_fn, interval = c(0, Amax_ini * 10000))
+  Amax_ini <- catchment_area
+  
+  opt_result <- sapply(Ci_storm, function(ci){
+    own_fn <- function(a) {
+      abs(mixed_reactor_C(Area = a, 
+                          Q_river = Q_river, 
+                          Ci_river = Ci_river,
+                          Ci_storm = ci, 
+                          coeff_runoff = coeff_runoff, 
+                          q_rain = q_rain, 
+                          t_rain = t_rain, 
+                          V_river = V_river) - 
+            Ci_threshold)
+    }
+    
+    stats::optimize(f = own_fn, interval = c(0, Amax_ini * 10000))
+  }
+  )
+  
   # first value is the Area where the concentration difference (second value) is
   # minimal
-  as.numeric(opt_result[1])
+  unlist((opt_result[1,]))
   
 }
 

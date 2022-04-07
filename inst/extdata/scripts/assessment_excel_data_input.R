@@ -8,11 +8,15 @@ c_river <- r2q::load_background_data(
   data.dir = "inst/extdata/Data_entry",
   filename = "Baukau.xlsx", default_for_na = TRUE)
 
-
-
 # load package data ------------------------------------------------------------
 # c_storm <- r2q::get_stormwater_concentrations()
-c_storm <- r2q::get_areaType_runoff(areaType_vector = siteData$areaType$Mix_flow / 100)
+c_storm <- r2q::get_areaType_runoff(
+  residential_suburban = 
+    siteData$areaType["residential_suburban","Mix_flow"],
+  residential_city = 
+    siteData$areaType["residential_city","Mix_flow"],
+  commercial = 
+    siteData$areaType["commercial","Mix_flow"])
 
 c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
 
@@ -23,8 +27,7 @@ rain <- r2q::get_rain(
   river_cross_section = siteData$river_cross_section$Value,
   river_length = siteData$river_length$Value, 
   x_coordinate = siteData$x_coordinate$Value,
-  y_coordinate = siteData$y_coordinate$Value
-)
+  y_coordinate = siteData$y_coordinate$Value)
 
 # # Calculated by average river flow
 # rain <- get_rain(area_catch = siteData$area_catch$Value,
@@ -49,21 +52,17 @@ c_table <- r2q::combine_concentration_tables(
   storm_table = c_storm, 
   background_table = c_river)
 
+
 # process ----------------------------------------------------------------------
-area_table <- r2q::add_max_areas(
+assessment1 <- r2q::maxArea_by_pollution(
   combined_concentration_table = c_table, 
   site_data = siteData, 
   q_rain = rain["q_rain"],
   t_rain = rain["duration"] * 60)
 
-area_table <- r2q::add_hydrology(site_data = siteData, 
-                           max_area_table = area_table, 
-                           q_rain = rain["q_rain"])
-
-# Adding maximal allowed loads for discharge into surface water
-area_table <- r2q::add_critical_loads(max_area_table = area_table, 
-                                      site_data = siteData, 
-                                      q_rain = rain["q_rain"])
+assessment2 <- r2q::maxArea_by_hydrology(
+  site_data = siteData, 
+  q_rain = rain["q_rain"])
 
 
 # Save data --------------------------------------------------------------------

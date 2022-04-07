@@ -1,4 +1,4 @@
-#' Maximal acceptable impervious area per substance
+#' Maximal connectable impervious area in the catchment abd planning area
 #' 
 #' This function calculates the maximal acceptabale impervious
 #' area per substance depending on the threshold value type either by dynamic 
@@ -25,179 +25,123 @@
 #' 
 #' @export
 #' 
-add_max_areas <- function(
+maxArea_by_pollution <- function(
   combined_concentration_table, 
   site_data,
   q_rain,
   t_rain
 ){
-  area_max <- combined_concentration_table
+  df_in <- combined_concentration_table
   
-  # the average runoff_coefficient and average connected area 
-  # based on area type composition
-  fD_average <- sum(
-    site_data$areaType[["fD"]] * site_data$areaType[["Mix_area"]] / 100)
-  
-  # "street" is excluded becaus the propotion of connected area has already been
-  # considered within the defined area type (-> see function: load_areaTypes)
-  connected <- sum(
-    site_data$areaType[["connected_percent"]] / 100 * 
-      site_data$areaType[["share_percent"]] / 100, na.rm = T)
   # add result columns
-  area_max$connectable_catch <- NA
-  for (i in 1:nrow(area_max)) {
+  
+  df_out <- data.frame(t(sapply(1:nrow(df_in), function(i){
     # get substance sheet
-    substance <- as.list(area_max[i,])
-    
-    spec_area <- check_pollutant_impact(
-      pollutant_name = substance$Substance,
-      Ci_river = substance$c_river, 
-      Ci_threshold = substance$threshold, 
-      Ci_storm = substance$c_storm)
-    
-    if(spec_area == TRUE){
-      # annual or event based analysis?
-      if (substance$threshold_type == "annual"){
-        spec_area <- 
-          max_area_steady_state(
-            Q_river = site_data[["Q_mean"]]$Value *3600 *24 *365.25, # from m3/s to m3/a
-            Ci_river = substance$c_river, 
-            Ci_threshold = substance$threshold, 
-            Ci_storm = substance$c_storm, 
-            coeff_runoff = fD_average, 
-            Q_rain = site_data[["rain_year"]]$Value) 
-      } else {
-        spec_area <- 
-          max_area_dynamic(
-            Q_river = site_data[["Q_mean"]]$Value, 
-            Ci_river = substance$c_river, 
-            Ci_threshold = substance$threshold, 
-            Ci_storm = substance$c_storm, 
-            coeff_runoff = fD_average, 
-            q_rain = q_rain, 
-            t_rain = t_rain, 
-            river_length = site_data[["river_length"]]$Value,
-            river_cross_section = site_data[["river_cross_section"]]$Value)
+    substance <- as.list(df_in[i,])
+    ci_storm_structures <- 
+      unlist(substance[grep(pattern = "_med$|_q95$", names(substance))])
+    pollutant_name <- substance$Substance
+   
+    spec_area_i <- sapply(ci_storm_structures, function(ci_storm){
+      
+      spec_area <- check_pollutant_impact(
+        Ci_river = substance$c_river, 
+        Ci_threshold = substance$threshold, 
+        Ci_storm = ci_storm)
+      
+      if(spec_area == TRUE){
+        # annual or event based analysis?
+        if (substance$threshold_type == "annual"){
+          spec_area <- 
+            max_area_steady_state(
+              Q_river = site_data[["Q_mean"]]$Value, 
+              Ci_river = substance$c_river, 
+              Ci_threshold = substance$threshold, 
+              Ci_storm = ci_storm, 
+              coeff_runoff = site_data[["f_D_catch"]]$Value, 
+              Q_rain = site_data[["rain_year"]]$Value) 
+        } else {
+          spec_area <- 
+            max_area_dynamic(
+              Q_river = site_data[["Q_mean"]]$Value, 
+              Ci_river = substance$c_river, 
+              Ci_threshold = substance$threshold, 
+              Ci_storm = ci_storm, 
+              coeff_runoff = site_data[["f_D_catch"]]$Value,
+              q_rain = q_rain, 
+              t_rain = t_rain, 
+              river_length = site_data[["river_length"]]$Value,
+              river_cross_section = site_data[["river_cross_section"]]$Value)
+        }
       }
+      
+      spec_area
+    })
+    if(any(spec_area_i == Inf)){
+      print(paste0(pollutant_name, 
+                   ": Stormwater concentration is <= threshold. This parameter", 
+                   " does not limit connected, impervious area"))
+    } else if(any(spec_area_i == -Inf)){
+      print(paste0(pollutant_name, 
+                   ": Background river concentration exceeds threshold."))
     }
+    spec_area_i
+  })))
   
-    area_max$connectable_catch[i] <- spec_area
-  }
+  # connectable area in the whole catchment in ha
+  df_out_catch <- cbind(df_in[,1], signif(df_out, 2)) 
   
-  # the connectable area in the whole catchment in ha
-  area_max$connectable_catch[i] <- spec_area 
+  # connectable in percent
+  df_out_percent <- cbind(df_in[,1], round(
+    df_out / (site_data[["area_catch"]]$Value * 100) * 100, 1))
   
-  # the status quo in the catchment in ha
-  area_max$connected_catch <- 
-    site_data[["area_catch"]]$Value * 100 * connected
+  # connectable area in planning area (proportional to whole catchment)
+  df_out_planning <- 
+    cbind(df_in[,1], signif(df_out * 
+            site_data[["area_plan"]]$Value / 
+            site_data[["area_catch"]]$Value, 2))
   
-  # the status quo in the catchment without minus planning area
-  area_max$connected_catch_ex <- area_max$connected_catch - 
-    site_data[["area_plan"]]$Value * 100 * connected
+  # reduction needed if whole impervious area will be connected (with actual mix)
+  df_out_reduction <- round(100 - df_out_planning[c("mix_med", "mix_q95")] / 
+                              site_data[["area_con_plan"]]$Value, 1)
+  df_out_reduction[df_out_reduction < 0] <- 0
+  df_out_reduction <- cbind(df_in[,1], df_out_reduction)
   
-  # connectable in planning area in ha and in %
-  delta <- area_max$connectable_catch - area_max$connected_catch_ex
-  area_max$connectable_planning_ha <- 
-    ifelse(delta > 0, yes = delta, no = 0) 
+  list("input_data" = df_in,
+       "connectable_catch" = df_out_catch,
+       "connectable_relative" = df_out_percent,
+       "connectable_planning" = df_out_planning,
+       "required_reduction" = df_out_reduction)
   
-  quot <-  area_max$connectable_planning_ha / 
-    site_data[["area_plan"]]$Value * 100 * connected
-  area_max$connectable_planning_percent <- 
-    ifelse(quot == Inf, yes = 100, no = quot) 
-  
-  area_max
+  # # the connectable area in the whole catchment in ha
+  # area_max$connectable_catch[i] <- spec_area 
+  # 
+  # # connectable area in the planning area (proportional to whole catchment)
+  # area_max$connectable_plan <- area_max$connectable_catch * 
+  #   site_data[["area_plan"]]$Value / site_data[["area_catch"]]$Value
+  # 
+  # # connectable area in catchment and planning are in percent of total area
+  # area_max$connectable_percent <- area_max$connectable_plan / 
+  #   (site_data[["area_plan"]]$Value * 100) * # from km2 to ha
+  #   100
+  # 
+  # # connectable area in catchment compared to status quo
+  # # status quo is the whole catchment multiplied with the proportion of 
+  # # area connected at all and the proportion of this area connected to seperate
+  # # sewer system
+  # status_quo <- 
+  #   site_data[["seperate_con_catch"]]$Value * 
+  #   site_data[["area_con_catch"]]$Value / site_data[["area_catch"]]$Value
+  # 
+  # area_max$connectable_connected <- area_max$connectable_percent / 
+  #   status_quo
+  # 
+  # area_max
 }
 
-#' Critical Pollutant loads into the surface water
+#' Maximal connectable impervious area based on hydrologic conditions
 #' 
-#' This function adds the critical loads to a table with maximal acceptable
-#' impervious area
 #' 
-#' @param max_area_table Table created with 
-#' @param site_data The site specific data loaded with function "loda_site_data"
-#' @param q_rain characteristic rainfall in L/(s*ha)
-#' 
-#' @return 
-#' the combined max_area table is extend by the columns
-#' crit_load_g_event: the maximal tolerated load per rain event.
-#' Calculated for acute threshold values 
-#' crit_load_kg_year: the maximal tolerated load per year.
-#' Calculated for annual threshold values 
-#' 
-#' @export
-#' 
-add_critical_loads <- function(
-  max_area_table, site_data, q_rain
-){
-  df_out <- max_area_table
-  
-  # factor for unit conversion
-  to_kg <- data.frame("unit" = c("ng", "\u03bcg", "ug",  "mg", "g"),
-                      "factor" = c(1E-12, 1E-9, 1E-9,1E-6, 1E-3))
-  factor_kg <- c()
-  for(i in 1:nrow(df_out)){
-    factor_kg <- 
-      c(factor_kg,
-        to_kg$factor[
-          grep(substr(df_out$Unit[i], 1, 1), substr(to_kg$unit, 1, 1))]) 
-  }
-  
-  df_out[["min_efficiency"]] <-
-  df_out[["is_load_g_event"]] <- df_out[["is_load_kg_year"]] <- 
-  df_out[["crit_load_g_event"]] <- df_out[["crit_load_kg_year"]] <- NA
-  
-  index_acute <- which(df_out$threshold_type == "acute")
-  index_annual <- which(df_out$threshold_type == "annual")
-  
-  df_out$crit_load_g_event[index_acute] <- 
-    signif(q_rain * # in  L/(s*ha)
-             df_out$max_area_plan_ha[index_acute] * # in ha
-             site_data[["f_D_plan"]]$Value * # [-]
-             site_data[["impact_time"]]$Value * 60 * # [s] 
-             df_out$c_storm[index_acute] * 
-             (factor_kg[index_acute] * 1E03), 3)
-  
-  df_out$is_load_g_event[index_acute] <- 
-    signif(q_rain * # in  L/(s*ha)
-             site_data[["area_con_plan"]]$Value * 100 * # in ha
-             site_data[["f_D_plan"]]$Value * # [-]
-             site_data[["impact_time"]]$Value * 60 * # [s] 
-             df_out$c_storm[index_acute] * 
-             (factor_kg[index_acute] * 1E03), 3)
-  
-  # überschreiben für annual substances
-  df_out$crit_load_kg_year[index_annual] <- 
-    signif(site_data[["rain_year"]]$Value * # [L/(m2*a)]
-             df_out$max_area_plan_ha[index_annual] * 1e4 * # ha to m2
-             site_data[["f_D_plan"]]$Value  * # [i]
-             df_out$c_storm[index_annual] * 
-             factor_kg[index_annual], 3)
-  
-  df_out$is_load_kg_year[index_annual] <- 
-    signif(site_data[["rain_year"]]$Value * # [L/(m2*a)]
-             site_data[["area_con_plan"]]$Value * 1e6 * # ha to m2
-             site_data[["f_D_plan"]]$Value  * # [i]
-             df_out$c_storm[index_annual] * 
-             factor_kg[index_annual], 3)
-  
-  # add minimal efficiency of pollutant removal
-  df_out$min_efficiency[index_acute] <- 
-    round(((df_out$is_load_g_event - df_out$crit_load_g_event) / 
-    df_out$is_load_g_event)[index_acute] * 100, 1)
-  
-  df_out$min_efficiency[index_annual] <- 
-    round(((df_out$is_load_kg_year - df_out$crit_load_kg_year) / 
-       df_out$is_load_kg_year)[index_annual] * 100, 1)
-  
-  df_out$min_efficiency[df_out$min_efficiency < 0] <- 0
-  df_out
-}
-
-#' Maximal acceptable impervious area based on hydrolic conditions
-#' 
-#' This function calculates the maximal acceptabale impervious area 
-#' 
-#' @param max_area_table Table created with 
 #' @param site_data The site specific data loaded with function "loda_site_data"
 #' @param q_rain characteristic rainfall in L/(s*ha)
 #' 
@@ -207,13 +151,9 @@ add_critical_loads <- function(
 #' 
 #' @export
 #' 
-add_hydrology <- function(
-  site_data, max_area_table, q_rain
+maxArea_by_hydrology <- function(
+  site_data, q_rain
 ){
-  
-  colnames(max_area_table)[1] <- "Parameter"
-  df_out <- data.frame(matrix(data = NA, nrow = 1, ncol = ncol(max_area_table)))
-  colnames(df_out) <- colnames(max_area_table)
   
   # tolerable discharge
   Q_tolerable <- calculate_tolerable_discharge(
@@ -226,21 +166,37 @@ add_hydrology <- function(
     verbose = T
   )
   
-  df_out["Parameter"] <- "Discharge"
-  df_out["Unit"] <- "L/s"
-  df_out["Group"] <- "hydrologic"
-  df_out["threshold"] <- Q_tolerable$planning
-  df_out["threshold_type"] <- "acute" 
-  df_out["max_area_catch_ha"] <- get_allowed_area(
+  # connectable area in ha
+  area_catch <- get_allowed_area(
     f_D = site_data[["f_D_catch"]]$Value, 
     Q_tol = Q_tolerable$catchment, 
     q_rain = q_rain)
-  df_out["max_area_plan_ha"] = get_allowed_area(
-    f_D = site_data[["f_D_plan"]]$Value, 
+  
+  # connectable area in ha
+  area_plan <- get_allowed_area(
+    f_D = site_data[["f_D_catch"]]$Value, 
     Q_tol = Q_tolerable$planning, 
     q_rain = q_rain) 
-  df_out["share_of_status_quo"] <- df_out["max_area_plan_ha"] /
-    site_data$area_con_plan$Value
   
-  rbind(max_area_table, df_out)
+  #  Required throttel discharge in L/(s*ha) if complete planning area is connected
+  throttel <- Q_tolerable$planning / (site_data[["area_con_plan"]]$Value * 100)
+  
+  current_discharge <- site_data$area_con_catch$Value * 100 * 
+    site_data$seperate_con_catch$Value * site_data$f_D_catch$Value * q_rain
+  
+  data.frame(
+    "Parameter" = 
+      c("Tolerable discharge of the whole catchment",
+        "Tolerable discharge of planning area",
+        "Status Quo discharge of the whole catchment area",
+        "Connetcable area in the catchment",
+        "Connectable area in the planning area", "Required throttel"), 
+    "Unit" = c("L/s", "L/s", "L/s", "ha", "ha", "L/(s*ha)"),
+    "Value" = c(signif(Q_tolerable$catchment,3), signif(Q_tolerable$planning,3), 
+                signif(current_discharge,3), signif(area_catch,2), 
+                signif(area_plan,2), signif(throttel,2)),
+    "Comment" = c(rep("", 5),
+                  "If the whole planning area is connected to the separate sewer system"))
+  
+  
 }

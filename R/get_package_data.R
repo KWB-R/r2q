@@ -124,9 +124,8 @@ get_stormwater_concentrations <- function (substances = NULL)
 #' obtained by the OgRe Dataset and multiplies it with the proportion of the
 #' correspoding area type in the catchment. 
 #' 
-#' @param areaType_vector A Vector of proportions for residential_suburban, 
-#' residential_city, industry, street area types. The sum of the vector should
-#' be 1
+#' @param residential_suburban,residential_city,commercial,street Proportions
+#' of the landuse types in percent
 #' 
 #' @return
 #' A dataframe with the columns "Substance", "unit", "Mean" which is the 
@@ -134,7 +133,15 @@ get_stormwater_concentrations <- function (substances = NULL)
 #' 
 #' @export
 #' @importFrom utils read.table
-get_areaType_runoff <- function(areaType_vector =  c(0.4, 0.4, 0.2, 0)){   
+get_areaType_runoff <- function(
+  residential_suburban = 40, residential_city = 40, commercial = 20, 
+  street = NULL){   
+  
+  areaType_vector <- if(is.null(street)){
+   c(residential_suburban, residential_city, commercial, 0) / 100
+  } else {
+    c(residential_suburban, residential_city, commercial, street) / 100
+  }
  
   conc <- read.table(file = system.file("extdata/Runoff_conc/catch_conc.csv", 
                                       package = "r2q"), 
@@ -143,10 +150,10 @@ get_areaType_runoff <- function(areaType_vector =  c(0.4, 0.4, 0.2, 0)){
   mm <- as.matrix(conc[,grep("_med$", colnames(conc))])
   qm <- as.matrix(conc[,grep("_q95$", colnames(conc))])
   
-  data.frame("Substance" = conc$Substance, 
+  cbind(data.frame("Substance" = conc$Substance, 
              "Unit" = conc$Unit, 
-             "Mean" = mm %*% areaType_vector,
-             "Q95" = qm %*% areaType_vector)
+             "mix_med" = mm %*% areaType_vector, # this is actually the median value
+             "mix_q95" = qm %*% areaType_vector), conc[,-c(1,2)])
 }
 
 #' Get KOSTRA rain characteristics
