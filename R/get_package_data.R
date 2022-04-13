@@ -134,7 +134,7 @@ get_stormwater_concentrations <- function (substances = NULL)
 #' @export
 #' @importFrom utils read.table
 get_areaType_runoff <- function(
-  residential_suburban = 40, residential_city = 40, commercial = 20, 
+  residential_city = 40, residential_suburban = 40, commercial = 20, 
   street = NULL){   
   
   areaType_vector <- if(is.null(street)){
@@ -283,20 +283,18 @@ get_default_background <- function (
 ){
 
   #get background_concentrations for SUW_type
-  if (SUW_type == "river") {
-    
-    C_background <- 
-      read.table(file = system.file("extdata/Default_data/Background_concentrations_river.csv", 
-                                    package = "r2q"),
-                 sep = ";", dec = ".", as.is = TRUE, header = TRUE)
-    
+  C_background <- if (SUW_type == "river") {
+      read.table(
+        file = system.file(
+          "extdata/Default_data/Background_concentrations_river.csv", 
+          package = "r2q"),
+        sep = ";", dec = ".", as.is = TRUE, header = TRUE)
   } else {
-    
-    C_background <- 
-      read.table(file = system.file("extdata/Default_data/Background_concentrations_lake.csv", 
-                                    package = "r2q"),
-                 sep = ";", dec = ".", as.is = TRUE, header = TRUE)
-    
+    read.table(
+      file = system.file(
+        "extdata/Default_data/Background_concentrations_lake.csv", 
+        package = "r2q"),
+      sep = ";", dec = ".", as.is = TRUE, header = TRUE)
   }
   C_background 
 }

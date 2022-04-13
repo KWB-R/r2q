@@ -7,8 +7,8 @@ obtained by the OgRe Dataset and multiplies it with the proportion of the
 correspoding area type in the catchment.}
 \usage{
 get_areaType_runoff(
-  residential_suburban = 40,
   residential_city = 40,
+  residential_suburban = 40,
   commercial = 20,
   street = NULL
 )

@@ -4,12 +4,23 @@
 \alias{load_areaTypes}
 \title{Loading all details about catchment area types}
 \usage{
-load_areaTypes(data.dir, filename)
+load_areaTypes(
+  data.dir = NULL,
+  filename,
+  residential_city = c(0.75, 100/3, 100),
+  residential_suburban = c(0.75, 100/3, 100),
+  commercial = c(0.75, 100/3, 100)
+)
 }
 \arguments{
 \item{data.dir}{The directory of the entry data table.}
 
 \item{filename}{Name of the R2Q-Excel File including ".xlsx".}
+
+\item{residential_suburban, residential_city, commercial}{vectors of 3
+containg 1) fD value of the landuse type, 2) the proportion of the landuse
+type within the catchment area in percent and 3) the proportion of area
+connected to a seperate sewer systen within the landuse type in percent.}
 }
 \value{
 A vector of length 5. Entries 1 to 4 describe the proportion of the area

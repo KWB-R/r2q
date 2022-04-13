@@ -52,8 +52,8 @@ combine_concentration_tables <- function(
   th <- threshold_table[,c("Substance", "Unit", "Group", 
                            "threshold", "threshold_type")]
   st <- storm_table
-  ba <- background_table[,c("Substance", "Unit", "river", "Comment")]
-  colnames(ba)[3:4] <- c("c_river", "river_value")
+  ba <- background_table
+  colnames(ba)[3] <- c("c_river")
   
   df_out <- Reduce(merge_by_pollutant, list(th, ba, st))
   

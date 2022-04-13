@@ -25,7 +25,7 @@
 #' toxicological relevance.
 #' 
 #' @return 
-#' Travel time of discharged water within the natural catchment in minutes
+#' Travel time of naturally discharged water within the catchment in minutes
 #' 
 #' @export
 #' @examples 
@@ -78,7 +78,7 @@ lin_interpolation <- function(x1, x2, y1, y2, x_is){
 #' 
 #' The rate of the yearly rain event depends on the prescribed duration. In this
 #' function the duration is either calculated using the natural catchment 
-#' discharge, using the average river flow or entered manualle.
+#' discharge, using the average river flow or entered manually.
 #' 
 #' @param area_catch The catchment area in km2
 #' @param river_cross_section The average river cross section in the catchment
@@ -137,8 +137,6 @@ get_rain <- function(
     }
   }
  
- 
-  
   sorted_mins <- sort(c(possible_T, mins))
   order_mins <- which(sorted_mins == mins)
   

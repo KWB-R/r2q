@@ -52,7 +52,7 @@ the rain event in L/(s*ha) based on KOSTRA
 \description{
 The rate of the yearly rain event depends on the prescribed duration. In this
 function the duration is either calculated using the natural catchment
-discharge, using the average river flow or entered manualle.
+discharge, using the average river flow or entered manually.
 }
 \details{
 The KOSTRA Data is available for a grid of x x x km. The location

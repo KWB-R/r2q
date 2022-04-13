@@ -3,7 +3,7 @@
 #' @param slope  slope of the planning area (unit %)
 #' @param area_catch catchment area  (in km2)
 #'
-#' @return potential annual natural discharge flow (unit L/(s*km2))
+#' @return Once-in-a-year natural discharge flow of the catchment in L/(s*km2)
 #' @export
 #'
 #' @examples

@@ -15,8 +15,6 @@ must fit to Ci_river and Ci_storm.}
 
 \item{Ci_storm}{Concentration in stormwater run-off for substance i. Concentration unit
 must fit to Ci_threshold and Ci_river.}
-
-\item{pollutant_name}{String defining the name of the Pollutant}
 }
 \value{
 Inf if the pollutant is no constraint, -Inf if the pollutant should not be
