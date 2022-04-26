@@ -57,7 +57,7 @@ load_site_data <- function(
   siteData[["f_D_catch"]] <- list(
     "Unit" = "-", 
     "Value" = sum(
-    siteData$areaType[["fD"]] * siteData$areaType[["effective"]] / 100),
+    siteData$areaType[["fD"]] * siteData$areaType[["share_percent"]] / 100),
     "Explanation" = "Area proportional average fD value of the connected area in the catchment")
 
   
@@ -66,7 +66,7 @@ load_site_data <- function(
   siteData[["seperate_con_catch"]] <- list(
     "Unit" = "-", 
     "Value" = sum(
-      siteData$areaType[["seperate_sewer_percent"]] / 100 * 
+      siteData$areaType[["separate_sewer_percent"]] / 100 * 
         siteData$areaType[["share_percent"]] / 100, na.rm = T),
     "Explanation" = "Proportion of Area-type mix connected to seperate sewer system")
   
@@ -80,7 +80,7 @@ load_site_data <- function(
 #'
 #' @param data.dir The directory of the entry data table.
 #' @param filename Name of the R2Q-Excel File including ".xlsx".
-#' @param residential_suburban,residential_city,commercial vectors of 3 
+#' @param residential_suburban,residential_city,commercial,main_road vectors of 3 
 #' containg 1) fD value of the landuse type, 2) the proportion of the landuse 
 #' type within the catchment area in percent and 3) the proportion of area
 #' connected to a seperate sewer systen within the landuse type in percent.
@@ -100,8 +100,9 @@ load_site_data <- function(
 #' filename = "Baukau.xlsx")
 #' 
 load_areaTypes <- function(
-  data.dir = NULL, filename, residential_city = c(0.75, 100/3, 100),  
-  residential_suburban = c(0.75, 100/3, 100), commercial = c(0.75, 100/3, 100)){
+  data.dir = NULL, filename, residential_city = c(0.75, 30, 100),  
+  residential_suburban = c(0.75, 30, 100), commercial = c(0.75, 30, 100), 
+  main_road = c(0.9, 10, 100)){
   
   
   df_in <-  if(!is.null(data.dir)){
@@ -110,10 +111,14 @@ load_areaTypes <- function(
     sheet = paste0("Catchment_LanduseMix")))
   } else {
     data.frame(
-      "landuse" = c("residential_city", "residential_suburban", "commercial"),
-      "fD" = c(residential_city[1], residential_suburban[1], commercial[1]),
-      "share_percent" = c(residential_city[2], residential_suburban[2], commercial[2]),
-      "separate_sewer_percent" = c(residential_city[3], residential_suburban[3], commercial[3]))
+      "landuse" = c("residential_city", "residential_suburban", "commercial", 
+                    "main_road"),
+      "fD" = c(residential_city[1], residential_suburban[1], commercial[1], 
+               main_road[1]),
+      "share_percent" = c(residential_city[2], residential_suburban[2], 
+                          commercial[2], main_road[2]),
+      "separate_sewer_percent" = c(residential_city[3], residential_suburban[3], 
+                                   commercial[3], main_road[3]))
   }
   
   if(round(sum(df_in$share_percent), 0) != 100L)
@@ -121,14 +126,18 @@ load_areaTypes <- function(
   
   # connecetd area in average
   connected <- sum(df_in$share_percent/100 * df_in$separate_sewer_percent/100)
-  # area types weighted by the proportion of seperate sewers 
-  df_in$effective <- df_in$share_percent / 100 * 
-    df_in$separate_sewer_percent/100 /
-    connected * 100
-  
-  df_in$Mix_flow <- (df_in$fD * df_in$effective) / 
-    sum(df_in$fD * df_in$effective) * 100
-  
+  if(connected > 0){
+    # area types weighted by the proportion of seperate sewers 
+    df_in$effective <- df_in$share_percent / 100 * 
+      df_in$separate_sewer_percent/100 /
+      connected * 100
+    df_in$Mix_flow <- (df_in$fD * df_in$effective) / 
+      sum(df_in$fD * df_in$effective) * 100
+    
+  } else {
+    df_in$effective <- df_in$Mix_flow <- 0
+  }
+
   rownames(df_in) <- df_in$landuse
   df_in[,-which(colnames(df_in) == "landuse")]
   

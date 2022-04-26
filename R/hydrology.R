@@ -62,12 +62,12 @@ get_x <- function(Hq1_pnat, Hq2_pnat) {
 #' @param area_con_catch connected area of planning area in km2
 #' @param area_catch complete catchment area in km2 upstream of point of discharge 
 #'
-#' @return tolerable discharged flow of planning area in L/s
+#' @return tolerable discharged flow of connected area in L/s
 #' @export
 get_q_max <- function(
-  Hq1pnat_catch, x = 0.1, area_con_catch, area_catch){
+  Hq1pnat_catch, x = 0.1, area_con, area_catch){
   
-  Hq1pnat_catch * area_con_catch + x * Hq1pnat_catch * area_catch
+  Hq1pnat_catch * area_con + x * Hq1pnat_catch * area_catch
 
 }
 
@@ -132,7 +132,7 @@ calculate_tolerable_discharge <- function(
   df_out$catchment <- 
     get_q_max(Hq1pnat = Hq1pnat_catch,
                     x = df_out$x,
-                    area_con_catch = area_con_catch,
+                    area_con = area_con_catch,
                     area_catch = area_catch)
   
   df_out$planning <- df_out$catchment * area_plan / area_catch

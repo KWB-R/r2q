@@ -80,7 +80,7 @@ max_area <- function (
 #' @param coeff_runoff Run-off coefficient of connected impervious area 
 #' @param Q_rain Annual amount of rain amount in mm/a
 #' 
-#' @return maximal connected impervious area in km2
+#' @return maximal connected impervious area in ha
 #' @export
 #' 
 max_area_steady_state <- function(
@@ -94,10 +94,7 @@ max_area_steady_state <- function(
   Q_river <- Q_river * 3600 * 24 * 365.25 # from m3/s to m3/a
   pot_input <- Q_river * (Ci_threshold - Ci_river) # potential input in µg/a
   Q_runoff_max <- pot_input / (Ci_storm - Ci_threshold) # maximum runoff in m³/a
-  S_con_catch <- Q_runoff_max / (10 * Q_rain * coeff_runoff) # maximal connectable area in ha
-  
-  
-  S_con_catch
+  Q_runoff_max / (10 * Q_rain * coeff_runoff) # maximal connectable area in ha
 }
 
 

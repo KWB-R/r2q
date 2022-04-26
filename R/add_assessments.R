@@ -188,15 +188,19 @@ maxArea_by_hydrology <- function(
     "Parameter" = 
       c("Tolerable discharge of the whole catchment",
         "Tolerable discharge of planning area",
-        "Status Quo discharge of the whole catchment area",
-        "Connetcable area in the catchment",
-        "Connectable area in the planning area", "Required throttel"), 
+        "Status Quo discharge of the urbanised catchment area",
+        "Connetcable area in the urbanised catchment",
+        "Connectable area in the planning area", 
+        "Required throttel"), 
     "Unit" = c("L/s", "L/s", "L/s", "ha", "ha", "L/(s*ha)"),
-    "Value" = c(signif(Q_tolerable$catchment,3), signif(Q_tolerable$planning,3), 
-                signif(current_discharge,3), signif(area_catch,2), 
-                signif(area_plan,2), signif(throttel,2)),
+    "Value" = c(signif(Q_tolerable$catchment,3), 
+                signif(Q_tolerable$planning,3), 
+                signif(current_discharge,3), 
+                signif(area_catch,2), 
+                signif(area_plan,2), 
+                signif(throttel,2)),
     "Comment" = c(rep("", 5),
-                  "If the whole planning area is connected to the separate sewer system"))
+                  "If the whole planning area was connected to the separate sewer system"))
   
   
 }

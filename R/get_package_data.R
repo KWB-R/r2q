@@ -135,12 +135,12 @@ get_stormwater_concentrations <- function (substances = NULL)
 #' @importFrom utils read.table
 get_areaType_runoff <- function(
   residential_city = 40, residential_suburban = 40, commercial = 20, 
-  street = NULL){   
+  main_road = NULL){   
   
-  areaType_vector <- if(is.null(street)){
+  areaType_vector <- if(is.null(main_road)){
    c(residential_suburban, residential_city, commercial, 0) / 100
   } else {
-    c(residential_suburban, residential_city, commercial, street) / 100
+    c(residential_suburban, residential_city, commercial, main_road) / 100
   }
  
   conc <- read.table(file = system.file("extdata/Runoff_conc/catch_conc.csv", 
