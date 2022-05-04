@@ -1,7 +1,7 @@
 # catchment data
-area_catchment <- 5.262 # km2 (complete catchment are)
-connected_area_catchment <- 1.651 # km2 (impervious catchment area)
-river_length <- 5000 # m (within urbanised catchment area)
+area_catchment <- 12.4 # km2 (complete catchment area)
+area_urban <- 1.26 # km2 (urban area surrounding the planning area)
+river_length <- 1400 # m (within urbanised catchment area)
 river_cross_section <- 0.54 # m2 (average)
 q_mean <- 0.04 # m3/s
 yearly_rain <- 822 # mm/a
@@ -11,14 +11,15 @@ y_coord <- 2753913
   
 # landuse type information
 # c(fD, percent of total connected area, percent connected to separate sewers)
-residential_city <- c(0.75, 40, 0) 
-residential_suburban = c(0.71, 30, 0)
-commercial <- c(0.73, 20,0)
-main_road <- c(0.9, 10,0)
+residential_city <- c(0.75, 0, 1) 
+residential_suburban = c(0.71, 41, 1)
+commercial <- c(0.73, 21,1)
+main_road <- c(0.6, 5,1)
+no_runoff <- c(0, 33, 0)
 
 
 # planning area data
-area_planning <- 1.55 # km2 (complete planning area)
+area_planning <- 0.107 # km2 (complete planning area)
 connected_area_planning <- 0.549 # km2 (impervious area)
 # fD_planning is the same as fD_catchment 
 
@@ -26,14 +27,18 @@ connected_area_planning <- 0.549 # km2 (impervious area)
 landuseTable <- r2q::load_areaTypes(
   residential_city = residential_city, # fD, percent of total connected area, percent connected to separate sewers
   residential_suburban = residential_suburban,
-  commercial = commercial, main_road = main_road)  
+  commercial = commercial, main_road = main_road, no_runoff = no_runoff)  
 
 c_storm <- r2q::get_areaType_runoff(
   residential_suburban = landuseTable["residential_suburban", "Mix_flow"], 
   residential_city = landuseTable["residential_city", "Mix_flow"],
   commercial = landuseTable["commercial", "Mix_flow"])
 
-fD_catchment <- sum(landuseTable$fD * landuseTable$share_percent/ 100)
+fD_catchment <- 
+  sum(landuseTable$fD[as.logical(landuseTable$separate_sewer)] * 
+        landuseTable$share_percent[as.logical(landuseTable$separate_sewer)]/100) /
+        (sum(landuseTable$share_percent[as.logical(landuseTable$separate_sewer)]) / 100)
+
 
 
 # yearly rain event

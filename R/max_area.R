@@ -80,7 +80,7 @@ max_area <- function (
 #' @param coeff_runoff Run-off coefficient of connected impervious area 
 #' @param Q_rain Annual amount of rain amount in mm/a
 #' 
-#' @return maximal connected impervious area in ha
+#' @return maximal connectable areain ha
 #' @export
 #' 
 max_area_steady_state <- function(
@@ -123,7 +123,7 @@ max_area_steady_state <- function(
 #' The catchment_area is used as initial value for the optimisation algorithm. 
 #' The default 100 ha should be sufficient for most problems. In that case
 #' the optimal solution between 0 and 1 000 km²
-#' @return maximal connected impervious area in ha
+#' @return maximal connectable area in ha
 #' @export
 #' @importFrom stats optimize
 max_area_dynamic <- function(

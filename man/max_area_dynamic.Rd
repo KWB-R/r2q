@@ -42,7 +42,7 @@ must fit to Ci_threshold and Ci_river.}
 \item{catchment_area}{Catchment area in ha.}
 }
 \value{
-maximal connected impervious area in ha
+maximal connectable area in ha
 }
 \description{
 based on concentration thresholds

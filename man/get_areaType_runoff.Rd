@@ -10,11 +10,11 @@ get_areaType_runoff(
   residential_city = 40,
   residential_suburban = 40,
   commercial = 20,
-  street = NULL
+  main_road = NULL
 )
 }
 \arguments{
-\item{residential_suburban, residential_city, commercial, street}{Proportions
+\item{residential_suburban, residential_city, commercial, main_road}{Proportions
 of the landuse types in percent}
 }
 \value{

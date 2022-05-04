@@ -30,7 +30,7 @@ must fit to Ci_threshold and Ci_river.}
 \item{Q_rain}{Annual amount of rain amount in mm/a}
 }
 \value{
-maximal connected impervious area in km2
+maximal connectable areain ha
 }
 \description{
 based on concentration thresholds

@@ -124,7 +124,7 @@ get_stormwater_concentrations <- function (substances = NULL)
 #' obtained by the OgRe Dataset and multiplies it with the proportion of the
 #' correspoding area type in the catchment. 
 #' 
-#' @param residential_suburban,residential_city,commercial,street Proportions
+#' @param residential_suburban,residential_city,commercial,main_road Proportions
 #' of the landuse types in percent
 #' 
 #' @return
@@ -138,9 +138,9 @@ get_areaType_runoff <- function(
   main_road = NULL){   
   
   areaType_vector <- if(is.null(main_road)){
-   c(residential_suburban, residential_city, commercial, 0) / 100
+   c(residential_suburban, residential_city, commercial, 0)
   } else {
-    c(residential_suburban, residential_city, commercial, main_road) / 100
+    c(residential_suburban, residential_city, commercial, main_road)
   }
  
   conc <- read.table(file = system.file("extdata/Runoff_conc/catch_conc.csv", 

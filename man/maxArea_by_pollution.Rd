@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_assessments.R
 \name{maxArea_by_pollution}
 \alias{maxArea_by_pollution}
-\title{Maximal connectable impervious area in the catchment abd planning area}
+\title{Maximal connectable impervious area in the urabnised catchment and planning area}
 \usage{
 maxArea_by_pollution(combined_concentration_table, site_data, q_rain, t_rain)
 }

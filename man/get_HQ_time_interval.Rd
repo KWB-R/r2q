@@ -8,6 +8,7 @@ get_HQ_time_interval(
   area_catch,
   river_cross_section,
   river_length,
+  river_flow,
   Hq_pnat1_catch = NULL,
   slope = 0.1
 )
@@ -20,13 +21,15 @@ in m2}
 
 \item{river_length}{The length of the affected urban river stretch in m}
 
+\item{river_flow}{The Average river flow in m3/s}
+
 \item{Hq_pnat1_catch}{the natural catchment discharge for a yearly rain event
 in L/(s*km2). If NULL it will be estimated by slope and area of the catchment}
 
 \item{slope}{Average slope of the catchment in \% (Default is 0.1)}
 }
 \value{
-Travel time of discharged water within the natural catchment in minutes
+Travel time of naturally discharged water within the catchment in minutes
 }
 \description{
 This function calculates the time in minutes that is needed for the water to
@@ -44,11 +47,4 @@ river cross section and thus to a longer travel time.
 Instead a constant of 60 minutes is added to the calculated travel time. This
 also ensures that the rain duration is high enough (> 60 min) for a
 toxicological relevance.
-}
-\examples{
-get_HQ_time_interval(
-area_catch = 5.62,
-river_cross_section = 0.54, 
-river_length = 5000)
-
 }

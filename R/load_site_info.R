@@ -49,26 +49,40 @@ load_site_data <- function(
   del <- which(sapply(siteData, function(x){is.na(x["Value"])}))
   siteData <- siteData[-del]
   
+  if(!("Hq1pnat_catch" %in% names(siteData))){
+    siteData[["Hq1pnat_catch"]] <- list(
+      "Unit" = "L/(s*km2)",
+      "Value" = get_Hq1_pnat(slope = siteData$slope_catch$Value, 
+                             area_catch = siteData$area_catch$Value),
+      "Explanation" = "Natural run-off of the catchment for a yearly rain event"
+    ) 
+  }
+  
+  siteData[["Q_event"]] <- list(
+    "Unit" = "m3/s",
+    "Value" =  siteData$Hq1pnat_catch$Value * siteData$area_catch$Value / 1000,
+    "Explanation" = "river flow during a yearly rain event"
+  ) 
+  
+  siteData[["cross_section_event"]] <- list(
+    "Unit" = "m2",
+    "Value" =  siteData$river_cross_section$Value * 
+      (1 + siteData$Q_event$Value / siteData$Q_mean$Value / 4),
+    "Explanation" = "river flow during a yearly rain event"
+  ) 
+  
+  
   siteData[["areaType"]] <- 
     load_areaTypes(data.dir = data.dir, filename = filename)
   
   # the average runoff_coefficient and average connected area 
-  # based on area type composition
-  siteData[["f_D_catch"]] <- list(
+  # based on area type composition (no_run)
+  siteData[["f_D_urban"]] <- list(
     "Unit" = "-", 
     "Value" = sum(
-    siteData$areaType[["fD"]] * siteData$areaType[["share_percent"]] / 100),
-    "Explanation" = "Area proportional average fD value of the connected area in the catchment")
-
-  
-  # "street" is excluded because the proportion of connected area has already been
-  # considered within the defined area type (-> see function: load_areaTypes)
-  siteData[["seperate_con_catch"]] <- list(
-    "Unit" = "-", 
-    "Value" = sum(
-      siteData$areaType[["separate_sewer_percent"]] / 100 * 
-        siteData$areaType[["share_percent"]] / 100, na.rm = T),
-    "Explanation" = "Proportion of Area-type mix connected to seperate sewer system")
+      siteData$areaType[["fD"]] * 
+        siteData$areaType[["effective"]]),
+    "Explanation" = "Area proportional average fD value of the urban catchment area (no_runoff) areas excluded")
   
   siteData
 }
@@ -80,11 +94,13 @@ load_site_data <- function(
 #'
 #' @param data.dir The directory of the entry data table.
 #' @param filename Name of the R2Q-Excel File including ".xlsx".
-#' @param residential_suburban,residential_city,commercial,main_road vectors of 3 
-#' containg 1) fD value of the landuse type, 2) the proportion of the landuse 
-#' type within the catchment area in percent and 3) the proportion of area
-#' connected to a seperate sewer systen within the landuse type in percent.
+#' @param residential_suburban,residential_city,commercial,main_road,no_runoff 
+#' vectors of 3 containing 1) fD value of the landuse type, 2) the proportion of 
+#' the landuse type within the catchment area in percent and 3) a value of if 1 
+#' if the landuse tyoe should be considered as connected to the separate sewer
+#' system or 0 if not.
 #' 
+
 #' @return 
 #' A vector of length 5. Entries 1 to 4 describe the proportion of the area 
 #' types "residential_suburban", "residential_city", "industry" and (high-
@@ -100,39 +116,42 @@ load_site_data <- function(
 #' filename = "Baukau.xlsx")
 #' 
 load_areaTypes <- function(
-  data.dir = NULL, filename, residential_city = c(0.75, 30, 100),  
-  residential_suburban = c(0.75, 30, 100), commercial = c(0.75, 30, 100), 
-  main_road = c(0.9, 10, 100)){
+  data.dir = NULL, filename, residential_city = c(0.75, 0.3, 1),  
+  residential_suburban = c(0.75, 0.3, 1), commercial = c(0.75, 0.3, 1), 
+  main_road = c(0.9, 0.1, 1), no_runoff = c(0, 0, 0)){
   
   
   df_in <-  if(!is.null(data.dir)){
     data.frame(readxl::read_excel(
     path = file.path(data.dir, filename),
-    sheet = paste0("Catchment_LanduseMix")))
+    sheet = paste0("urban_catchment_landuse")))
   } else {
     data.frame(
       "landuse" = c("residential_city", "residential_suburban", "commercial", 
-                    "main_road"),
+                    "main_road", "no_runoff"),
       "fD" = c(residential_city[1], residential_suburban[1], commercial[1], 
-               main_road[1]),
+               main_road[1], no_runoff[1]),
       "share_percent" = c(residential_city[2], residential_suburban[2], 
-                          commercial[2], main_road[2]),
-      "separate_sewer_percent" = c(residential_city[3], residential_suburban[3], 
-                                   commercial[3], main_road[3]))
+                          commercial[2], main_road[2], no_runoff[2]),
+      "separate_sewer" = c(residential_city[3], residential_suburban[3], 
+                           commercial[3], main_road[3], no_runoff[3]))
   }
   
-  if(round(sum(df_in$share_percent), 0) != 100L)
+  # 
+  df_in$separate_sewer[df_in$landuse == "no_runoff"] <- 0
+  
+  if(round(sum(df_in$proportion), 0) != 1L)
     stop("The specified area types do not sum up to 100 %")
   
   # connecetd area in average
-  connected <- sum(df_in$share_percent/100 * df_in$separate_sewer_percent/100)
+  connected <- sum(df_in$proportion * df_in$separate_sewer, na.rm = T)
   if(connected > 0){
     # area types weighted by the proportion of seperate sewers 
-    df_in$effective <- df_in$share_percent / 100 * 
-      df_in$separate_sewer_percent/100 /
-      connected * 100
+    df_in$effective <- df_in$proportion * 
+      df_in$separate_sewer /
+      connected 
     df_in$Mix_flow <- (df_in$fD * df_in$effective) / 
-      sum(df_in$fD * df_in$effective) * 100
+      sum(df_in$fD * df_in$effective, na.rm = T)
     
   } else {
     df_in$effective <- df_in$Mix_flow <- 0

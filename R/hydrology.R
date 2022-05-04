@@ -59,16 +59,15 @@ get_x <- function(Hq1_pnat, Hq2_pnat) {
 #' in L/(s*km²)
 #' @param x dimensionless factor regulating tolerable additional anthropogenic 
 #' discharge. default is 0.1
-#' @param area_con_catch connected area of planning area in km2
+#' @param area_urban connected area of planning area in km2
 #' @param area_catch complete catchment area in km2 upstream of point of discharge 
 #'
 #' @return tolerable discharged flow of connected area in L/s
 #' @export
 get_q_max <- function(
-  Hq1pnat_catch, x = 0.1, area_con, area_catch){
+  Hq1pnat_catch, x = 0.1, area_urban, area_catch){
   
-  Hq1pnat_catch * area_con + x * Hq1pnat_catch * area_catch
-
+  Hq1pnat_catch * area_urban + x * Hq1pnat_catch * area_catch
 }
 
 
@@ -91,10 +90,11 @@ get_allowed_area <- function(f_D , Q_tol, q_rain){
 #' Uses the site data to calculate a natural stormwater run-off for a yearly
 #' rain event 
 #'
-#' @param area_catch catchment area in km²
-#' @param area_con_catch impervious catchment area discharging into the surface
-#' water in km²
-#' @param area_plan planning area in km² (default is 0 -> no planning area)
+#' @param area_catch catchment area in km2
+#' @param area_urban urban area around the planning area in km2
+#' @param area_plan planning area in km2 (default is 0 -> no planning area)
+#' @param area_urban_upstream urbanised area further upstream of the planning 
+#' area in km2 (Default is 1/4 of the catchment area)
 #' @param slope_catch average slope of the catchment area in % (Defalut is 0.1)
 #' @param Hq1pnat_catch natural average catchment discharge for a yearly rain
 #' event in L/(s*km²) (Defautl is NULL)
@@ -112,8 +112,8 @@ get_allowed_area <- function(f_D , Q_tol, q_rain){
 #' @export
 #'
 calculate_tolerable_discharge <- function(
-  area_catch = 10, area_con_catch = 1, area_plan = 0, slope_catch = 0.1, 
-  Hq1pnat_catch = NULL, Hq2pnat_catch = NULL, verbose = TRUE
+  area_catch = 10, area_urban = 1, area_plan = 0, area_urban_upstream = area_catch/4,
+  slope_catch = 0.1, Hq1pnat_catch = NULL, Hq2pnat_catch = NULL, verbose = TRUE
 ){
   
   if(is.null(Hq1pnat_catch)){
@@ -122,25 +122,29 @@ calculate_tolerable_discharge <- function(
   
   df_out <- data.frame("Hq1pnat" = Hq1pnat_catch,
                        "x" = NA, 
-                       "catchment" = NA, 
+                       "tol_discharge" = NA, 
+                       "urban" = NA,
                        "planning" = NA,
                        "unit" = "L/s")
   # Calculate x
   df_out$x <- get_x(Hq1_pnat = Hq1pnat_catch, Hq2_pnat = Hq2pnat_catch)
   
-  # Calculate tolerable discharge  of yearly event in l/s from the planning area
-  df_out$catchment <- 
+  # Calculate tolerable discharge of yearly event in l/s from the planning area
+  df_out$tol_discharge <- 
     get_q_max(Hq1pnat = Hq1pnat_catch,
-                    x = df_out$x,
-                    area_con = area_con_catch,
-                    area_catch = area_catch)
+              x = df_out$x,
+              area_urban = area_urban + area_urban_upstream,
+              area_catch = area_catch)
   
-  df_out$planning <- df_out$catchment * area_plan / area_catch
+  df_out$urban <- df_out$tol_discharge * area_urban /
+    (area_urban + area_urban_upstream)
+  df_out$planning <- df_out$tol_discharge * area_plan / 
+    (area_urban + area_urban_upstream)
   
   if(verbose){
     print(paste("Based on provided input data a tolerable annual discharge flow of",
-                as.character(df_out$catchment), "L/s was calculated for the Catchment.",
-                as.character("For the planning area this corresponds to"), 
+                as.character(df_out$tol_discharge), "L/s was calculated for the catchment.",
+                "For the planning area this corresponds to", 
                 as.character(round(df_out$planning, 2)), "L/s"))
     df_out
   } else{

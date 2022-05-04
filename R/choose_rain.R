@@ -8,6 +8,7 @@
 #' @param river_cross_section The average river cross section in the catchment
 #' in m2
 #' @param river_length The length of the affected urban river stretch in m
+#' @param river_flow The Average river flow in m3/s
 #' @param Hq_pnat1_catch the natural catchment discharge for a yearly rain event
 #' in L/(s*km2). If NULL it will be estimated by slope and area of the catchment
 #' @param slope Average slope of the catchment in % (Default is 0.1)
@@ -28,26 +29,26 @@
 #' Travel time of naturally discharged water within the catchment in minutes
 #' 
 #' @export
-#' @examples 
-#' get_HQ_time_interval(
-#' area_catch = 5.62,
-#' river_cross_section = 0.54, 
-#' river_length = 5000)
 #' 
 get_HQ_time_interval <- function(
   area_catch,
   river_cross_section, 
   river_length, 
+  river_flow,
   Hq_pnat1_catch = NULL,
   slope = 0.1){
+  
   if(is.null(Hq_pnat1_catch)){
-    Hq_pnat1 <- get_Hq1_pnat(slope = slope, area_catch = area_catch)
+    Hq_pnat1 <- get_Hq1_pnat(slope = slope, area_catch = area_catch) # L/(s*km2)
   } else {
     Hq_pnat1 <- Hq_pnat1_catch
   }
   HQ_pnat1 <- Hq_pnat1 * area_catch / 1000 # m3/s
   
-  (river_length * river_cross_section) / HQ_pnat1 / 60  + # from s to min
+  discharge_increase <- (HQ_pnat1 - river_flow) / river_flow
+  river_cross_event <- river_cross_section * (1 + discharge_increase / 4)
+  
+  (river_length * river_cross_event) / HQ_pnat1 / 60  + # from s to min
     60 # 60 additional minutes for flow time in the sewer system
 }
 
@@ -123,20 +124,20 @@ get_rain <- function(
   
   if(is.null(mins)){
     if(use_p1nat){
+      if(is.null(river_flow)){
+        stop("Parameter river_flow must be defined if mins = NULL")
+      }
+      
       mins <- get_HQ_time_interval(
         area_catch = area_catch, 
         river_cross_section = river_cross_section, 
         river_length = river_length, 
+        river_flow = river_flow,  
         Hq_pnat1_catch = Hq_pnat1_catch,
         slope =  slope)
-    } else {
-      if(is.null(river_flow)){
-        stop("Parameter river_flow must be defined if use_p1nat = FALSE and mins = NULL")
-      }
-      mins <- (river_length * river_cross_section) / river_flow / 60
     }
   }
- 
+  
   sorted_mins <- sort(c(possible_T, mins))
   order_mins <- which(sorted_mins == mins)
   

@@ -6,8 +6,9 @@
 \usage{
 calculate_tolerable_discharge(
   area_catch = 10,
-  area_con_catch = 1,
+  area_urban = 1,
   area_plan = 0,
+  area_urban_upstream = area_catch/4,
   slope_catch = 0.1,
   Hq1pnat_catch = NULL,
   Hq2pnat_catch = NULL,
@@ -15,12 +16,14 @@ calculate_tolerable_discharge(
 )
 }
 \arguments{
-\item{area_catch}{catchment area in km²}
+\item{area_catch}{catchment area in km2}
 
-\item{area_con_catch}{impervious catchment area discharging into the surface
-water in km²}
+\item{area_urban}{urban area around the planning area in km2}
 
-\item{area_plan}{planning area in km² (default is 0 -> no planning area)}
+\item{area_plan}{planning area in km2 (default is 0 -> no planning area)}
+
+\item{area_urban_upstream}{urbanised area further upstream of the planning
+area in km2 (Default is 1/4 of the catchment area)}
 
 \item{slope_catch}{average slope of the catchment area in \% (Defalut is 0.1)}
 

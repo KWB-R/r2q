@@ -28,7 +28,7 @@ grid$allowed_fD <- 1
 for (i in 1:nrow(grid)){
   grid$q_tolerable[i] <- r2q::get_q_max(
     area_catch = grid$area_catch[i], 
-    area_con_catch = grid$area_con_catch[i], 
+    area_urban = grid$area_con_catch[i], 
     Hq1pnat_catch = 75, x = 0.1)
   
   grid$allowed_area_plan[i] <- grid$q_tolerable[i] / (150 * 0.7)
