@@ -21,7 +21,7 @@ c_storm <- r2q::get_areaType_runoff(
 
 c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
 
-# yearly rain 
+# yearly rain event
 # duration either calculated with natural catchment discharge
 rain <- r2q::get_rain(
   area_catch = siteData$area_catch$Value, 
@@ -30,23 +30,6 @@ rain <- r2q::get_rain(
   river_flow = siteData$Q_mean$Value,
   x_coordinate = siteData$x_coordinate$Value,
   y_coordinate = siteData$y_coordinate$Value)
-
-# # Calculated by average river flow
-# rain <- get_rain(area_catch = siteData$area_catch$Value,
-#                  river_cross_section = siteData$river_cross_section$Value,
-#                  river_length = siteData$river_length$Value,
-#                  x_coordinate = siteData$x_coordinate$Value,
-#                  y_coordinate = siteData$y_coordinate$Value
-#                  use_p1nat = FALSE,
-#                  river_flow = siteData$Q_mean$Value)
-# 
-# # or manually entered
-# rain <- get_rain(area_catch = siteData$area_catch$Value,
-#                  river_cross_section = siteData$river_cross_section$Value,
-#                  river_length = siteData$river_length$Value,
-#                  x_coordinate = siteData$x_coordinate$Value,
-#                  y_coordinate = siteData$y_coordinate$Value
-#                  mins = 1080)
 
 # combine data
 c_table <- r2q::combine_concentration_tables(
