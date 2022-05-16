@@ -106,7 +106,7 @@ x_plot <- x_plot[index,]
 
 #plot
 kwb.plot::setMargins(left = 9)
-barplot(height = x_plot$mix_med, names.arg = x_plot$`df_in[, 1]`, xlim = c(0, 180),
+barplot(height = x_plot$mix_med, names.arg = x_plot$`df_in[, 1]`, xlim = c(0, 250),
         horiz = TRUE, xlab = "Maximal anschließbare Fläche [%]", las = 1)
 text(labels = round(x_plot$mix_med, 1), x = x_plot$mix_med + 20, y = c(1: length(x_plot$mix_med))*1.2 - 0.5)
 
