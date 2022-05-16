@@ -2,11 +2,11 @@
 # load external data -----------------------------------------------------------
 siteData <- r2q::load_site_data(
   data.dir = "inst/extdata/Data_entry", 
-  filename = "Baukau.xlsx")
+  filename = "Abschlussveranstaltung.xlsx")
 
 c_river <- r2q::load_background_data(
   data.dir = "inst/extdata/Data_entry",
-  filename = "Baukau.xlsx", default_for_na = TRUE)
+  filename = "Abschlussveranstaltung.xlsx", default_for_na = TRUE)
 
 # load package data ------------------------------------------------------------
 # c_storm <- r2q::get_stormwater_concentrations()
