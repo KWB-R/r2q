@@ -7,20 +7,13 @@ if(FALSE){
     hydr_assessment = assessment2,
     site_data = siteData, 
     refer_to_statusQuo = TRUE,
-    worst_case = FALSE)
-  
+    worst_case = FALSE) # Median or 0.95-Percentile concentration?
   
   plot_max_area(plot_table = plot_table, 
                 site_data = siteData, 
                 xlab = "Anschließbare Flächen / vorhandene Flächen [%]",
                 include_weak_constratints = TRUE, 
                 language = "german")
-  
-  plot_max_area(plot_table = plot_table, 
-                site_data = siteData, 
-                include_weak_constratints = FALSE, 
-                language = "german")
-  
   
 }
 
@@ -116,10 +109,10 @@ plot_max_area <- function(
   
   rowsToPlot <- which(df_pro$constraint == "strong")
   if(include_weak_constratints){
-    rowsToPlot <- c(linesToPlot, which(df_pro$constraint == "weak"))
+    rowsToPlot <- c(rowsToPlot, which(df_pro$constraint == "weak"))
   }
   
-  dev.new(noRStudioGD = T, width = 8, height = length(linesToPlot)/2 + 0.5)
+  dev.new(noRStudioGD = T, width = 8, height = length(rowsToPlot)/2 + 0.5)
   par(mar = c(4.1, 9.1, 1.1, 1.1), family = "serif")
   ylim <- c(0.4, length(rowsToPlot) + 0.6)
   
@@ -161,7 +154,7 @@ prepare_plotTable <- function(
   poll_assessment, hydr_assessment, site_data, refer_to_statusQuo = FALSE, 
   worst_case = FALSE){
   
-  df_pro <- data.frame("Substance" = df_connectable_percent[,1])
+  df_pro <- data.frame("Substance" = poll_assessment$input_data$Substance)
   
   df_in <- if(refer_to_statusQuo){
     poll_assessment$connectable_statusQuo
