@@ -68,3 +68,46 @@ abline(h = 0, col = "red")
 dev.off()
 
 
+####Abschlussveranstaltung-------------
+
+###Plot absolute allowable areas
+
+png(filename= file.path("inst/extdata/plots", "Max_areas_Abschluss.png"), 
+    width=14, height=10, units="cm", res=600)
+
+x_plot <- assessment1$connectable_urban
+
+#only numeric substances
+index <- which(x_plot$mix_med == "Inf")
+x_plot <- x_plot[-index,]
+index <- order(x_plot$mix_med, decreasing = FALSE)
+x_plot <- x_plot[index,]
+
+#plot
+kwb.plot::setMargins(left = 9)
+barplot(height = x_plot$mix_med, names.arg = x_plot$`df_in[, 1]`, xlim = c(0, 220),
+        horiz = TRUE, xlab = "Maximal anschließbare Fläche [ha]", las = 1)
+text(labels = round(x_plot$mix_med, 1), x = x_plot$mix_med + 20, y = c(1: length(x_plot$mix_med))*1.2 - 0.5)
+
+dev.off()
+
+###Plot percentages assuming equal distribution within Baukau
+
+png(filename= file.path("inst/extdata/plots", "Max_areas_perc_Abschluss.png"), 
+    width=14, height=10, units="cm", res=600)
+
+x_plot <- assessment1$connectable_percent
+
+#only numeric substances
+index <- which(x_plot$mix_med == "Inf")
+x_plot <- x_plot[-index,]
+index <- order(x_plot$mix_med, decreasing = FALSE)
+x_plot <- x_plot[index,]
+
+#plot
+kwb.plot::setMargins(left = 9)
+barplot(height = x_plot$mix_med, names.arg = x_plot$`df_in[, 1]`, xlim = c(0, 180),
+        horiz = TRUE, xlab = "Maximal anschließbare Fläche [%]", las = 1)
+text(labels = round(x_plot$mix_med, 1), x = x_plot$mix_med + 20, y = c(1: length(x_plot$mix_med))*1.2 - 0.5)
+
+dev.off()
