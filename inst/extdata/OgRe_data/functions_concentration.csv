@@ -1,0 +1,33 @@
+dataEntry_row;Funktion;Eigenschaften;;;Benzo(b)fluoranthen;Benzo(g,h,i)perylen;Benzo(k)fluoranthen;Fluoranthen;Gesamt-P;Orthophosphat;Zink;Kupfer;Mecoprop;Diethylhexylphtalat (DEHP);AFS_Fein
+1;Wohngebäude;In Verkehrsreichem Gebiet;Mit Zinkdach;;0.17;0.075;0.06;0.395;0;0;7000;39;0;0.58;0
+2;Wohngebäude;In Verkehrsreichem Gebiet;Mit Gründach;Mit Biozidverwendung / unbekannt;0.017;0.0082;0.017;0.12;0.1;0.05;55;39;1.9;0.58;0
+3;Wohngebäude;In Verkehrsreichem Gebiet;Mit Gründach;Ohne Biozidverwendung;0.017;0.0082;0.017;0.12;0.1;0.05;55;39;0;0.58;0
+4;Wohngebäude;In Verkehrsreichem Gebiet;Mit Bitumendach;Mit Biozidverwendung / unbekannt;0.17;0.075;0.06;0.395;0;0;55;39;1.9;0.58;0
+5;Wohngebäude;In Verkehrsreichem Gebiet;Mit Bitumendach;Ohne Biozidverwendung;0.17;0.075;0.06;0.395;0;0;55;39;0;0.58;0
+6;Wohngebäude;In Verkehrsreichem Gebiet;Mit Ziegel-, Glas- oder ...dach;;0.17;0.075;0.06;0.395;0;0;55;39;0;0.58;0
+7;Wohngebäude;In Verkehrsarmen Gebiet;Mit Zinkdach;;0.025;0;0;0;0;0;7000;39;0;0.58;0
+8;Wohngebäude;In Verkehrsarmen Gebiet;Mit Gründach;Mit Biozidverwendung / unbekannt;0.017;0;0;0;0.1;0.05;55;39;1.9;0.58;0
+9;Wohngebäude;In Verkehrsarmen Gebiet;Mit Gründach;Ohne Biozidverwendung;0.017;0;0;0;0.1;0.05;55;39;0;0.58;0
+10;Wohngebäude;In Verkehrsarmen Gebiet;Mit Bitumendach;Mit Biozidverwendung / unbekannt;0.025;0;0;0;0;0;55;39;1.9;0.58;0
+11;Wohngebäude;In Verkehrsarmen Gebiet;Mit Bitumendach;Ohne Biozidverwendung;0.025;0;0;0;0;0;55;39;0;0.58;0
+12;Wohngebäude;In Verkehrsarmen Gebiet;Mit Ziegel-, Glas- oder ...dach;;0.025;0;0;0;0;0;55;39;0;0.58;0
+13;Gewerbe/Industriegebäude ;In Verkehrsreichem Gebiet;Mit Zinkdach;;0.17;0.075;0.06;0.395;0;0;7000;106;0;2.12;0
+14;Gewerbe/Industriegebäude ;In Verkehrsreichem Gebiet;Mit Gründach;Mit Biozidverwendung;0.017;0.0082;0.017;0.12;0.1;0.05;0;106;1.9;2.12;0
+15;Gewerbe/Industriegebäude ;In Verkehrsreichem Gebiet;Mit Gründach;Ohne Biozidverwendung;0.017;0.0082;0.017;0.12;0.1;0.05;0;106;0;2.12;0
+16;Gewerbe/Industriegebäude ;In Verkehrsreichem Gebiet;Mit Bitumendach;Mit Biozidverwendung;0.17;0.075;0.06;0.395;0;0;0;106;1.9;2.12;0
+17;Gewerbe/Industriegebäude ;In Verkehrsreichem Gebiet;Mit Bitumendach;Ohne Biozidverwendung;0.17;0.075;0.06;0.395;0;0;0;106;0;2.12;0
+18;Gewerbe/Industriegebäude ;In Verkehrsreichem Gebiet;Mit Ziegel-, Glas- oder ...dach;;0.17;0.075;0.06;0.395;0;0;0;106;0;2.12;0
+19;Gewerbe/Industriegebäude ;In Verkehrsarmen Gebiet;Mit Zinkdach;;0.025;0;0;0;0;0;7000;106;0;2.12;0
+20;Gewerbe/Industriegebäude ;In Verkehrsarmen Gebiet;Mit Gründach;Mit Biozidverwendung;0.017;0;0;0;0.1;0.05;0;106;1.9;2.12;0
+21;Gewerbe/Industriegebäude ;In Verkehrsarmen Gebiet;Mit Gründach;Ohne Biozidverwendung;0.017;0;0;0;0.1;0.05;0;106;0;2.12;0
+22;Gewerbe/Industriegebäude ;In Verkehrsarmen Gebiet;Mit Bitumendach;Mit Biozidverwendung;0.025;0;0;0;0;0;0;106;1.9;2.12;0
+23;Gewerbe/Industriegebäude ;In Verkehrsarmen Gebiet;Mit Bitumendach;Ohne Biozidverwendung;0.025;0;0;0;0;0;0;106;0;2.12;0
+24;Gewerbe/Industriegebäude ;In Verkehrsarmen Gebiet;Mit Ziegel-, Glas- oder ...dach;;0.025;0;0;0;0;0;0;106;0;2.12;0
+25;Hoffläche;In Verkehrsreichem Gebiet;Fugenlos;;0.17;0.075;0.06;0.395;0;0;41;56;0;0.97;0
+26;Hoffläche;In Verkehrsreichem Gebiet;offene Fugen;;0.17;0.075;0.06;0.395;0;0;41;56;0;0.97;0
+27;Hoffläche;In Verkehrsarmen Gebiet;Fugenlos;;0.025;0;0;0;0;0;41;56;0;0.97;0
+28;Hoffläche;In Verkehrsarmen Gebiet;offene Fugen;;0.025;0;0;0;0;0;41;56;0;0.97;0
+29;Straße;Viel befahren;;;0.34;0.13;0.157;1.02;0.094;0.044;109;14.6;0;1.02;75
+30;Straße;Mittel befahren;;;0.29;0.11;0.127;0.83;0.25;0.125;109;14.6;0;0.83;75
+31;Straße;gering befahren;;;0.15;0.054;0.051;0.35;1.9;0.78;109;14.6;0;0.35;75
+32;Straße;kaum befahren;;;0;0;0;0;1.9;0.78;109;14.6;0;0;75
