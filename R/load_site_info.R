@@ -71,18 +71,43 @@ load_site_data <- function(
     "Explanation" = "river flow during a yearly rain event"
   ) 
   
-  
   siteData[["areaType"]] <- 
     load_areaTypes(data.dir = data.dir, filename = filename)
   
   # the average runoff_coefficient and average connected area 
   # based on area type composition (no_run)
-  siteData[["f_D_urban"]] <- list(
+  siteData[["area_urban_connectable"]] <- list(
+    "Unit" = "km2", 
+    "Value" =  siteData[["area_urban"]]$Value - 
+      siteData[["area_urban"]]$Value * 
+      siteData$areaType["no_runoff", "proportion"],
+    "Explanation" = "Connectable area of the urban area (area_urban exclusive no_runoff)")
+  
+  siteData[["area_urban_connected"]] <- list(
+    "Unit" = "km2", 
+    "Value" = siteData[["area_urban"]]$Value * 
+      sum(siteData$areaType[["proportion"]] * 
+            siteData$areaType[["separate_sewer"]]),
+    "Explanation" = "Urban area currently connected to separate sewer system")
+  
+  # the average runoff_coefficient and average connected area 
+  # based on area type composition (no_run)
+  siteData[["f_D_connectable"]] <- list(
+    "Unit" = "-", 
+    "Value" = sum(
+      siteData$areaType[["fD"]] * 
+        siteData$areaType[["proportion"]]) / 
+      (1 - siteData$areaType["no_runoff", "proportion"]),
+    "Explanation" = "Area proportional average fD value of the urban catchment area (no_runoff) areas excluded")
+  
+  siteData[["f_D_connected"]] <- list(
     "Unit" = "-", 
     "Value" = sum(
       siteData$areaType[["fD"]] * 
         siteData$areaType[["effective"]]),
     "Explanation" = "Area proportional average fD value of the urban catchment area (no_runoff) areas excluded")
+  
+  
   
   siteData
 }

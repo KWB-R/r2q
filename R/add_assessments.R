@@ -34,7 +34,6 @@ maxArea_by_pollution <- function(
   df_in <- combined_concentration_table
   
   # add result columns
-  
   df_out <- data.frame(t(sapply(1:nrow(df_in), function(i){
     # get substance sheet
     substance <- as.list(df_in[i,])
@@ -58,7 +57,7 @@ maxArea_by_pollution <- function(
               Ci_river = substance$c_river, 
               Ci_threshold = substance$threshold, 
               Ci_storm = ci_storm, 
-              coeff_runoff = site_data[["f_D_urban"]]$Value, 
+              coeff_runoff = site_data[["f_D_connectable"]]$Value, 
               Q_rain = site_data[["rain_year"]]$Value) 
         } else {
           spec_area <- 
@@ -67,7 +66,7 @@ maxArea_by_pollution <- function(
               Ci_river = substance$c_river, 
               Ci_threshold = substance$threshold, 
               Ci_storm = ci_storm, 
-              coeff_runoff = site_data[["f_D_urban"]]$Value,
+              coeff_runoff = site_data[["f_D_connectable"]]$Value,
               q_rain = q_rain, 
               t_rain = t_rain, 
               river_length = site_data[["river_length"]]$Value,
@@ -99,7 +98,7 @@ maxArea_by_pollution <- function(
   
   # connectable in percent
   df_out_percent <- 
-    cbind(df_in[,1], round(df_out[,1:2] / site_data$area_urban$Value, 1))
+    cbind(df_in[,1], round(df_out[,1:2] / site_data[["area_urban_connectable"]]$Value, 1))
   
   # connectable in percent with respect to status quo (--> find problematic substances)
   # Currently connected surface to separate sewer system in ha
@@ -108,7 +107,11 @@ maxArea_by_pollution <- function(
     site_data$area_urban$Value * 100
   
   df_out_statusQuo <- 
-    cbind(df_in[,1], round(df_out[,1:2] / status_quo * 100, 1))
+    if(site_data$area_urban_connected$Value > 0){
+      cbind(df_in[,1], round(df_out[,1:2] / site_data$area_urban_connected$Value, 1))
+    } else {
+      NA
+    }
   
   list("input_data" = df_in,
        "connectable_urban" = df_out_urban,
@@ -139,28 +142,38 @@ maxLoad_pollution <- function(maxArea_list, site_data, rain){
   df_out_urban <- cbind(
     maxArea_list$input_data[,1:5],
     data.frame(
-      "max_load" = maxArea_list$connectable_urban$mix_med * 
-        maxArea_list$input_data$mix_med * rain["duration"] * 60 * 
-        rain["q_rain"] / 100 * site_data$f_D_urban$Value / 1000)) 
+      "max_load" = 
+        signif(maxArea_list$connectable_urban$mix_med *  # in ha
+                 maxArea_list$input_data$mix_med * # in ug/L or mg/L
+                 rain["duration"] * 60 * # from min to s
+                 rain["q_rain"] * # in L/(s*ha)
+                 site_data[["f_D_connectable"]]$Value / # -
+                 1000 / 1000, # from ug to g or mg to kg
+               3)
+      )
+    ) 
   
-  df_out_urban$Unit[grep(pattern = "^mg", df_out_urban$Unit)] <- "g/year"
-  df_out_urban$Unit[grep(pattern = "^ug", df_out_urban$Unit)] <- "mg/rain"
+  df_out_urban$Unit[grep(pattern = "^mg", df_out_urban$Unit)] <- "kg/year"
+  df_out_urban$Unit[grep(pattern = "^ug", df_out_urban$Unit)] <- "g/rain"
   
   # maximal load from planning area (proportional)
   df_out_planning <- df_out_urban
-  df_out_planning$max_load <- df_out_planning$max_load * 
-    site_data$area_plan$Value / site_data$area_urban$Value
+  df_out_planning$max_load <- 
+    signif(df_out_planning$max_load * 
+             site_data[["area_plan"]]$Value / 
+             site_data[["area_urban"]]$Value, 3)
   
   # maximal load from planning area, given the urbanised catchment 
   # Currently connected surface to separate sewer system in ha
-  status_quo <- sum(site_data[["areaType"]][ "proportion"] * 
-                      site_data[["areaType"]]["separate_sewer"]) * 
-    site_data$area_urban$Value * 100
   df_out_absolute <- df_out_urban
   df_out_absolute$max_load <- 
-    df_out_urban$max_load - status_quo * 
-    maxArea_list$input_data$mix_med * rain["duration"] * 60 * 
-    rain["q_rain"] / 100 * site_data$f_D_urban$Value / 1000
+    df_out_urban$max_load - (
+      site_data[["area_urban_connected"]]$Value * 100 * # from km2 to ha 
+        maxArea_list$input_data$mix_med * # in ug/L or mg/L
+        rain["duration"] * 60 * # from min to s
+        rain["q_rain"] * # in L/(s * ha)
+        site_data[["f_D_connected"]]$Value / # -
+        1000 /1000) # from mg to g or g to kg
   
   list("input_data" = maxArea_list$input_data,
        "maxLoad_urban" = df_out_urban,
@@ -189,7 +202,7 @@ maxArea_by_hydrology <- function(
   # tolerable discharge
   Q_tolerable <- calculate_tolerable_discharge(
     area_catch = site_data[["area_catch"]]$Value, 
-    area_urban = site_data[["area_urban"]]$Value, 
+    area_urban = site_data[["area_urban_connectable"]]$Value, # Wording DWA: "angeschlossene befestigte Fläche des geschlossenen Siedlungsgebiets"
     area_plan = site_data[["area_plan"]]$Value, 
     area_urban_upstream = site_data[["area_urban_upstream"]]$Value,
     slope_catch = site_data[["slope_catch"]]$Value, 
@@ -200,23 +213,24 @@ maxArea_by_hydrology <- function(
   
   # connectable area in ha
   area_urban <- get_allowed_area(
-    f_D = site_data[["f_D_urban"]]$Value, 
+    f_D = site_data[["f_D_connectable"]]$Value, 
     Q_tol = Q_tolerable$urban, 
     q_rain = q_rain)
   
   # connectable in %
-  area_percent <- area_urban / site_data$area_urban$Value 
-  
-  # status Quo area in ha
-  area_status_quo <- 
-    sum(site_data[["areaType"]][ "proportion"] * 
-          site_data[["areaType"]]["separate_sewer"]) * 
-    site_data$f_D_urban$Value * site_data$area_urban$Value * 100
+  area_percent <- area_urban / site_data[["area_urban_connectable"]]$Value 
   
   # status Quo discharge
-  current_discharge <- area_status_quo * q_rain * site_data$f_D_urban$Value
+  current_discharge <- site_data[["area_urban_connected"]]$Value * 100 *
+    q_rain * 
+    site_data[["f_D_connected"]]$Value
                     
-  connectable_statusQuo <- area_urban / area_status_quo
+  connectable_statusQuo <- 
+    if(site_data[["area_urban_connected"]]$Value > 0){
+      area_urban / site_data[["area_urban_connected"]]$Value
+    } else {
+      NA
+    }
   
   
   #  Required throttel discharge in L/(s*ha) if complete planning area was connected
@@ -230,7 +244,7 @@ maxArea_by_hydrology <- function(
         "Connetcable area in the urbanised catchment",
         "Connectable area in percent",
         "Connectable refered to status quo",
-        "Required throttel"), 
+        "Required throttel in planning area"), 
     "Unit" = c("L/s", "L/s", "L/s", "ha", "%", "%", "L/(s*ha)"),
     "Value" = c(signif(Q_tolerable$urban,3), 
                 signif(Q_tolerable$planning,3), 

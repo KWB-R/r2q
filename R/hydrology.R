@@ -123,29 +123,37 @@ calculate_tolerable_discharge <- function(
   df_out <- data.frame("Hq1pnat" = Hq1pnat_catch,
                        "x" = NA, 
                        "tol_discharge" = NA, 
+                       "urban_upstream" = NA,
                        "urban" = NA,
                        "planning" = NA,
                        "unit" = "L/s")
   # Calculate x
   df_out$x <- get_x(Hq1_pnat = Hq1pnat_catch, Hq2_pnat = Hq2pnat_catch)
   
-  # Calculate tolerable discharge of yearly event in l/s from the planning area
+  # Calculate the tolerable once-per-year runoff from the complete urban area 
+  # within in l/s from 
   df_out$tol_discharge <- 
     get_q_max(Hq1pnat = Hq1pnat_catch,
               x = df_out$x,
               area_urban = area_urban + area_urban_upstream,
               area_catch = area_catch)
   
+  # breaking it down to the urban area around the planning area
+  df_out$urban_upstream <- df_out$tol_discharge * area_urban_upstream /
+    (area_urban + area_urban_upstream)
+  
   df_out$urban <- df_out$tol_discharge * area_urban /
     (area_urban + area_urban_upstream)
+  
+  # 
   df_out$planning <- df_out$tol_discharge * area_plan / 
     (area_urban + area_urban_upstream)
   
   if(verbose){
     print(paste("Based on provided input data a tolerable annual discharge flow of",
-                as.character(df_out$tol_discharge), "L/s was calculated for the catchment.",
-                "For the planning area this corresponds to", 
-                as.character(round(df_out$planning, 2)), "L/s"))
+                as.character(df_out$tol_discharge),"L/s was calculated for all", 
+                "connectable areas the catchment. For the planning area this",
+                "corresponds to",as.character(round(df_out$planning, 2)),"L/s"))
     df_out
   } else{
     df_out
