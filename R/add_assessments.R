@@ -138,7 +138,7 @@ maxArea_by_pollution <- function(
 #' 
 maxLoad_pollution <- function(maxArea_list, site_data, rain){
   
-  # maximal load from catchment
+  # maximal load from surrounding urban area
   df_out_urban <- cbind(
     maxArea_list$input_data[,1:5],
     data.frame(
@@ -174,6 +174,9 @@ maxLoad_pollution <- function(maxArea_list, site_data, rain){
         rain["q_rain"] * # in L/(s * ha)
         site_data[["f_D_connected"]]$Value / # -
         1000 /1000) # from mg to g or g to kg
+  
+
+  df_out_absolute$max_load[df_out_absolute$max_load < 0] <- 0
   
   list("input_data" = maxArea_list$input_data,
        "maxLoad_urban" = df_out_urban,
