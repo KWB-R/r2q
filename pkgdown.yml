@@ -1,5 +1,5 @@
 pandoc: 2.7.3
-pkgdown: 2.0.2
+pkgdown: 2.0.3
 pkgdown_sha: ~
 articles:
   dashboard: dashboard.html
@@ -8,5 +8,5 @@ articles:
   natural_discharge: natural_discharge.html
   p_annual: p_annual.html
   testplots: testplots.html
-last_built: 2022-03-18T14:06Z
+last_built: 2022-06-11T06:32Z
 
