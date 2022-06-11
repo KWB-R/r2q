@@ -8,5 +8,8 @@ articles:
   natural_discharge: natural_discharge.html
   p_annual: p_annual.html
   testplots: testplots.html
-last_built: 2022-06-11T06:32Z
+last_built: 2022-06-11T06:45Z
+urls:
+  reference: https://kwb-r.github.io/r2q/reference
+  article: https://kwb-r.github.io/r2q/articles
 
