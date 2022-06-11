@@ -3,6 +3,7 @@
 [![codecov](https://codecov.io/github/KWB-R/r2q/branch/main/graphs/badge.svg)](https://codecov.io/github/KWB-R/r2q)
 [![Project Status](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/r2q)]()
+[![R-Universe_Status_Badge](https://kwb-r.r-universe.dev/badges/r2q)](https://kwb-r.r-universe.dev/)
 
 R Package with Functions and Exchange for Project
 R2Q.
