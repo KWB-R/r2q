@@ -22,22 +22,32 @@
 load_site_data <- function(
   data.dir,
   filename
-){
-  site_data <- readxl::read_excel(
-    path = file.path(data.dir, filename),
-    sheet = "site_data")
+)
+{
+  siteInfo_id <- get_siteInfoID()
   
-  siteData <- lapply(1:nrow(site_data), function(i){
-    one_parameter <- as.list(site_data[i,2:5])
-    if(is.na(one_parameter["Value"]) & 
-       !is.na(one_parameter["Obligatory"])){
-      stop("No value for oblitogry parameter ", site_data[i,1])
-    }
-    one_parameter$Value <- 
-      utils::type.convert(x = one_parameter$Value, as.is = TRUE)
-    one_parameter
-  })
-  names(siteData) <- site_data[["Parameter"]]
+  site_data <- suppressWarnings(readxl::read_excel(
+    path = file.path(data.dir, filename),
+    sheet = "site_data", 
+    col_types = c("numeric", rep("text", 4)), 
+    col_names = c("ID", "Variable", "Unit", "Value", "Description")
+  ))
+  
+  site_data <- site_data[!is.na(site_data$ID),]
+  
+  siteData <- lapply(
+    site_data$ID, 
+    function(i){
+      obligatory <- siteInfo_id$obligatory[siteInfo_id$i_id == i] == "x"
+      x <- as.list(site_data[i,1:5])
+      if(is.na(x["Value"]) & obligatory) {
+        stop("No value for obligatory variable ", x$Variable)
+      }
+      x$Value <- utils::type.convert(x = x$Value, as.is = TRUE)
+      x
+    })
+  
+  names(siteData) <- site_data[["Variable"]]
   
   if(all(is.na(c(siteData[["slope_catch"]]$Value,
                  siteData[["Hq1pnat_catch"]]$Value)))){
@@ -45,69 +55,74 @@ load_site_data <- function(
          " Hq1pnat are missing. At least one parameter must be provided.")
   }
   
-  # exclude all the NA values --> Either headings or not obligatory
   del <- which(sapply(siteData, function(x){is.na(x["Value"])}))
-  siteData <- siteData[-del]
-  
+  if(length(del)) {
+    siteData <- siteData[-del]
+  }
+
   if(!("Hq1pnat_catch" %in% names(siteData))){
     siteData[["Hq1pnat_catch"]] <- list(
       "Unit" = "L/(s*km2)",
-      "Value" = get_Hq1_pnat(slope = siteData$slope_catch$Value, 
-                             area_catch = siteData$area_catch$Value),
-      "Explanation" = "Natural run-off of the catchment for a yearly rain event"
+      "Value" = get_Hq1_pnat(
+        slope = siteData$slope_catch$Value, 
+        area_catch = siteData$area_catch$Value),
+      "Description" = "Natural run-off of the catchment for a yearly rain event"
     ) 
   }
   
   siteData[["Q_event"]] <- list(
     "Unit" = "m3/s",
-    "Value" =  siteData$Hq1pnat_catch$Value * siteData$area_catch$Value / 1000,
-    "Explanation" = "river flow during a yearly rain event"
+    "Value" = siteData$Hq1pnat_catch$Value * siteData$area_catch$Value / 1000,
+    "Description" = "River flow during a yearly rain event"
   ) 
   
   siteData[["cross_section_event"]] <- list(
     "Unit" = "m2",
-    "Value" =  siteData$river_cross_section$Value * 
+    "Value" =  
+      siteData$river_cross_section$Value * 
       (1 + siteData$Q_event$Value / siteData$Q_mean$Value / 4),
-    "Explanation" = "river flow during a yearly rain event"
+    "Description" = "River cross section during a yearly rain event"
   ) 
   
   siteData[["areaType"]] <- 
     load_areaTypes(data.dir = data.dir, filename = filename)
   
-  # the average runoff_coefficient and average connected area 
-  # based on area type composition (no_run)
   siteData[["area_urban_connectable"]] <- list(
     "Unit" = "km2", 
-    "Value" =  siteData[["area_urban"]]$Value - 
+    "Value" =  
+      siteData[["area_urban"]]$Value - 
       siteData[["area_urban"]]$Value * 
       siteData$areaType["no_runoff", "proportion"],
-    "Explanation" = "Connectable area of the urban area (area_urban exclusive no_runoff)")
+    "Description" = 
+      paste0("Connectable area of the urban area ",  
+             "(area_urban exclusive 'no_runoff')"))
   
   siteData[["area_urban_connected"]] <- list(
     "Unit" = "km2", 
-    "Value" = siteData[["area_urban"]]$Value * 
+    "Value" = 
+      siteData[["area_urban"]]$Value * 
       sum(siteData$areaType[["proportion"]] * 
             siteData$areaType[["separate_sewer"]]),
-    "Explanation" = "Urban area currently connected to separate sewer system")
+    "Description" = "Urban area currently connected to separate sewer system")
   
-  # the average runoff_coefficient and average connected area 
-  # based on area type composition (no_run)
   siteData[["f_D_connectable"]] <- list(
     "Unit" = "-", 
-    "Value" = sum(
-      siteData$areaType[["fD"]] * 
-        siteData$areaType[["proportion"]]) / 
+    "Value" = 
+      sum(siteData$areaType[["fD"]] * 
+            siteData$areaType[["proportion"]]) / 
       (1 - siteData$areaType["no_runoff", "proportion"]),
-    "Explanation" = "Area proportional average fD value of the urban catchment area (no_runoff) areas excluded")
+    "Description" = 
+      paste0("Area proportional average fD value of the connetable urban ", 
+      "catchment area (no_runoff) areas excluded"))
   
   siteData[["f_D_connected"]] <- list(
     "Unit" = "-", 
     "Value" = sum(
       siteData$areaType[["fD"]] * 
         siteData$areaType[["effective"]]),
-    "Explanation" = "Area proportional average fD value of the urban catchment area (no_runoff) areas excluded")
-  
-  
+    "Description" = 
+      paste0("Area proportional average fD value of the conneted urban ",
+      "catchment area (no_runoff) areas excluded"))
   
   siteData
 }
@@ -143,48 +158,52 @@ load_site_data <- function(
 load_areaTypes <- function(
   data.dir = NULL, filename, residential_city = c(0.75, 0.3, 1),  
   residential_suburban = c(0.75, 0.3, 1), commercial = c(0.75, 0.3, 1), 
-  main_road = c(0.9, 0.1, 1), no_runoff = c(0, 0, 0)){
-  
-  
-  df_in <-  if(!is.null(data.dir)){
-    data.frame(readxl::read_excel(
-    path = file.path(data.dir, filename),
-    sheet = paste0("urban_catchment_landuse")))
+  main_road = c(0.9, 0.1, 1), no_runoff = c(0, 0, 0)
+)
+{
+  df_in <- if(!is.null(data.dir)) {
+    data.frame(
+      readxl::read_excel(
+        path = file.path(data.dir, filename),
+        sheet = paste0("urban_catchment_landuse")
+      )
+    )
   } else {
     data.frame(
-      "landuse" = c("residential_city", "residential_suburban", "commercial", 
-                    "main_road", "no_runoff"),
-      "fD" = c(residential_city[1], residential_suburban[1], commercial[1], 
-               main_road[1], no_runoff[1]),
-      "share_percent" = c(residential_city[2], residential_suburban[2], 
-                          commercial[2], main_road[2], no_runoff[2]),
-      "separate_sewer" = c(residential_city[3], residential_suburban[3], 
-                           commercial[3], main_road[3], no_runoff[3]))
+      "fD" = c(
+        residential_city[1], residential_suburban[1], commercial[1], 
+        main_road[1], no_runoff[1]),
+      "share_percent" = c(
+        residential_city[2], residential_suburban[2], commercial[2], 
+        main_road[2], no_runoff[2]),
+      "separate_sewer" = c(
+        residential_city[3], residential_suburban[3], commercial[3],
+        main_road[3], no_runoff[3]), 
+      row.names = c(
+        "residential_city", "residential_suburban", "commercial", 
+        "main_road", "no_runoff"))
   }
   
-  # 
-  df_in$separate_sewer[df_in$landuse == "no_runoff"] <- 0
+  df_in$separate_sewer[rownames(df_in) == "no_runoff"] <- 0
   
   if(round(sum(df_in$proportion), 0) != 1L)
     stop("The specified area types do not sum up to 100 %")
   
   # connecetd area in average
   connected <- sum(df_in$proportion * df_in$separate_sewer, na.rm = T)
-  if(connected > 0){
+  if(connected > 0L){
     # area types weighted by the proportion of seperate sewers 
-    df_in$effective <- df_in$proportion * 
+    df_in$effective <- 
+      df_in$proportion * 
       df_in$separate_sewer /
       connected 
-    df_in$Mix_flow <- (df_in$fD * df_in$effective) / 
+    df_in$Mix_flow <- 
+      (df_in$fD * df_in$effective) / 
       sum(df_in$fD * df_in$effective, na.rm = T)
-    
   } else {
     df_in$effective <- df_in$Mix_flow <- 0
   }
-
-  rownames(df_in) <- df_in$landuse
-  df_in[,-which(colnames(df_in) == "landuse")]
-  
+  df_in
 }
 
 #' Loading local background concentration
