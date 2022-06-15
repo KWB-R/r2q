@@ -16,46 +16,56 @@ get_thresholds <- function(
   LAWA_type = "default"
 )
 {
-  
-  # acute concentration (valid for all SUW type)
   acute_thresholds <- read.table(
-    file = system.file("extdata/Thresholds/thresholds_acute.csv", 
-                       package = "r2q"),
-    sep = ";", dec = ".", as.is = TRUE, header = TRUE)
+    file = system.file("extdata/Thresholds/acute.csv",package = "r2q"),
+    sep = ";", 
+    dec = ".", 
+    as.is = TRUE, 
+    header = TRUE
+  )
   
-  # annual thresholds (depending on SUW type)
   if (SUW_type == "river") {
     annual_thresholds <- read.table(
-      file = system.file("extdata/Thresholds/thresholds_annual_rivers.csv", 
-                         package = "r2q"),
-      sep = ";", dec = ".", as.is = TRUE, header = TRUE)
+      file = system.file("extdata/Thresholds/annual_rivers.csv", package = "r2q"),
+      sep = ";", 
+      dec = ".", 
+      as.is = TRUE, 
+      header = TRUE
+    )
   } else {
     annual_thresholds <- read.table(
-      file = system.file("extdata/Thresholds/thresholds_annual_lakes.csv", 
-                         package = "r2q"),
-      sep = ";", dec = ".", as.is = TRUE, header = TRUE)
+      file = system.file("extdata/Thresholds/annual_lakes.csv", package = "r2q"),
+      sep = ";", 
+      dec = ".", 
+      as.is = TRUE, 
+      header = TRUE)
   }
   
-  index_SUW_type <- which(sapply(
-    lapply(annual_thresholds$LAWA_type, strsplit, split = ",| "), 
-    function(Lawa_string){
-      here_it_is <- grep(pattern = paste0("^", LAWA_type, "$"), 
-                         x = unlist(Lawa_string))
-      length(here_it_is) > 0
-    }))
+  index_SUW_type <- which(
+    sapply(
+      lapply(
+        annual_thresholds$LAWA_type, 
+        strsplit, 
+        split = ",| "), 
+      function(Lawa_string){
+        here_it_is <- grep(
+          pattern = paste0("^", LAWA_type, "$"), 
+          x = unlist(Lawa_string))
+        length(here_it_is) > 0
+      }
+    )
+  )
   
-  # set index to default if the specified LAWA type was not found
-  if (length(index_SUW_type) == 0) {
-    index_SUW_type <- which(annual_thresholds$LAWA_type == "default")
-    warning("Lawa Type ", LAWA_type, " not found.",
-            " -> LAWA Type was set to default instead")
-  }
-  
-  
-  if(any(duplicated(annual_thresholds$Substance[index_SUW_type]))){
-    warning("two thresholds were found for Lawa Type: ", LAWA_type, 
-            " -> LAWA Type was set to default instead")
-  }
+  index_SUW_type <- 
+    if (length(index_SUW_type) == 0L) {
+      warning("Lawa Type ", LAWA_type, " not found.",
+              " -> LAWA Type was set to default instead")
+      which(annual_thresholds$LAWA_type == "default")
+    } else if (any(duplicated(annual_thresholds$substance_id[index_SUW_type]))) {
+      warning("two thresholds were found for Lawa Type: ", LAWA_type, 
+              " -> LAWA Type was set to default instead")
+      which(annual_thresholds$LAWA_type == "default")
+    }
   
   c_thresh <- rbind(acute_thresholds, 
         annual_thresholds[index_SUW_type, 
@@ -79,26 +89,32 @@ get_thresholds <- function(
 #' @importFrom utils read.table
 get_areaType_runoff <- function(
   residential_city = 40, residential_suburban = 40, commercial = 20, 
-  main_road = NULL){   
-  
-  areaType_vector <- if(is.null(main_road)){
-   c(residential_suburban, residential_city, commercial, 0)
+  main_road = NULL
+)
+{   
+  areaType_vector <- if(is.null(main_road)) {
+    c(residential_suburban, residential_city, commercial, 0)
   } else {
     c(residential_suburban, residential_city, commercial, main_road)
   }
- 
-  conc <- read.table(file = system.file("extdata/Runoff_conc/catch_conc.csv", 
-                                      package = "r2q"), 
-                   sep = ";", dec = ".", header = T)
+  
+  conc <- read.table(
+    file = system.file("extdata/Runoff_conc/catch_conc.csv",  package = "r2q"), 
+    sep = ";", 
+    dec = ".", 
+    header = T
+  )
   
   conc <- sub_OgRe_to_name(c_table = conc)
   mm <- as.matrix(conc[,grep("_med$", colnames(conc))])
   qm <- as.matrix(conc[,grep("_q95$", colnames(conc))])
   
-  cbind(data.frame("Substance" = conc$substance, 
-             "Unit" = conc$Unit, 
-             "mix_med" = mm %*% areaType_vector, 
-             "mix_q95" = qm %*% areaType_vector), conc[,-c(1:3)])
+  cbind(data.frame(
+    "Substance" = conc$substance, 
+    "Unit" = conc$Unit, 
+    "mix_med" = mm %*% areaType_vector, 
+    "mix_q95" = qm %*% areaType_vector), conc[,-c(1:3)]
+  )
 }
 
 #' This function loads the landuse specific pollutant runoff concentration

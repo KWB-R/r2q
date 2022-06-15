@@ -11,12 +11,9 @@ c_river <- r2q::load_background_data(
 # load package data ------------------------------------------------------------
 # c_storm <- r2q::get_stormwater_concentrations()
 c_storm <- r2q::get_areaType_runoff(
-  residential_suburban = 
-    siteData$areaType["residential_suburban","Mix_flow"],
-  residential_city = 
-    siteData$areaType["residential_city","Mix_flow"],
-  commercial = 
-    siteData$areaType["commercial","Mix_flow"], 
+  residential_suburban =  siteData$areaType["residential_suburban","Mix_flow"],
+  residential_city =  siteData$areaType["residential_city","Mix_flow"],
+  commercial = siteData$areaType["commercial","Mix_flow"], 
   main_road = siteData$areaType["main_road", "Mix_flow"])
 
 c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
