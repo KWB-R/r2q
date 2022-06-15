@@ -175,9 +175,11 @@ sub_OgRe_to_name <- function(c_table){
 #' 
 get_subID <- function(){
   read.table(
-    file = system.file("extdata/IDs/substance_id.csv", 
-                       package = "r2q"),
-    sep = ";", dec = ".", as.is = TRUE, header = TRUE)
+    file = system.file("extdata/IDs/substance_id.csv",  package = "r2q"),
+    sep = ";",
+    as.is = TRUE, 
+    header = TRUE
+  )
 }
 
 #' Loads the table with function IDs
@@ -187,8 +189,23 @@ get_subID <- function(){
 #' 
 get_functionsID <- function(){
   read.table(
-    file = system.file("extdata/IDs/functions_id.csv", 
-                       package = "r2q"),
-    sep = ";", dec = ".", as.is = TRUE, header = TRUE)
+    file = system.file("extdata/IDs/functions_id.csv", package = "r2q"),
+    sep = ";",
+    as.is = TRUE, 
+    header = TRUE
+  )
+}
+
+#' Load the table with site data variable IDs
+#'
+#' @return data.frame with site specific variables IDs, variable names and units
+#' @export
+#' 
+get_siteInfoID <- function(){
+  read.table(
+    system.file("extdata/IDs/siteInfo_id.csv",  package = "r2q"), 
+    sep = ";", 
+    header = TRUE
+  ) 
 }
 
