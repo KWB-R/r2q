@@ -222,6 +222,11 @@ load_background_data <- function(
     sheet = "pollution_data", 
     col_types = c("text", "text", "numeric", "text"), na = "NA")
   
+  id <- get_subID()
+  df_in$Substance <- sapply(df_in$Substance, function(x){
+    id$substance[which(x == id$name_OgRe)]
+  })
+ 
   colnames(df_in)[colnames(df_in) == "Background Concentration"] <- "river"
   df_in$Comment <- "entered"
   
@@ -231,9 +236,11 @@ load_background_data <- function(
     )
     substances_needed <- df_in[["Substance"]][default_index]
     
+    print(paste0("Using default values for substances ", 
+                 paste0(substances_needed, collapse = ", ")))
     defaults <- get_default_background(SUW_type = SUW_type)
     defaults_row <- 
-      lapply(substances_needed, function(x){which(defaults[["Substance"]] == x)})
+      lapply(substances_needed, function(x){which(defaults[["substance"]] == x)})
     
     for(i in 1:length(default_index)){
       df_in$river[default_index[i]] <- defaults[defaults_row[[i]], "Default"]

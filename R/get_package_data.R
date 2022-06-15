@@ -11,11 +11,12 @@
 #' @return data.frame with acute and annual substance threshold, suitable for a given SUW body
 #' @importFrom utils read.table
 #' @export
-get_thresholds <- function (
+get_thresholds <- function(
   SUW_type = "river",
   LAWA_type = "default"
 )
 {
+  
   # acute concentration (valid for all SUW type)
   acute_thresholds <- read.table(
     file = system.file("extdata/Thresholds/thresholds_acute.csv", 
@@ -56,71 +57,14 @@ get_thresholds <- function (
             " -> LAWA Type was set to default instead")
   }
   
-  rbind(acute_thresholds, 
+  c_thresh <- rbind(acute_thresholds, 
         annual_thresholds[index_SUW_type, 
                           names(annual_thresholds) != "LAWA_type"])
   
+  sub_id_to_name(c_table = c_thresh)
 }
 
-#' get average concentrations in stormwater runoff
-#'
-#' assembles concentrations in stormwater runoff  
-#' for selected substances based on Berlin OgRe data set
-#' from csv table. In addition to averages, coeffs for log-normal
-#' distribution are assessed
-#'
-#' @param substances substance name or vector of substance names in German
-#' if left NULL all parameters measured in OgRe will be loaded 
-#' 
-#' @return data.frame with mean(x), mean (log x) and sd (log x) 
-#' @export
-#' @importFrom stats sd
-#' @importFrom utils read.table
-#' 
-get_stormwater_concentrations <- function (substances = NULL)
-{
-  OgRe_data <- read.table(file = system.file("extdata/OgRe_data/OgRe_drain.csv", 
-                                             package = "r2q"), 
-                          sep = ";", dec = ".", header = TRUE, as.is = TRUE)
-  
-  
-  if(is.null(substances)){
-    substances <- unique(OgRe_data$VariableName)
-  }
-  
-  #result format
-  C_storm_average <- data.frame("Substance" = substances,
-                                "Unit" = NA,
-                                "Mean" = NA,
-                                "log_mean" = NA,
-                                "log_stdev" = NA)
-  
-  #calculate average over all city structure types (for values below dl, dl is used)
-  for (substance in substances) {
-    
-    index_Ogre <- which(OgRe_data$VariableName == substance)
-    index_output <- which(C_storm_average$Substance == substance)
-    unit <- unique(OgRe_data$UnitsAbbreviation[index_Ogre])
-    
-    if(length(unit) > 1){
-      stop("Stormwater concentration in different units for ", substance,
-           ". Data cannot be agregated." ) 
-    }
-    
-    C_storm_average$Unit[index_output] <- unit
-    
-    C_storm_average$Mean[index_output] <- 
-      mean(OgRe_data$DataValue[index_Ogre])
-    C_storm_average$log_mean[index_output] <- 
-      mean(log10(OgRe_data$DataValue[index_Ogre]))
-    C_storm_average$log_stdev[index_output] <- 
-      sd(log10(OgRe_data$DataValue[index_Ogre]))
-    
-  }
-  C_storm_average
-}
-
-#' This function loads the area type specific pollutant runoff concentration
+#' This function loads the landuse specific pollutant runoff concentration
 #' obtained by the OgRe Dataset and multiplies it with the proportion of the
 #' correspoding area type in the catchment. 
 #' 
@@ -147,13 +91,31 @@ get_areaType_runoff <- function(
                                       package = "r2q"), 
                    sep = ";", dec = ".", header = T)
   
+  conc <- sub_OgRe_to_name(c_table = conc)
   mm <- as.matrix(conc[,grep("_med$", colnames(conc))])
   qm <- as.matrix(conc[,grep("_q95$", colnames(conc))])
   
-  cbind(data.frame("Substance" = conc$Substance, 
+  cbind(data.frame("Substance" = conc$substance, 
              "Unit" = conc$Unit, 
-             "mix_med" = mm %*% areaType_vector, # this is actually the median value
-             "mix_q95" = qm %*% areaType_vector), conc[,-c(1,2)])
+             "mix_med" = mm %*% areaType_vector, 
+             "mix_q95" = qm %*% areaType_vector), conc[,-c(1:3)])
+}
+
+#' This function loads the landuse specific pollutant runoff concentration
+#' obtained by the OgRe Dataset and multiplies it with the proportion of the
+#' correspoding area type in the catchment. 
+#' 
+#' @return
+#' A dataframe with the columns "Substance", "unit", "Mean" which is the 
+#' median value and "Q95" which is the 95th quantile.
+#' 
+#' @export
+#' @importFrom utils read.table
+get_spec_runoff <- function(){   
+  read.table(file = system.file("extdata/Runoff_conc/spec_conc.csv", 
+                                        package = "r2q"), 
+                     sep = ";", dec = ".", header = T)
+  
 }
 
 #' Get KOSTRA rain characteristics
@@ -281,7 +243,7 @@ get_KOSTRA <- function(
 get_default_background <- function (
   SUW_type = "river"
 ){
-
+ 
   #get background_concentrations for SUW_type
   C_background <- if (SUW_type == "river") {
       read.table(
@@ -296,7 +258,9 @@ get_default_background <- function (
         package = "r2q"),
       sep = ";", dec = ".", as.is = TRUE, header = TRUE)
   }
-  C_background 
+  
+  sub_id_to_name(c_table = C_background)
+ 
 }
 
 

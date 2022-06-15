@@ -11,7 +11,9 @@ merge_by_pollutant <- function(
   dataFrame1, 
   dataFrame2
 ){
-  merge(dataFrame1, dataFrame2, by = c("Substance", "Unit"), 
+  colnames(dataFrame1) <- tolower(colnames(dataFrame1))
+  colnames(dataFrame2) <- tolower(colnames(dataFrame2))
+  merge(dataFrame1, dataFrame2, by = c("substance", "unit"), 
         all = TRUE)
 }
 
@@ -49,8 +51,7 @@ combine_concentration_tables <- function(
   background_table,
   onlyComplete = FALSE
 ){
-  th <- threshold_table[,c("Substance", "Unit", "Group", 
-                           "threshold", "threshold_type")]
+  th <- threshold_table[,c("substance", "Unit", "threshold", "threshold_type")]
   st <- storm_table
   ba <- background_table
   colnames(ba)[3] <- c("c_river")
@@ -112,3 +113,82 @@ check_pollutant_impact <- function(Ci_river, Ci_threshold, Ci_storm){
   
   max_sealed_area
 }
+
+#' Substance IDs within the package data tables are turned to substance names
+#' 
+#' @details This function ensures that every defined substance ID is part of the
+#' concentration table, and every ID of the table is defined in the package
+#' 
+#' @return c_table expanded by the column "substance" 
+#' @export
+#' 
+sub_id_to_name <- function(c_table){
+  id <- get_subID()
+  c_table <- 
+    merge(x = id[c("s_id", "substance")], y = c_table, 
+          by.x = "s_id", by.y = grep(pattern = "id", colnames(c_table), value = T), 
+          all = T)
+  if(any(is.na(c_table[[ncol(c_table)]]))){
+    no_concentration <- which(is.na(c_table[[ncol(c_table)]]))
+    message("No concentration in table for substance ", (c_table$substance[no_concentration]))
+  }
+  if(any(is.na(c_table$s_id))){
+    no_definition <- which(is.na(c_table$s_id))
+    message("ID  ", (c_table$s_id[no_definition]), " is not a defined substance")
+  }
+  c_table
+}
+
+#' OgRe substance names are turned to substance names used in the tables
+#' 
+#' @details This function ensures that every defined substance is part of the
+#' concentration table, and every OgRe Substance of the table is defined in the package
+#' 
+#' @return c_table expanded by the column "substance" 
+#' @export
+#' 
+sub_OgRe_to_name <- function(c_table){
+  id <- get_subID()
+  c_table <- 
+    merge(x = id[c("name_OgRe", "substance")], y = c_table, 
+          by.x = "name_OgRe", by.y = grep(pattern = "Substance", colnames(c_table), value = T), 
+          all = T)
+  if(any(is.na(c_table[[ncol(c_table)]]))){
+    no_concentration <- which(is.na(c_table[[ncol(c_table)]]))
+    message("No concentration in table for substance ", (c_table$substance[no_concentration]))
+  }
+  if(any(is.na(c_table$substance))){
+    no_definition <- which(is.na(c_table$substance))
+    message("Substance  ", 
+            paste0((c_table$name_OgRe[no_definition]), collapse = " ,"), 
+            " is/are not a defined substance/s")
+  }
+  c_table
+}
+
+#' Load the table with substance IDs
+#'
+#' @return data.frame with substance IDs, substance names within the OgRe-
+#' data set, clean substance names, substance unit 
+#' and substance groups in english and german
+#' @export
+#' 
+get_subID <- function(){
+  read.table(
+    file = system.file("extdata/IDs/substance_id.csv", 
+                       package = "r2q"),
+    sep = ";", dec = ".", as.is = TRUE, header = TRUE)
+}
+
+#' Loads the table with function IDs
+#'
+#' @return data.frame with function IDs and additional 1 to 3 characterizations
+#' @export
+#' 
+get_functionsID <- function(){
+  read.table(
+    file = system.file("extdata/IDs/functions_id.csv", 
+                       package = "r2q"),
+    sep = ";", dec = ".", as.is = TRUE, header = TRUE)
+}
+

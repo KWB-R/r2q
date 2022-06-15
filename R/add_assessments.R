@@ -89,16 +89,16 @@ maxArea_by_pollution <- function(
   
   # connectable area in the whole urban area in ha
   df_out_urban <- 
-    cbind(df_in[,1], signif(df_out, 2)) 
+    cbind(df_in[1], signif(df_out, 2)) 
   
   # connectable area in the planning area (proportional)
   df_out_planning <- 
-    cbind(df_in[,1], 
+    cbind(df_in[1], 
           signif(df_out * site_data$area_plan$Value / site_data$area_urban$Value, 2)) 
   
   # connectable in percent
   df_out_percent <- 
-    cbind(df_in[,1], round(df_out[,1:2] / site_data[["area_urban_connectable"]]$Value, 1))
+    cbind(df_in[1], round(df_out[,1:2] / site_data[["area_urban_connectable"]]$Value, 1))
   
   # connectable in percent with respect to status quo (--> find problematic substances)
   # Currently connected surface to separate sewer system in ha
@@ -108,7 +108,7 @@ maxArea_by_pollution <- function(
   
   df_out_statusQuo <- 
     if(site_data$area_urban_connected$Value > 0){
-      cbind(df_in[,1], round(df_out[,1:2] / site_data$area_urban_connected$Value, 1))
+      cbind(df_in[1], round(df_out[,1:2] / site_data$area_urban_connected$Value, 1))
     } else {
       NA
     }
@@ -153,8 +153,8 @@ maxLoad_pollution <- function(maxArea_list, site_data, rain){
       )
     ) 
   
-  df_out_urban$Unit[grep(pattern = "^mg", df_out_urban$Unit)] <- "kg/year"
-  df_out_urban$Unit[grep(pattern = "^ug", df_out_urban$Unit)] <- "g/rain"
+  df_out_urban$unit[grep(pattern = "^mg", df_out_urban$unit)] <- "kg/year"
+  df_out_urban$unit[grep(pattern = "^ug", df_out_urban$unit)] <- "g/rain"
   
   # maximal load from planning area (proportional)
   df_out_planning <- df_out_urban

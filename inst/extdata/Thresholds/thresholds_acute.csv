@@ -1,20 +1,20 @@
-Substance;Unit;Group;threshold;threshold_type;Source
-Anthracen;ug/L;PAK;0.7;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Cadmium gelöst;ug/L;Schwermetalle, gelöst;0.9;acute;OGewV 2016, Anlage 8, Tabelle 2, Wasserhärte 4, ZHK-UQN
-Carbendazim;ug/L;Biozide;0.7;acute;OGewV 2016, Anlage 6, ZHK-UQN
-Diethylhexylphthalat (DEHP);ug/L;Phthalate;1.3;acute;OGewV 2016, Anlage 8, Tabelle 2, JD-UQN
-Mecoprop;ug/L;Biozide;0.1;acute;OGewV 2016, Anlage 6, JD-UQN
-Phenanthren;ug/L;PAK;0.5;acute;OGewV 2016, Anlage 6, ZHK-UQN
-Diuron;ug/L;Biozide;1.8;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Fluoranthen;ug/L;PAK;0.12;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Blei gelöst;ug/L;Schwermetalle, gelöst;14;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Naphthalin;ug/L;PAK;130;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Nickel gelöst;ug/L;Schwermetalle, gelöst;34;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Benzo[a]pyren;ug/L;PAK;0.27;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Benzo[b]fluoranthen;ug/L;PAK;0.017;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Benzo[k]fluoranthen;ug/L;PAK;0.017;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Benzo[g,h,i]perylen;ug/L;PAK;0.0082;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Terbutryn;ug/L;Biozide;0.34;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
-Zink gelöst;ug/L;Schwermetalle, gelöst;33;acute;UQN-Vorschläge des UBA (Wenzel et al. 2015)
-Kupfer gelöst;ug/L;Schwermetalle, gelöst;2.4;acute;UQN-Vorschläge des UBA (Wenzel et al. 2015)
-AFS fein (<63µm);mg/L;AFS63;30;annual;DWA A102, Abschnitt 3, Kap. 7.5.1.3
+substance_id;Unit;threshold;threshold_type;Source
+2;ug/L;0.7;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+8;ug/L;0.9;acute;OGewV 2016, Anlage 8, Tabelle 2, Wasserhärte 4, ZHK-UQN
+9;ug/L;0.7;acute;OGewV 2016, Anlage 6, ZHK-UQN
+10;ug/L;1.3;acute;OGewV 2016, Anlage 8, Tabelle 2, JD-UQN
+15;ug/L;0.1;acute;OGewV 2016, Anlage 6, JD-UQN
+19;ug/L;0.5;acute;OGewV 2016, Anlage 6, ZHK-UQN
+11;ug/L;1.8;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+12;ug/L;0.12;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+7;ug/L;14;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+16;ug/L;130;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+17;ug/L;34;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+3;ug/L;0.27;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+4;ug/L;0.017;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+6;ug/L;0.017;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+5;ug/L;0.0082;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+20;ug/L;0.34;acute;OGewV 2016, Anlage 8, Tabelle 2, ZHK-UQN
+21;ug/L;33;acute;UQN-Vorschläge des UBA (Wenzel et al. 2015)
+14;ug/L;2.4;acute;UQN-Vorschläge des UBA (Wenzel et al. 2015)
+1;mg/L;30;annual;DWA A102, Abschnitt 3, Kap. 7.5.1.3
