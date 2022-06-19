@@ -1,5 +1,5 @@
 s_id;substance;name_OgRe;group_de;group_en
-1;AFS_63;AFS fein (<63µm);AFS;TSS
+1;AFS_63;AFS fein (<63µm);AFS;suspended_solids
 2;Anthracen;Anthracen;PAK;PAH
 3;Benzo_a_pyren;Benzo[a]pyren;PAK;PAH
 4;Benzo_b_fluoranthen;Benzo[b]fluoranthen;PAK;PAH
@@ -8,7 +8,7 @@ s_id;substance;name_OgRe;group_de;group_en
 7;Pb_geloest;Blei gelöst;Schwermetalle;Heavy metals
 8;Cd_geloest;Cadmium gelöst;Schwermetalle;Heavy metals
 9;Carbendazim;Carbendazim;Biozide;Biocides
-10;Diethylhexylphthalat;Diethylhexylphthalat (DEHP);Phthalat;Phthalat
+10;Diethylhexylphthalat;Diethylhexylphthalat (DEHP);Phthalat;Phthalate
 11;Diuron;Diuron;Biozide;Biocides
 12;Fluoranthen;Fluoranthen;PAK;PAH
 13;Gesamt_Phosphor;Gesamt-Phosphor;Naehrstoffe;Nutrients

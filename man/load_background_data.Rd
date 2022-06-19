@@ -30,9 +30,3 @@ default values are used this is documented in the "comment" column.
 This functions loads the data from the sheet "pollution_data" within the
 R2Q-Excel file for data entry
 }
-\examples{
-load_site_data(
-data.dir = system.file("extdata/Data_entry", package = "r2q"), 
-filename = "Baukau.xlsx")
-
-}

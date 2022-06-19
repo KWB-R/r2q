@@ -6,9 +6,11 @@
 #'
 #' @param SUW_type "lake" or "river", "river" is used as default 
 #' @param LAWA_type lake or river type as described in German OGewV. 
-#' Only main type sould be indicated (e.g. insert 11 for river type 11.1 or 11 K). 
+#' Only main type sould be indicated (e.g. insert 11 for river type 11.1 
+#' or 11 K). 
 #' If unknown, "default" will return typical values valid for a range of SUW.
-#' @return data.frame with acute and annual substance threshold, suitable for a given SUW body
+#' @return data.frame with acute and annual substance threshold, suitable for a 
+#' given SUW body
 #' @importFrom utils read.table
 #' @export
 get_thresholds <- function(
@@ -17,7 +19,7 @@ get_thresholds <- function(
 )
 {
   acute_thresholds <- read.table(
-    file = system.file("extdata/Thresholds/acute.csv",package = "r2q"),
+    file = system.file("extdata/Thresholds/acute.csv", package = "r2q"),
     sep = ";", 
     dec = ".", 
     as.is = TRUE, 
@@ -26,7 +28,7 @@ get_thresholds <- function(
   
   if (SUW_type == "river") {
     annual_thresholds <- read.table(
-      file = system.file("extdata/Thresholds/annual_rivers.csv", package = "r2q"),
+      file =system.file("extdata/Thresholds/annual_rivers.csv",package = "r2q"),
       sep = ";", 
       dec = ".", 
       as.is = TRUE, 
@@ -34,7 +36,7 @@ get_thresholds <- function(
     )
   } else {
     annual_thresholds <- read.table(
-      file = system.file("extdata/Thresholds/annual_lakes.csv", package = "r2q"),
+      file = system.file("extdata/Thresholds/annual_lakes.csv",package = "r2q"),
       sep = ";", 
       dec = ".", 
       as.is = TRUE, 
@@ -56,20 +58,20 @@ get_thresholds <- function(
     )
   )
   
-  index_SUW_type <- 
-    if (length(index_SUW_type) == 0L) {
-      warning("Lawa Type ", LAWA_type, " not found.",
-              " -> LAWA Type was set to default instead")
-      which(annual_thresholds$LAWA_type == "default")
-    } else if (any(duplicated(annual_thresholds$substance_id[index_SUW_type]))) {
-      warning("two thresholds were found for Lawa Type: ", LAWA_type, 
-              " -> LAWA Type was set to default instead")
-      which(annual_thresholds$LAWA_type == "default")
-    }
   
-  c_thresh <- rbind(acute_thresholds, 
-        annual_thresholds[index_SUW_type, 
-                          names(annual_thresholds) != "LAWA_type"])
+  if (length(index_SUW_type) == 0L) {
+    warning("Lawa Type ", LAWA_type, " not found.",
+            " -> LAWA Type was set to default instead")
+    index_SUW_type <- which(annual_thresholds$LAWA_type == "default")
+  } else if (any(duplicated(annual_thresholds$substance_id[index_SUW_type]))) {
+    warning("two thresholds were found for Lawa Type: ", LAWA_type, 
+            " -> LAWA Type was set to default instead")
+    index_SUW_type <- which(annual_thresholds$LAWA_type == "default")
+  } 
+  
+  c_thresh <- rbind(
+    acute_thresholds, 
+    annual_thresholds[index_SUW_type, names(annual_thresholds) != "LAWA_type"])
   
   sub_id_to_name(c_table = c_thresh)
 }
@@ -78,43 +80,41 @@ get_thresholds <- function(
 #' obtained by the OgRe Dataset and multiplies it with the proportion of the
 #' correspoding area type in the catchment. 
 #' 
-#' @param residential_suburban,residential_city,commercial,main_road Proportions
-#' of the landuse types in percent
+#' @param runoff_effective_mix List of numeric vectors. Each vector must contain 
+#' 4 values representing the areal proportion of "residential suburban",
+#' "residential city", "commercial" and "main road" landuse types in percent.
+#' @param mix_names A character vector with names for each landuse mix 
 #' 
 #' @return
-#' A dataframe with the columns "Substance", "unit", "Mean" which is the 
-#' median value and "Q95" which is the 95th quantile.
+#' A dataframe with the columns "Substance", "unit", the median and 95th
+#' quantile concentrations of all four landuse types and for the defined landuse
+#' combinations
 #' 
 #' @export
-#' @importFrom utils read.table
-get_areaType_runoff <- function(
-  residential_city = 40, residential_suburban = 40, commercial = 20, 
-  main_road = NULL
+#' 
+get_stormwaterRunoff <- function(
+    runoff_effective_mix = list(c(40, 40, 20, 0), c(20, 40, 20, 20)),
+    mix_names = c("is", "pot")
 )
 {   
-  areaType_vector <- if(is.null(main_road)) {
-    c(residential_suburban, residential_city, commercial, 0)
-  } else {
-    c(residential_suburban, residential_city, commercial, main_road)
-  }
-  
-  conc <- read.table(
-    file = system.file("extdata/Runoff_conc/catch_conc.csv",  package = "r2q"), 
-    sep = ";", 
-    dec = ".", 
-    header = T
-  )
-  
+  conc <- get_landuse_runoff()
   conc <- sub_OgRe_to_name(c_table = conc)
+  
   mm <- as.matrix(conc[,grep("_med$", colnames(conc))])
   qm <- as.matrix(conc[,grep("_q95$", colnames(conc))])
   
-  cbind(data.frame(
-    "Substance" = conc$substance, 
-    "Unit" = conc$Unit, 
-    "mix_med" = mm %*% areaType_vector, 
-    "mix_q95" = qm %*% areaType_vector), conc[,-c(1:3)]
+  c_list <- c(
+    list(conc), 
+    lapply(seq_along(runoff_effective_mix), function(i){
+      df_out <- data.frame(
+        mm %*% runoff_effective_mix[[i]],
+        qm %*% runoff_effective_mix[[i]]) 
+      colnames(df_out) <- paste0(mix_names[i], c("_med", "_q95"))
+      df_out
+    })
   )
+  
+  do.call(cbind, c_list)
 }
 
 #' This function loads the landuse specific pollutant runoff concentration
@@ -128,10 +128,32 @@ get_areaType_runoff <- function(
 #' @export
 #' @importFrom utils read.table
 get_spec_runoff <- function(){   
-  read.table(file = system.file("extdata/Runoff_conc/spec_conc.csv", 
-                                        package = "r2q"), 
-                     sep = ";", dec = ".", header = T)
-  
+  read.table(
+    file = system.file("extdata/Runoff_conc/spec_conc.csv", package = "r2q"), 
+    sep = ";", 
+    dec = ".", 
+    header = T
+  )
+}
+
+#' Loads landuse specific pollutant runoff concentration obtained by the OgRe 
+#' Dataset 
+#' 
+#' @return
+#' A data frame with the columns "Substance", "unit",  median  and 95th quantile
+#' of landuses "residential_suburban", "residential_city", "commercial" and 
+#' "main_road"
+#' 
+#' @export
+#' @importFrom utils read.table
+#' 
+get_landuse_runoff <- function(){   
+  read.table(
+    file = system.file("extdata/Runoff_conc/catch_conc.csv", package = "r2q"), 
+    sep = ";", 
+    dec = ".", 
+    header = T
+  )
 }
 
 #' Get KOSTRA rain characteristics
@@ -243,6 +265,7 @@ get_KOSTRA <- function(
     # Return numeric results  
     return(list(data = df))}
 }
+
 
 
 #' get background concentrations for SUW before rain events

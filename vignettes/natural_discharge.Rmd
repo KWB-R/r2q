@@ -1,3 +1,13 @@
+---
+title: "Natural Discharge"
+author: "Malte Zamzow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Natural Discharge}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
 library(r2q)
 area_catch <- seq(1,150,1)
 

@@ -4,15 +4,19 @@
 \alias{sub_id_to_name}
 \title{Substance IDs within the package data tables are turned to substance names}
 \usage{
-sub_id_to_name(c_table)
+sub_id_to_name(c_table, all_substances = TRUE)
+}
+\arguments{
+\item{c_table}{Data frame with column "Substance" or "substance" containing
+substance IDs as defined in the package substance ID table \code{\link[=get_subID]{get_subID()}}}
+
+\item{all_substances}{If TRUE, all substances named in c_table or
+in the substance ID table are kept. A warning is given if concentrations or
+substance definitions are missing.}
 }
 \value{
-c_table expanded by the column "substance"
+
 }
 \description{
 Substance IDs within the package data tables are turned to substance names
-}
-\details{
-This function ensures that every defined substance ID is part of the
-concentration table, and every ID of the table is defined in the package
 }

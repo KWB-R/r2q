@@ -56,24 +56,24 @@ combine_concentration_tables <- function(
   ba <- background_table
   colnames(ba)[3] <- c("c_river")
   
-  df_out <- Reduce(merge_by_pollutant, list(th, ba, st))
+  Reduce(merge_by_pollutant, list(th, ba, st))
   
-  # Substances with incomplete data sets 
-  missing <- df_out$Substance[
-    apply(X = df_out[,c("threshold", "mix_med", "c_river")], 1, function(x){
-    any(is.na(x))})]
-  
-  if(length(missing)){
-    warning("Threshold value, stormwater concentration and/or river water ", 
-            "concentration is either missing or in an incorrect unit for: ", 
-            missing, ". If you want to continue without run this function with", 
-            " 'onlyComplete = TRUE'.")
-    if(onlyComplete){
-      df_out[-which(df_out$Substance == missing),]
-    }
-  }
-  
-  df_out
+  # # Substances with incomplete data sets 
+  # missing <- df_out$Substance[
+  #   apply(X = df_out[,c("threshold", "mix_med", "c_river")], 1, function(x){
+  #   any(is.na(x))})]
+  # 
+  # if(length(missing)){
+  #   warning("Threshold value, stormwater concentration and/or river water ", 
+  #           "concentration is either missing or in an incorrect unit for: ", 
+  #           missing, ". If you want to continue without run this function with", 
+  #           " 'onlyComplete = TRUE'.")
+  #   if(onlyComplete){
+  #     df_out[-which(df_out$Substance == missing),]
+  #   }
+  # }
+  # 
+  # df_out
 }
 
 
@@ -116,53 +116,92 @@ check_pollutant_impact <- function(Ci_river, Ci_threshold, Ci_storm){
 
 #' Substance IDs within the package data tables are turned to substance names
 #' 
-#' @details This function ensures that every defined substance ID is part of the
-#' concentration table, and every ID of the table is defined in the package
+#' @param c_table Data frame with column "Substance" or "substance" containing
+#' substance IDs as defined in the package substance ID table [get_subID()]
+#' @param all_substances If TRUE, all substances named in c_table or
+#' in the substance ID table are kept. A warning is given if concentrations or
+#' substance definitions are missing.
 #' 
-#' @return c_table expanded by the column "substance" 
+#' @return 
 #' @export
 #' 
-sub_id_to_name <- function(c_table){
+sub_id_to_name <- function(
+  c_table, all_substances = TRUE
+)
+{
   id <- get_subID()
-  c_table <- 
-    merge(x = id[c("s_id", "substance")], y = c_table, 
-          by.x = "s_id", by.y = grep(pattern = "id", colnames(c_table), value = T), 
-          all = T)
-  if(any(is.na(c_table[[ncol(c_table)]]))){
+  
+  c_table <- merge(
+    x = id[c("s_id", "substance")], 
+    y = c_table, 
+    by.x = "s_id", 
+    by.y = colnames(c_table)[grep(pattern = "id", tolower(colnames(c_table)))], 
+    all = all_substances
+  )
+  
+  if (any(is.na(c_table[[ncol(c_table)]]))) {
     no_concentration <- which(is.na(c_table[[ncol(c_table)]]))
-    message("No concentration in table for substance ", (c_table$substance[no_concentration]))
+    message(
+      "No concentration in table for substance ", 
+      paste(
+        c_table$substance[no_concentration], 
+        collapse = ", "
+      )
+    )
   }
+  
   if(any(is.na(c_table$s_id))){
     no_definition <- which(is.na(c_table$s_id))
-    message("ID  ", (c_table$s_id[no_definition]), " is not a defined substance")
+    message(
+      "ID  ", 
+      c_table$s_id[no_definition], 
+      " is not a defined substance"
+    )
   }
+  
   c_table
 }
 
 #' OgRe substance names are turned to substance names used in the tables
 #' 
-#' @details This function ensures that every defined substance is part of the
-#' concentration table, and every OgRe Substance of the table is defined in the package
+#' @param c_table Data frame columne "Substance" or "substance" containing
+#' OgRe substance names as defined in the OgRe data set. 
+#' @param all_substances If TRUE, all substances named in c_table or
+#' in the substance ID table are kept. A warning is given if concentrations or
+#' substance definitions are missing.
+#' 
+#' @details To get an overiew of all Substance names, run function [get_subID()]
 #' 
 #' @return c_table expanded by the column "substance" 
 #' @export
 #' 
-sub_OgRe_to_name <- function(c_table){
+sub_OgRe_to_name <- function(
+    c_table, all_substances = TRUE
+)
+{
   id <- get_subID()
-  c_table <- 
-    merge(x = id[c("name_OgRe", "substance")], y = c_table, 
-          by.x = "name_OgRe", by.y = grep(pattern = "Substance", colnames(c_table), value = T), 
-          all = T)
+  
+  c_table <- merge(
+    x = id[c("name_OgRe", "substance")], 
+    y = c_table, 
+    by.x = "name_OgRe", 
+    by.y = colnames(c_table)[grep("substance", tolower(colnames(c_table)))], 
+    all = all_substances
+  )
+  
   if(any(is.na(c_table[[ncol(c_table)]]))){
     no_concentration <- which(is.na(c_table[[ncol(c_table)]]))
-    message("No concentration in table for substance ", (c_table$substance[no_concentration]))
+    message("No concentration in table for substance ", 
+            (c_table$substance[no_concentration]))
   }
+  
   if(any(is.na(c_table$substance))){
     no_definition <- which(is.na(c_table$substance))
     message("Substance  ", 
             paste0((c_table$name_OgRe[no_definition]), collapse = " ,"), 
             " is/are not a defined substance/s")
   }
+  
   c_table
 }
 
@@ -207,5 +246,52 @@ get_siteInfoID <- function(){
     sep = ";", 
     header = TRUE
   ) 
+}
+
+#' Start counting from the string end to get a substring
+#' 
+#' @param x Character String
+#' @param rev_start,rev_stop  The first and last value counted from the end of 
+#' the String. rev_stop > rev_start
+#' @param keep If TRUE (default) the selection is return. Otherwise everything 
+#' but the selection is returend
+#' 
+#' @return 
+#' Character Vector
+#' 
+#' @export
+#' 
+substr_reverse <- function(
+    x, rev_start, rev_stop, keep = TRUE
+)
+{
+  selected <- rev(seq_along(unlist(strsplit(x, ""))))[rev_start:rev_stop]
+  
+  if(keep){
+    substr(x = x, start = min(selected), stop = max(selected))
+  } else {
+    substr(x = x, start = 1, stop = min(selected) - 1)
+  }
+} 
+
+#' Transforms the mass units ng, ug, mg and g
+#' 
+#' @param original_unit One of ng, ug ("u" instead of my), mg and g
+#' @param change Integers between -2 and 2. Each integer represents a factor of
+#' 1000
+#' 
+#' @return
+#' Character value of the transformed unit
+#' 
+#' @export
+massUnit_tranformation <- function(original_unit, change){
+  df <- data.frame("m2" = c("-",  "pg", "ng", "mg"), 
+                   "m1" = c("pg", "ng", "ug", "mg"), 
+                   "or" = c("ng", "ug", "mg",  "g"), 
+                   "p1" = c("ug", "mg",  "g", "kg"), 
+                   "p2" = c("mg",  "g", "kg",  "t"))
+  
+  init_row <- which(df$or == original_unit)
+  df[init_row, 3 + change]
 }
 

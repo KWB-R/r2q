@@ -4,7 +4,15 @@
 \alias{sub_OgRe_to_name}
 \title{OgRe substance names are turned to substance names used in the tables}
 \usage{
-sub_OgRe_to_name(c_table)
+sub_OgRe_to_name(c_table, all_substances = TRUE)
+}
+\arguments{
+\item{c_table}{Data frame columne "Substance" or "substance" containing
+OgRe substance names as defined in the OgRe data set.}
+
+\item{all_substances}{If TRUE, all substances named in c_table or
+in the substance ID table are kept. A warning is given if concentrations or
+substance definitions are missing.}
 }
 \value{
 c_table expanded by the column "substance"
@@ -13,6 +21,5 @@ c_table expanded by the column "substance"
 OgRe substance names are turned to substance names used in the tables
 }
 \details{
-This function ensures that every defined substance is part of the
-concentration table, and every OgRe Substance of the table is defined in the package
+To get an overiew of all Substance names, run function \code{\link[=get_subID]{get_subID()}}
 }

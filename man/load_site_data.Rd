@@ -20,9 +20,3 @@ site_info table
 this functions loads the data from the sheet "site_data" within the data
 entry excel file and returns the specified parameters in a list
 }
-\examples{
-load_site_data(
-data.dir = system.file("extdata/Data_entry", package = "r2q"), 
-filename = "Baukau.xlsx")
-
-}

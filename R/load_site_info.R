@@ -14,11 +14,6 @@
 #' @importFrom utils type.convert
 #' @export
 #' 
-#' @examples 
-#' load_site_data(
-#' data.dir = system.file("extdata/Data_entry", package = "r2q"), 
-#' filename = "Baukau.xlsx")
-#' 
 load_site_data <- function(
   data.dir,
   filename
@@ -84,15 +79,15 @@ load_site_data <- function(
     "Description" = "River cross section during a yearly rain event"
   ) 
   
-  siteData[["areaType"]] <- 
-    load_areaTypes(data.dir = data.dir, filename = filename)
+  siteData[["landuse"]] <- 
+    load_landuse(data.dir = data.dir, filename = filename)
   
   siteData[["area_urban_connectable"]] <- list(
     "Unit" = "km2", 
     "Value" =  
       siteData[["area_urban"]]$Value - 
       siteData[["area_urban"]]$Value * 
-      siteData$areaType["no_runoff", "proportion"],
+      siteData$landuse["no_runoff", "proportion"],
     "Description" = 
       paste0("Connectable area of the urban area ",  
              "(area_urban exclusive 'no_runoff')"))
@@ -101,28 +96,28 @@ load_site_data <- function(
     "Unit" = "km2", 
     "Value" = 
       siteData[["area_urban"]]$Value * 
-      sum(siteData$areaType[["proportion"]] * 
-            siteData$areaType[["separate_sewer"]]),
+      sum(siteData$landuse[["proportion"]] * 
+            siteData$landuse[["separate_sewer"]]),
     "Description" = "Urban area currently connected to separate sewer system")
   
-  siteData[["f_D_connectable"]] <- list(
+  siteData[["f_D_pot"]] <- list(
     "Unit" = "-", 
     "Value" = 
-      sum(siteData$areaType[["fD"]] * 
-            siteData$areaType[["proportion"]]) / 
-      (1 - siteData$areaType["no_runoff", "proportion"]),
+      sum(siteData$landuse[["fD"]] * 
+            siteData$landuse[["proportion"]]) / 
+      (1 - siteData$landuse["no_runoff", "proportion"]),
     "Description" = 
       paste0("Area proportional average fD value of the connetable urban ", 
-      "catchment area (no_runoff) areas excluded"))
+      "catchment area (no_runoff areas excluded)"))
   
-  siteData[["f_D_connected"]] <- list(
+  siteData[["f_D_is"]] <- list(
     "Unit" = "-", 
     "Value" = sum(
-      siteData$areaType[["fD"]] * 
-        siteData$areaType[["effective"]]),
+      siteData$landuse[["fD"]] * 
+        siteData$landuse[["effective"]]),
     "Description" = 
       paste0("Area proportional average fD value of the conneted urban ",
-      "catchment area (no_runoff) areas excluded"))
+      "catchment area (no_runoff areas excluded)"))
   
   siteData
 }
@@ -150,30 +145,28 @@ load_site_data <- function(
 #' @importFrom readxl read_excel
 #' @export
 #' 
-#' @examples
-#' load_site_data(
-#' data.dir = system.file("extdata/Data_entry", package = "r2q"), 
-#' filename = "Baukau.xlsx")
 #' 
-load_areaTypes <- function(
-  data.dir = NULL, filename, residential_city = c(0.75, 0.3, 1),  
+load_landuse <- function(
+  data.dir = NULL, filename = NULL, residential_city = c(0.75, 0.3, 1),  
   residential_suburban = c(0.75, 0.3, 1), commercial = c(0.75, 0.3, 1), 
   main_road = c(0.9, 0.1, 1), no_runoff = c(0, 0, 0)
 )
 {
   df_in <- if(!is.null(data.dir)) {
-    data.frame(
+    df <- data.frame(
       readxl::read_excel(
         path = file.path(data.dir, filename),
-        sheet = paste0("urban_catchment_landuse")
+        sheet = paste0("urban_catchment_landuse") 
       )
     )
+    rownames(df) <- df$landuse
+    df[,-1]
   } else {
     data.frame(
       "fD" = c(
         residential_city[1], residential_suburban[1], commercial[1], 
         main_road[1], no_runoff[1]),
-      "share_percent" = c(
+      "proportion" = c(
         residential_city[2], residential_suburban[2], commercial[2], 
         main_road[2], no_runoff[2]),
       "separate_sewer" = c(
@@ -190,21 +183,28 @@ load_areaTypes <- function(
     stop("The specified area types do not sum up to 100 %")
   
   # connecetd area in average
+  connectable <- sum(df_in$proportion, na.rm = T)
   connected <- sum(df_in$proportion * df_in$separate_sewer, na.rm = T)
   if(connected > 0L){
     # area types weighted by the proportion of seperate sewers 
-    df_in$effective <- 
+    df_in[["effective"]] <- 
       df_in$proportion * 
       df_in$separate_sewer /
       connected 
-    df_in$Mix_flow <- 
+    df_in[["Mix_flow_connected"]] <- 
       (df_in$fD * df_in$effective) / 
       sum(df_in$fD * df_in$effective, na.rm = T)
   } else {
-    df_in$effective <- df_in$Mix_flow <- 0
+    df_in[["effective"]] <- df_in[["Mix_flow_connected"]] <- 0
   }
+  ef <- df_in$proportion / connectable
+  df_in[["Mix_flow_connectable"]] <- 
+    (df_in$fD * ef) / sum(df_in$fD * ef, na.rm = T)
+  
   df_in
 }
+
+
 
 #' Loading local background concentration
 #' 
@@ -224,11 +224,6 @@ load_areaTypes <- function(
 #' 
 #' @importFrom readxl read_excel
 #' @export
-#' 
-#' @examples 
-#' load_site_data(
-#' data.dir = system.file("extdata/Data_entry", package = "r2q"), 
-#' filename = "Baukau.xlsx")
 #' 
 load_background_data <- function(
   data.dir,
@@ -269,3 +264,27 @@ load_background_data <- function(
   df_in
 }
 
+
+#' Loads Excel sheet "planning_area_details"
+#' 
+#' This functions loads the data from the sheet "pollution_data" within the 
+#' R2Q-Excel file for data entry
+#'
+#' @param data.dir The path of the entry data table.
+#' @param filename Name of the R2Q-Excel File including ".xlsx".
+#' 
+#' @return 
+#' The Excel sheet as data frame
+#' 
+#' @importFrom readxl read_excel
+#' @export
+#' 
+load_planning_details <- function(
+  data.dir,
+  filename
+){
+  readxl::read_excel(
+    path = file.path(data.dir, filename),
+    sheet = "planning_area_details", 
+    skip = 1)
+}

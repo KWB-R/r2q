@@ -10,11 +10,13 @@ get_thresholds(SUW_type = "river", LAWA_type = "default")
 \item{SUW_type}{"lake" or "river", "river" is used as default}
 
 \item{LAWA_type}{lake or river type as described in German OGewV.
-Only main type sould be indicated (e.g. insert 11 for river type 11.1 or 11 K).
+Only main type sould be indicated (e.g. insert 11 for river type 11.1
+or 11 K).
 If unknown, "default" will return typical values valid for a range of SUW.}
 }
 \value{
-data.frame with acute and annual substance threshold, suitable for a given SUW body
+data.frame with acute and annual substance threshold, suitable for a
+given SUW body
 }
 \description{
 assembles relevant thresholds depending on

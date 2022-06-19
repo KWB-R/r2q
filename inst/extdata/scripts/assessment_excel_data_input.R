@@ -2,19 +2,21 @@
 # load external data -----------------------------------------------------------
 siteData <- r2q::load_site_data(
   data.dir = "inst/extdata/Data_entry", 
-  filename = "Abschlussveranstaltung.xlsx")
+  filename = "example_sheets.xlsx"
+)
 
 c_river <- r2q::load_background_data(
   data.dir = "inst/extdata/Data_entry",
-  filename = "Abschlussveranstaltung.xlsx", default_for_na = TRUE)
+  filename = "example_sheets.xlsx", 
+  default_for_na = TRUE
+)
 
 # load package data ------------------------------------------------------------
-# c_storm <- r2q::get_stormwater_concentrations()
-c_storm <- r2q::get_areaType_runoff(
-  residential_suburban =  siteData$areaType["residential_suburban","Mix_flow"],
-  residential_city =  siteData$areaType["residential_city","Mix_flow"],
-  commercial = siteData$areaType["commercial","Mix_flow"], 
-  main_road = siteData$areaType["main_road", "Mix_flow"])
+c_storm <- r2q::get_stormwaterRunoff(
+  runoff_effective_mix = list(
+    siteData$landuse$Mix_flow_connected[1:4], 
+    siteData$landuse$Mix_flow_connectable[1:4]),
+  mix_names = c("is", "pot"))
 
 c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
 
@@ -26,30 +28,75 @@ rain <- r2q::get_rain(
   river_length = siteData$river_length$Value, 
   river_flow = siteData$Q_mean$Value,
   x_coordinate = siteData$x_coordinate$Value,
-  y_coordinate = siteData$y_coordinate$Value)
+  y_coordinate = siteData$y_coordinate$Value
+)
 
 # combine data
 c_table <- r2q::combine_concentration_tables(
   threshold_table = c_threshold, 
   storm_table = c_storm, 
-  background_table = c_river)
+  background_table = c_river
+)
 
 
 # process ----------------------------------------------------------------------
-assessment1 <- r2q::maxArea_by_pollution(
-  combined_concentration_table = c_table, 
-  site_data = siteData, 
-  q_rain = rain["q_rain"],
-  t_rain = rain["duration"] * 60)
+r2q::hydrology_assessment(site_data = siteData, q_rain = rain[2])
 
-assessment2 <- r2q::maxArea_by_hydrology(
-  site_data = siteData, 
-  q_rain = rain["q_rain"])
+c_type <- "average" # or "worstcase" -> Sollte in den Excel input
+checked <- r2q::check_all_substances(
+  c_table = c_table, 
+  c_type = c_type)
 
-maxLoads <- r2q::maxLoad_pollution(
-  maxArea_list = assessment1, 
+r2q::plot_hazards(hazards = checked)
+
+r2q_out <- r2q::assess_all_hazards(
+  hazard_list = checked, 
   site_data = siteData, 
-  rain = rain)
+  c_table = c_table, 
+  q_rain = rain[2], t_rain = rain[1] * 60, 
+  c_type = c_type)
+
+############################ detailed planning
+planningData <- r2q::load_planning_details(
+  data.dir = "inst/extdata/Data_entry", 
+  filename = "Abschlussveranstaltung.xlsx"
+)
+
+pl_out <- r2q::planning_area_discharge(
+  planning_data = planningData, 
+  q_rain = rain[2], 
+  t_rain = rain[1] * 60)
+
+#################### comparison
+
+isPlan <- data.frame(
+  "loadPlan_is" = pl_out$sum)
+isPlan$substance <- rownames(isPlan)
+
+df_compare <- merge(
+  x = isPlan, 
+  y = as.data.frame(lapply(r2q_out$general, unlist)), 
+  by = "substance", 
+  all.y = TRUE)
+df_compare
+
+sort_i <- order(df_compare$area_pot_rel)
+
+par(mar = c(4.1, 10.1, 1.1, 4.1))
+barplot(
+  height = df_compare$area_pot_rel[sort_i], 
+  horiz = T, las = 1,
+  names.arg = df_compare$substance[sort_i], xlab = "Connectable area in %", 
+  xlim = c(0,200), xpd = F, col = "steelblue", space = 0.1, border = NA)
+abline(v = c(0, 200))
+axis(
+  side = 4, 
+  at = seq_along(df_compare$substance) / nrow(df_compare) * 10 - 
+    0.5 / nrow(df_compare) * 10, 
+  labels = df_compare$area_pot_rel[sort_i], las = 1, tick = FALSE)
+
+
+
 
 # Save data --------------------------------------------------------------------
 write.table(
