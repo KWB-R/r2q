@@ -35,8 +35,8 @@ get_Hq1_pnat <- function(slope , area_catch)
 
 #' Calculate acceptable additional runoff factor x
 #'
-#' @param Hq1_pnat potential annual natural discharge flow (unit l*s^-1 km²^-1)
-#' @param Hq2_pnat potential biennial natural discharge flow (unit l*s^-1 km²^-1)
+#' @param Hq1_pnat potential annual natural discharge flow in L/(s*km2)
+#' @param Hq2_pnat potential biennial natural discharge flow in L/(s*km2)
 #'
 #' @return 
 #' dimensionless factor regulating tolerable additional anthropogenic discharge
@@ -125,7 +125,7 @@ calculate_tolerable_discharge <- function(
                        "tol_discharge" = NA, 
                        "urban_upstream" = NA,
                        "urban" = NA,
-                       "planning" = NA,
+                       "planning_scaled" = NA,
                        "unit" = "L/s")
   # Calculate x
   df_out$x <- get_x(Hq1_pnat = Hq1pnat_catch, Hq2_pnat = Hq2pnat_catch)
@@ -133,7 +133,7 @@ calculate_tolerable_discharge <- function(
   # Calculate the tolerable once-per-year runoff from the complete urban area 
   # within in l/s from 
   df_out$tol_discharge <- 
-    get_q_max(Hq1pnat = Hq1pnat_catch,
+    get_q_max(Hq1pnat_catch = Hq1pnat_catch,
               x = df_out$x,
               area_urban = area_urban + area_urban_upstream,
               area_catch = area_catch)
@@ -146,7 +146,7 @@ calculate_tolerable_discharge <- function(
     (area_urban + area_urban_upstream)
   
   # 
-  df_out$planning <- df_out$tol_discharge * area_plan / 
+  df_out$planning_scaled <- df_out$tol_discharge * area_plan / 
     (area_urban + area_urban_upstream)
   
   if(verbose){
@@ -159,38 +159,3 @@ calculate_tolerable_discharge <- function(
     df_out
   }
 }
-
-#' calculate surface discharge from planning area
-#' 
-#' this function calculates the surface discharge either from single values of 
-#' impervious area and runoff coefficent or from the input table surface_data
-#'
-#' @param q_rain Amount of rain in L / (s*ha)
-#' @param area Impervious area in ha
-#' @param fD Runoff coefficient of impervious area
-#'
-#' @return 
-#' A numeric: stormwater run-off from planning area in L/s
-#' @export
-#'
-calculate_surface_discharge <- function(
-  area = 1,
-  fD = 0.9,
-  q_rain
-){
-  if(!is.null(surface_Data)){
-    area <- surface_Data$Area_ha
-    fD <- surface_Data$fD
-    }
-  
-  surface_Data$qe_partial <-  area  * fD  * q_rain
-  sum(surface_Data$qe_partial)
-}
-
-
-
-
-
-
-
-

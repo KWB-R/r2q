@@ -369,6 +369,18 @@ hydrology_assessment <- function(
     verbose = T
   )
   
+  # status quo discharge
+  Q_tolerable$urban_is <- site_data[["area_urban_connected"]]$Value * 100 *
+    q_rain * 
+    site_data[["f_D_is"]]$Value
+  
+  Q_tolerable$planning_pot <- 
+    Q_tolerable$urban - Q_tolerable$urban_is
+  
+  if(Q_tolerable$planning_pot < 0){
+    Q_tolerable$planning_pot <- 0
+  }
+  
   # connectable area in ha
   area_urban <- get_allowed_area(
     f_D = site_data[["f_D_pot"]]$Value, 
@@ -378,41 +390,53 @@ hydrology_assessment <- function(
   # connectable in %
   area_percent <- area_urban / site_data[["area_urban_connectable"]]$Value 
   
-  # status Quo discharge
-  current_discharge <- site_data[["area_urban_connected"]]$Value * 100 *
+  # Discharge from Planning Area if completely connected in L/s
+  max_discharge_planning <- site_data[["area_plan"]]$Value * 100 * 
     q_rain * 
-    site_data[["f_D_is"]]$Value
-                    
-  connectable_statusQuo <- 
-    if(site_data[["area_urban_connected"]]$Value > 0){
-      area_urban / site_data[["area_urban_connected"]]$Value
-    } else {
-      NA
-    }
+    site_data$landuse$fD[-5]
+  names(max_discharge_planning) <- rownames(site_data$landuse)[-5]
   
+  # Potentially connectable in planning area
+  discharge_planning_pot_rel <- 
+    round((Q_tolerable$urban - Q_tolerable$urban_is) / 
+            max_discharge_planning * 100, 1)
+  discharge_planning_pot_rel[discharge_planning_pot_rel < 0] <- 0
+  
+  # Potentially connectable in planning area (scaled)
+  discharge_planning_scaled_rel <- 
+    round((Q_tolerable$planning_scaled) / 
+            max_discharge_planning * 100, 1)
   
   #  Required throttel discharge in L/(s*ha) if complete planning area was connected
-  throttel <- Q_tolerable$planning / (site_data[["area_plan"]]$Value * 100)
+  throttel_scaled <- Q_tolerable$planning_scaled / 
+    (site_data[["area_plan"]]$Value * 100)
+  throttel_statusQuo <- Q_tolerable$planning_pot / 
+    (site_data[["area_plan"]]$Value * 100)
   
-  data.frame(
+  list("discharge_parameters" = data.frame(
     "Parameter" = 
       c("Tolerable discharge of the urban area",
-        "Tolerable discharge of planning area",
-        "Status Quo discharge of the urban area",
-        "Connetcable area in the urbanised catchment",
-        "Connectable area in percent",
-        "Connectable refered to status quo",
-        "Required throttel in planning area"), 
-    "Unit" = c("L/s", "L/s", "L/s", "ha", "%", "%", "L/(s*ha)"),
+        "Status quo discharge of the urban area",
+        "Tolerable discharge of planning area (scaled)",
+        "Tolerable discharge of planning area (status quo)",
+        "Connetcable area in urban area (potential mix)",
+        "Connectable area in percent (potential mix)",
+        "Required throttel in planning area (scaled)",
+        "Required throttel in planning area (status quo)"),
+    "Unit" = c(rep("L/s", 4), "ha", "%", rep("L/(s*ha)", 2)),
     "Value" = c(signif(Q_tolerable$urban,3), 
-                signif(Q_tolerable$planning,3), 
-                signif(current_discharge,3), 
+                signif(Q_tolerable$urban_is, 3),
+                signif(Q_tolerable$planning_scaled,3), 
+                signif(Q_tolerable$planning_pot,3),
                 signif(area_urban,2), 
-                round(area_percent,2), 
-                round(connectable_statusQuo,2),
-                signif(throttel,2)),
+                round(area_percent,2),
+                signif(throttel_scaled,2),
+                signif(throttel_statusQuo,2)),
     "Comment" = c(rep("", 6),
-                  "If the whole planning area was connected to the separate sewer system"))
+                  rep(paste("If the whole planning area was connected to", 
+                            "the separate sewer system"),2))), 
+    "planning_pot_percent" = discharge_planning_pot_rel,
+    "planning_scaled_percent" = discharge_planning_scaled_rel)
 }
 
 #' Check if substances pose a risk to the surface water
