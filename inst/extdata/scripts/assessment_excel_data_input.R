@@ -2,12 +2,12 @@
 # load external data -----------------------------------------------------------
 siteData <- r2q::load_site_data(
   data.dir = "inst/extdata/Data_entry", 
-  filename = "example_sheets.xlsx"
+  filename = "Baukau_final.xlsx"
 )
 
 c_river <- r2q::load_background_data(
   data.dir = "inst/extdata/Data_entry",
-  filename = "example_sheets.xlsx", 
+  filename = "Baukau_final.xlsx", 
   default_for_na = TRUE
 )
 
@@ -26,7 +26,7 @@ rain <- r2q::get_rain(
   area_catch = siteData$area_catch$Value, 
   river_cross_section = siteData$river_cross_section$Value,
   river_length = siteData$river_length$Value, 
-  river_flow = siteData$Q_mean$Value,
+  river_mean_flow = siteData$Q_mean$Value,
   x_coordinate = siteData$x_coordinate$Value,
   y_coordinate = siteData$y_coordinate$Value
 )
@@ -40,7 +40,7 @@ c_table <- r2q::combine_concentration_tables(
 
 
 # process ----------------------------------------------------------------------
-r2q::hydrology_assessment(site_data = siteData, q_rain = rain[2])
+r2q_h <- r2q::hydrology_assessment(site_data = siteData, q_rain = rain[2])
 
 c_type <- "average" # or "worstcase" -> Sollte in den Excel input
 checked <- r2q::check_all_substances(
@@ -49,12 +49,79 @@ checked <- r2q::check_all_substances(
 
 r2q::plot_hazards(hazards = checked)
 
+# Example for one substance -----------
+r2q::immission_assessment(
+  site_data = siteData, 
+  c_table = c_table, 
+  q_rain = rain[2], 
+  t_rain = rain[1] * 60, substance = "Zink_geloest", 
+  hazard_list = checked)
+# -------------------------------------
+
 r2q_out <- r2q::assess_all_hazards(
   hazard_list = checked, 
   site_data = siteData, 
   c_table = c_table, 
   q_rain = rain[2], t_rain = rain[1] * 60, 
   c_type = c_type)
+
+###  save results
+siteFolder <- "baukau"
+{
+  write.table(
+    x = r2q_h$discharge_parameters, 
+    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
+                     "hydologie_generell.csv"), 
+    sep = ";", 
+    dec = ".",  
+    row.names = FALSE
+  )
+  
+  write.table(
+    x = r2q_h$planning_pot_percent, 
+    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
+                     "hydologie_plan_pot.csv"), 
+    sep = ";", 
+    dec = ".",  
+    row.names = FALSE
+  )
+  
+  write.table(
+    x = r2q_h$planning_scaled_percent, 
+    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
+                     "hydologie_plan_scale.csv"), 
+    sep = ";", 
+    dec = ".",  
+    row.names = FALSE
+  )
+  
+  write.table(
+    x = as.matrix(r2q_out$general), 
+    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
+                     "stoff_generell.csv"), 
+    sep = ";", 
+    dec = ".",  
+    row.names = FALSE
+  )
+  
+  write.table(
+    x = r2q_out$plannig_pot, 
+    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
+                     "stoff_plan_pot.csv"), 
+    sep = ";", 
+    dec = ".",  
+    row.names = FALSE
+  )
+  
+  write.table(
+    x = r2q_out$planning_scaled, 
+    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
+                     "stoff_plan_scale.csv"), 
+    sep = ";", 
+    dec = ".",  
+    row.names = FALSE
+  )
+}
 
 ############################ detailed planning
 planningData <- r2q::load_planning_details(
