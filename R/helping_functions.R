@@ -123,6 +123,8 @@ check_pollutant_impact <- function(Ci_river, Ci_threshold, Ci_storm){
 #' substance definitions are missing.
 #' 
 #' @return 
+#' Input table containing substance names
+#' 
 #' @export
 #' 
 sub_id_to_name <- function(

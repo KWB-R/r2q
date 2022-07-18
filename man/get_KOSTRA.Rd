@@ -44,4 +44,5 @@ duration_string = 10, location_name = "Berlin", plot = TRUE)
 berlin$plot
 berlin$data
 
+
 }

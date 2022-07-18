@@ -13,7 +13,7 @@ get_rain(
   Hq_pnat1_catch = NULL,
   slope = 0.1,
   use_p1nat = TRUE,
-  river_flow = NULL,
+  river_mean_flow = NULL,
   mins = NULL
 )
 }
@@ -38,8 +38,8 @@ in L/(s*km2). If NULL it will be estimated by slope and area of the catchment}
 the average river flow is used. Exception: If mins is defined, this value is
 used.}
 
-\item{river_flow}{The average river flow in m³/s (only needed if use_p1nat
-= FALSE and min = NULL)}
+\item{river_mean_flow}{The average river flow in m³/s (only needed if
+use_p1nat = FALSE and min = NULL)}
 
 \item{mins}{The Default is NULL. In this case either natural catchment
 discharge or average river flow is used for precipitation duration. If not

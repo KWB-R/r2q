@@ -15,7 +15,7 @@ in the substance ID table are kept. A warning is given if concentrations or
 substance definitions are missing.}
 }
 \value{
-
+Input table containing substance names
 }
 \description{
 Substance IDs within the package data tables are turned to substance names

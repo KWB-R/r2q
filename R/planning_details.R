@@ -12,7 +12,7 @@
 #' @param t_rain Rain length in s
 #' 
 #' @return 
-#' Pollutant load per event or per year, depending on the treshold value 
+#' Pollutant load per event or per year, depending on the threshold value 
 #' definition. The mass unit is either mg or ug, depending on the input 
 #' concentration unit. 
 #' 

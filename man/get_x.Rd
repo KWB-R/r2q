@@ -7,9 +7,9 @@
 get_x(Hq1_pnat, Hq2_pnat)
 }
 \arguments{
-\item{Hq1_pnat}{potential annual natural discharge flow (unit l*s^-1 km²^-1)}
+\item{Hq1_pnat}{potential annual natural discharge flow in L/(s*km2)}
 
-\item{Hq2_pnat}{potential biennial natural discharge flow (unit l*s^-1 km²^-1)}
+\item{Hq2_pnat}{potential biennial natural discharge flow in L/(s*km2)}
 }
 \value{
 dimensionless factor regulating tolerable additional anthropogenic discharge

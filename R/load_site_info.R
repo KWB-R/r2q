@@ -68,15 +68,28 @@ load_site_data <- function(
   siteData[["Q_event"]] <- list(
     "Unit" = "m3/s",
     "Value" = siteData$Hq1pnat_catch$Value * siteData$area_catch$Value / 1000,
-    "Description" = "River flow during a yearly rain event"
+    "Description" = "Yearly river flow"
   ) 
   
   siteData[["cross_section_event"]] <- list(
     "Unit" = "m2",
-    "Value" =  
+    "Value" = 
       siteData$river_cross_section$Value * 
-      (1 + siteData$Q_event$Value / siteData$Q_mean$Value / 4),
-    "Description" = "River cross section during a yearly rain event"
+      (1 + (siteData$Q_event$Value - siteData$Q_mean$Value) /  
+         siteData$Q_mean$Value / 4),
+    "Description" = "Yearly river cross section"
+  ) 
+  
+  siteData[["t_waterParcel"]] <- list(
+    "Unit" = "min",
+    "Value" =  get_HQ_time_interval(
+      area_catch = siteData$area_catch$Value,
+      river_cross_section = siteData$river_cross_section$Value, 
+      river_length = siteData$river_length$Value, 
+      river_mean_flow = siteData$Q_mean$Value, 
+      Hq_pnat1_catch = siteData$Hq1pnat_catch$Value) - 60,
+    "Description" = 
+      "Time it takes for the water parcel along the urban river stretch"
   ) 
   
   siteData[["landuse"]] <- 

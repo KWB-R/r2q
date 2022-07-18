@@ -8,7 +8,7 @@ get_HQ_time_interval(
   area_catch,
   river_cross_section,
   river_length,
-  river_flow,
+  river_mean_flow,
   Hq_pnat1_catch = NULL,
   slope = 0.1
 )
@@ -21,7 +21,7 @@ in m2}
 
 \item{river_length}{The length of the affected urban river stretch in m}
 
-\item{river_flow}{The Average river flow in m3/s}
+\item{river_mean_flow}{The Average river flow in m3/s}
 
 \item{Hq_pnat1_catch}{the natural catchment discharge for a yearly rain event
 in L/(s*km2). If NULL it will be estimated by slope and area of the catchment}
