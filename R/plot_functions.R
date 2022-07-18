@@ -10,6 +10,9 @@
 #' @return Plot with coloured rectangles representing the three different output
 #' options from function [check_all_substances()]
 #' 
+#' @importFrom grDevices dev.new 
+#' @importFrom graphics axis legend par rect
+#' 
 #' @export
 #' 
 plot_hazards <- function(

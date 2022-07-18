@@ -195,6 +195,7 @@ get_landuse_runoff <- function(){
 #' berlin$plot
 #' berlin$data
 #' 
+#' 
 get_KOSTRA <- function(
   coord_vector,  
   duration_string,
@@ -230,7 +231,7 @@ get_KOSTRA <- function(
     sf::st_set_geometry(NULL) %>% 
     dplyr::select(- "INDEX_RC") %>% 
     tidyr::gather("Jaehrlichkeit", "Bemessungsniederschlag") %>%  
-    dplyr::mutate("Regenspende" = `Bemessungsniederschlag` * 10000 / 
+    dplyr::mutate("Regenspende" = .data$Bemessungsniederschlag * 10000 / 
                     (as.numeric(duration_string)*60)) %>% 
     tidyr::gather( "Kategorie", "Wert", - "Jaehrlichkeit")
   
