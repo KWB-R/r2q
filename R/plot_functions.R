@@ -54,3 +54,36 @@ plot_hazards <- function(
          cex = 0.8, 
          y.intersp = 2)
 }
+
+#' Plot of relative connectable area
+#' 
+#' Share of the urban area that can be connected to the seperate sewer system
+#' without exceeding the threshold values (and without further treatment)
+#' 
+#' @param r2q_substance Assessment output created by [assess_all_hazards()]
+#' @param r2q_hydrology Assessment output created by [hydrology_assessment()].
+#' Is NULL by default, so that the plot can be created for substances only
+#' 
+#' @importFrom graphics abline barplot
+#' @importFrom utils data
+#' @export
+#' 
+plot_connectable_urban_area <- function(r2q_substance, r2q_hydrology = NULL){
+  r2q_pal <- data("r2q_pal", envir = environment())
+  
+  v_i <- unlist(r2q_substance$general$area_pot_rel)
+  v_h <- r2q_hydrology$discharge_parameters$Value[6]
+  v <- round(c(v_i, "Hydrology" = v_h), 0)
+  r <- order(v)
+  
+  par(mar = c(4.1, 10.1, 1.1, 4.1))
+  yAt <- barplot(
+    height = v[r], 
+    horiz = T, las = 1,
+    names.arg = names(v)[r], xlab = "Connectable area in %", 
+    xlim = c(0,200), xpd = F, col = r2q_pal$blue[4], space = 0.1, border = NA)
+  abline(v = c(0, 200))
+  abline(v = c(100), lty = "dotted")
+  axis(side = 4, at = yAt, labels = v[r], las = 1, tick = FALSE)
+}
+
