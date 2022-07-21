@@ -10,6 +10,8 @@ get_planningLoad(
   fID,
   q_rain,
   t_rain,
+  y_rain,
+  thresholdTable,
   function_c_table = NULL
 )
 }
@@ -26,6 +28,11 @@ get_planningLoad(
 \item{q_rain}{Rain intensity in L/(ha*s)}
 
 \item{t_rain}{Rain length in s}
+
+\item{y_rain}{Yearly rain amount in mm}
+
+\item{thresholdTable}{Table of threshold values. Can be loaded with
+\code{\link[=get_thresholds]{get_thresholds()}}.}
 
 \item{function_c_table}{A table of surface specific runoff concentrations
 from the package. If NULL it is loaded automatically within the function.}

@@ -4,7 +4,7 @@
 \alias{planning_area_discharge}
 \title{Calculates the pollutants load from the planning area into the surface water}
 \usage{
-planning_area_discharge(planning_data, q_rain, t_rain)
+planning_area_discharge(planning_data, q_rain, t_rain, y_rain, thresholdTable)
 }
 \arguments{
 \item{planning_data}{The Excel sheet "planning_area_details" loaded by
@@ -13,6 +13,11 @@ planning_area_discharge(planning_data, q_rain, t_rain)
 \item{q_rain}{Rain intensity in L/(ha*s)}
 
 \item{t_rain}{Rain length in s}
+
+\item{y_rain}{Yearly rain amount in mm}
+
+\item{thresholdTable}{Table of threshold values. Can be loaded with
+\code{\link[=get_thresholds]{get_thresholds()}}.}
 }
 \value{
 Pollutant load per event or per year, depending on the threshold value

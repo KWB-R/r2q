@@ -296,8 +296,16 @@ load_planning_details <- function(
   data.dir,
   filename
 ){
-  readxl::read_excel(
+  df_out <- readxl::read_excel(
     path = file.path(data.dir, filename),
     sheet = "planning_area_details", 
     skip = 1)
+  
+  missing_values <- which(is.na(df_out$area_m2))
+  if(length(missing_values) > 0L){
+    df_out$area_m2[missing_values] <- 0
+    warning("Missing values for function ID ", df_out$f_id[missing_values], 
+            ". Values set to 0.")
+  }
+  df_out
 }

@@ -10,6 +10,9 @@
 #' [load_planning_details()]
 #' @param q_rain Rain intensity in L/(ha*s)
 #' @param t_rain Rain length in s
+#' @param y_rain Yearly rain amount in mm
+#' @param thresholdTable Table of threshold values. Can be loaded with
+#' [get_thresholds()]. 
 #' 
 #' @return 
 #' Pollutant load per event or per year, depending on the threshold value 
@@ -19,11 +22,11 @@
 #' @export
 #' 
 planning_area_discharge <- function(
-    planning_data, q_rain, t_rain
+    planning_data, q_rain, t_rain, y_rain, thresholdTable
 ){
   
   conc <- r2q::sub_id_to_name(
-    r2q::get_spec_runoff(), 
+    c_table = r2q::get_spec_runoff(), 
     all_substances = FALSE)
   
   afID <- get_functionsID()
@@ -32,8 +35,13 @@ planning_area_discharge <- function(
     signif(unlist(
       sapply(afID$f_id, 
              get_planningLoad, 
-             planning_data = planning_data, function_c_table = conc, sID = s, 
-             q_rain = q_rain, t_rain = t_rain)), 4)
+             planning_data = planning_data, 
+             function_c_table = conc, 
+             sID = s, 
+             q_rain = q_rain, 
+             t_rain = t_rain, 
+             y_rain = y_rain, 
+             thresholdTable = thresholdTable)), 4)
   })
   colnames(df_out) <- conc$substance
   rownames(df_out) <- paste(afID$f_id, afID$primary_function, sep = "_")
@@ -51,6 +59,9 @@ planning_area_discharge <- function(
 #' (see [get_functionsID()])
 #' @param q_rain Rain intensity in L/(ha*s)
 #' @param t_rain Rain length in s
+#' @param y_rain Yearly rain amount in mm
+#' @param thresholdTable Table of threshold values. Can be loaded with
+#' [get_thresholds()]. 
 #' @param function_c_table A table of surface specific runoff concentrations
 #' from the package. If NULL it is loaded automatically within the function.
 #' 
@@ -62,27 +73,39 @@ planning_area_discharge <- function(
 #' @export
 #' 
 get_planningLoad <- function(
-    planning_data,  sID, fID, q_rain, t_rain, function_c_table = NULL
+    planning_data,  sID, fID, q_rain, t_rain, y_rain, thresholdTable, 
+    function_c_table = NULL
 )
 {
   if(is.null(function_c_table)){
     function_c_table <- r2q::sub_id_to_name(
-      r2q::get_spec_runoff(), 
+      c_table = r2q::get_spec_runoff(), 
       all_substances = FALSE)
   }
 
   subID <- get_subID()
   s_group <- subID$group_en[subID$s_id == sID]
-  
-  c_i <- function_c_table[
-    function_c_table$s_id == sID, 
-    colnames(function_c_table) == paste0("X", fID)] / 1000 # mg/L
-  
+  subName <- subID$substance[subID$s_id == sID]
+  tType <- thresholdTable$threshold_type[thresholdTable$substance == subName]
   treated <- planning_data[which(planning_data$f_id == fID), tolower(s_group)]
-  area <- planning_data$area_m2[planning_data$f_id== fID] / 100 / 100 # ha
   fD <- planning_data$fD[planning_data$f_id == fID]
   
-  unname(area * q_rain * t_rain * c_i * fD * (100 - treated) / 100)
+  if(tType == "acute"){
+    # same factor as in function "input_event()" for max load calculation
+    c_i <- function_c_table[
+      function_c_table$s_id == sID, 
+      colnames(function_c_table) == paste0("X", fID)] / 1000  
+    area <- planning_data$area_m2[planning_data$f_id== fID] / 100 / 100 # ha
+    
+    unname(area * q_rain * t_rain * c_i * fD * (100 - treated) / 100)
+  } else if(tType == "annual"){
+    # same factor as in function "maxInput_year()" for max load calculation 
+    c_i <- function_c_table[
+      function_c_table$s_id == sID, 
+      colnames(function_c_table) == paste0("X", fID)] / 1000 / 1000   
+    area <- planning_data$area_m2[planning_data$f_id== fID] # m2
+    unname(area * y_rain * c_i * fD * (100 - treated) / 100)
+  }
 }
 
 
