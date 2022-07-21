@@ -1,22 +1,22 @@
-s_id;substance;name_OgRe;group_de;group_en
-1;AFS_63;AFS fein (<63µm);AFS;suspended_solids
-2;Anthracen;Anthracen;PAK;PAH
-3;Benzo_a_pyren;Benzo[a]pyren;PAK;PAH
-4;Benzo_b_fluoranthen;Benzo[b]fluoranthen;PAK;PAH
-5;Benzo_g,h,i_perylen;Benzo[g,h,i]perylen;PAK;PAH
-6;Benzo_k_fluoranthen;Benzo[k]fluoranthen;PAK;PAH
-7;Pb_geloest;Blei gelöst;Schwermetalle;Heavy metals
-8;Cd_geloest;Cadmium gelöst;Schwermetalle;Heavy metals
-9;Carbendazim;Carbendazim;Biozide;Biocides
-10;Diethylhexylphthalat;Diethylhexylphthalat (DEHP);Phthalat;Phthalate
-11;Diuron;Diuron;Biozide;Biocides
-12;Fluoranthen;Fluoranthen;PAK;PAH
-13;Gesamt_Phosphor;Gesamt-Phosphor;Naehrstoffe;Nutrients
-14;Kupfer_geloest;Kupfer gelöst;Schwermetalle;Heavy metals
-15;Mecoprop;Mecoprop;Biozide;Biocides
-16;Naphthalin;Naphthalin;PAK;PAH
-17;Nickel_geloest;Nickel gelöst;Schwermetalle;Heavy metals
-18;Orthophosphat;Orthophosphat;Naehrstoffe;Nutrients
-19;Phenanthren;Phenanthren;PAK;PAH
-20;Terbutryn;Terbutryn;Biozide;Biocides
-21;Zink_geloest;Zink gelöst;Schwermetalle;Heavy metals
+s_id;substance;name_OgRe;name_de;name_en;group_de;group_en
+1;AFS_63;AFS fein (<63µm);AFS (<63µm);AFS (<63µm);AFS;suspended_solids
+2;Anthracen;Anthracen;Anthracen;Anthracene;PAK;PAH
+3;Benzo_a_pyren;Benzo[a]pyren;Benzo(a)pyren;Benzo(a)pyrene;PAK;PAH
+4;Benzo_b_fluoranthen;Benzo[b]fluoranthen;Benzo(b)fluoranthen;Benzo(b)fluoranthene;PAK;PAH
+5;Benzo_g,h,i_perylen;Benzo[g,h,i]perylen;Benzo(g,h,i)perylen;Benzo(g,h,i)perylene;PAK;PAH
+6;Benzo_k_fluoranthen;Benzo[k]fluoranthen;Benzo(k)fluoranthen;Benzo(k)fluoranthene;PAK;PAH
+7;Pb_geloest;Blei gelöst;Pb (gel.);Pb (diss);Schwermetalle;Heavy metals
+8;Cd_geloest;Cadmium gelöst;Cd (gel.);Cd (diss);Schwermetalle;Heavy metals
+9;Carbendazim;Carbendazim;Carbendazim;Carbendazim;Biozide;Biocides
+10;Diethylhexylphthalat;Diethylhexylphthalat (DEHP);Diethylhexylphthalat;Diethylhexyl phthalate;Phthalat;Phthalate
+11;Diuron;Diuron;Diuron;Diuron;Biozide;Biocides
+12;Fluoranthen;Fluoranthen;Fluoranthen;Fluoranthene;PAK;PAH
+13;Gesamt_Phosphor;Gesamt-Phosphor;Gesamt Phosphor;Total Phosphorus;Naehrstoffe;Nutrients
+14;Kupfer_geloest;Kupfer gelöst;Cu (gel.);Cu (diss);Schwermetalle;Heavy metals
+15;Mecoprop;Mecoprop;Mecoprop;Mecoprop;Biozide;Biocides
+16;Naphthalin;Naphthalin;Naphthalin;Naphthalene;PAK;PAH
+17;Nickel_geloest;Nickel gelöst;Ni (gel.);Ni (diss);Schwermetalle;Heavy metals
+18;Orthophosphat;Orthophosphat;Orthophosphat;Orthophosphate;Naehrstoffe;Nutrients
+19;Phenanthren;Phenanthren;Phenanthren;Phenanthrene;PAK;PAH
+20;Terbutryn;Terbutryn;Terbutryn;Terbutryn;Biozide;Biocides
+21;Zink_geloest;Zink gelöst;Zn (gel.);Zn (diss);Schwermetalle;Heavy metals
