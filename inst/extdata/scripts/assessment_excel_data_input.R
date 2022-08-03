@@ -50,12 +50,14 @@ checked <- r2q::check_all_substances(
 r2q::plot_hazards(hazards = checked)
 
 # Example for one substance -----------
-r2q::immission_assessment(
-  site_data = siteData, 
-  c_table = c_table, 
-  q_rain = rain[2], 
-  t_rain = rain[1] * 60, substance = "Zink_geloest", 
-  hazard_list = checked)
+if(FALSE){
+  r2q::immission_assessment(
+    site_data = siteData, 
+    c_table = c_table, 
+    q_rain = rain[2], 
+    t_rain = rain[1] * 60, substance = "Zink_geloest", 
+    hazard_list = checked)
+}
 # -------------------------------------
 
 r2q_out <- r2q::assess_all_hazards(
@@ -65,6 +67,10 @@ r2q_out <- r2q::assess_all_hazards(
   q_rain = rain[2], t_rain = rain[1] * 60, 
   c_type = c_type)
 
+plot_connectable_urban_area(
+  r2q_substance = r2q_out, 
+  r2q_hydrology = r2q_h
+)
 ###  save results
 siteFolder <- "baukau"
 {
@@ -126,13 +132,15 @@ siteFolder <- "baukau"
 ############################ detailed planning
 planningData <- r2q::load_planning_details(
   data.dir = "inst/extdata/Data_entry", 
-  filename = "Abschlussveranstaltung.xlsx"
+  filename = "Baukau_final.xlsx"
 )
 
 pl_out <- r2q::planning_area_discharge(
   planning_data = planningData, 
   q_rain = rain[2], 
-  t_rain = rain[1] * 60)
+  t_rain = rain[1] * 60, 
+  y_rain = siteData$rain_year$Value, 
+  thresholdTable = c_threshold)
 
 #################### comparison
 
@@ -147,7 +155,18 @@ df_compare <- merge(
   all.y = TRUE)
 df_compare
 
+
+
 sort_i <- order(df_compare$area_pot_rel)
+
+immission_out <- r2q_out
+hydrology_out <- r2q_h
+
+
+
+
+r2q_out$general
+r2q_h$discharge_parameters
 
 par(mar = c(4.1, 10.1, 1.1, 4.1))
 barplot(
