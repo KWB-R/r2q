@@ -14,8 +14,8 @@ c_river <- r2q::load_background_data(
 # load package data ------------------------------------------------------------
 c_storm <- r2q::get_stormwaterRunoff(
   runoff_effective_mix = list(
-    siteData$landuse$Mix_flow_connected[1:4], 
-    siteData$landuse$Mix_flow_connectable[1:4]),
+    siteData$landuse$Mix_flow_connected[c(2,1,3,4)], 
+    siteData$landuse$Mix_flow_connectable[c(2,1,3,4)]),
   mix_names = c("is", "pot"))
 
 c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
@@ -67,7 +67,7 @@ r2q_out <- r2q::assess_all_hazards(
   q_rain = rain[2], t_rain = rain[1] * 60, 
   c_type = c_type)
 
-plot_connectable_urban_area(
+r2q::plot_connectable_urban_area(
   r2q_substance = r2q_out, 
   r2q_hydrology = r2q_h
 )
@@ -154,40 +154,5 @@ df_compare <- merge(
   by = "substance", 
   all.y = TRUE)
 df_compare
-
-
-
-sort_i <- order(df_compare$area_pot_rel)
-
-immission_out <- r2q_out
-hydrology_out <- r2q_h
-
-
-
-
-r2q_out$general
-r2q_h$discharge_parameters
-
-par(mar = c(4.1, 10.1, 1.1, 4.1))
-barplot(
-  height = df_compare$area_pot_rel[sort_i], 
-  horiz = T, las = 1,
-  names.arg = df_compare$substance[sort_i], xlab = "Connectable area in %", 
-  xlim = c(0,200), xpd = F, col = "steelblue", space = 0.1, border = NA)
-abline(v = c(0, 200))
-axis(
-  side = 4, 
-  at = seq_along(df_compare$substance) / nrow(df_compare) * 10 - 
-    0.5 / nrow(df_compare) * 10, 
-  labels = df_compare$area_pot_rel[sort_i], las = 1, tick = FALSE)
-
-
-
-
-# Save data --------------------------------------------------------------------
-write.table(
-  area_table, 
-  file = "C:/Users/mzamzo/Documents/R2Q/output/Baukau.csv", 
-  sep = ";", dec = ".", row.names = FALSE)
 
 
