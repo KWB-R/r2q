@@ -76,7 +76,8 @@ get_thresholds <- function(
   sub_id_to_name(c_table = c_thresh)
 }
 
-#' This function loads the landuse specific pollutant runoff concentration
+#' Load landuse specific pollutant runoff concentration
+#' 
 #' obtained by the OgRe Dataset and multiplies it with the proportion of the
 #' correspoding area type in the catchment. 
 #' 
