@@ -261,17 +261,19 @@ load_background_data <- function(
     suppressWarnings(
       default_index <- which(is.na(as.numeric(df_in$river)))
     )
-    substances_needed <- df_in[["Substance"]][default_index]
-    
-    print(paste0("Using default values for substances ", 
-                 paste0(substances_needed, collapse = ", ")))
-    defaults <- get_default_background(SUW_type = SUW_type)
-    defaults_row <- 
-      lapply(substances_needed, function(x){which(defaults[["substance"]] == x)})
-    
-    for(i in 1:length(default_index)){
-      df_in$river[default_index[i]] <- defaults[defaults_row[[i]], "Default"]
-      df_in$Comment[default_index[i]] <- "default"
+    if(length(default_index) > 0L){
+      substances_needed <- df_in[["Substance"]][default_index]
+      
+      print(paste0("Using default values for substances ", 
+                   paste0(substances_needed, collapse = ", ")))
+      defaults <- get_default_background(SUW_type = SUW_type)
+      defaults_row <- 
+        lapply(substances_needed, function(x){which(defaults[["substance"]] == x)})
+      
+      for(i in 1:length(default_index)){
+        df_in$river[default_index[i]] <- defaults[defaults_row[[i]], "Default"]
+        df_in$Comment[default_index[i]] <- "default"
+      }
     }
   }
   df_in
