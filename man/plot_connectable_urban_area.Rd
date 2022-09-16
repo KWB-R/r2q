@@ -2,17 +2,36 @@
 % Please edit documentation in R/plot_functions.R
 \name{plot_connectable_urban_area}
 \alias{plot_connectable_urban_area}
-\title{Plot of relative connectable area}
+\title{Plot of connectable area}
 \usage{
-plot_connectable_urban_area(r2q_substance, r2q_hydrology = NULL)
+plot_connectable_urban_area(
+  r2q_substance,
+  site_data,
+  r2q_hydrology = NULL,
+  x_type = "percent",
+  language = "de"
+)
 }
 \arguments{
 \item{r2q_substance}{Assessment output created by \code{\link[=assess_all_hazards]{assess_all_hazards()}}}
 
+\item{site_data}{List of site data as loaded by \code{\link[=load_site_data]{load_site_data()}}}
+
 \item{r2q_hydrology}{Assessment output created by \code{\link[=hydrology_assessment]{hydrology_assessment()}}.
 Is NULL by default, so that the plot can be created for substances only}
+
+\item{x_type}{Unit of the x-axis. Default is "percent", also possible "ha"
+for absolute values}
+
+\item{language}{Either "de" or "en" for German or English language.}
 }
 \description{
-Share of the urban area that can be connected to the seperate sewer system
+Urban area that can be connected to the seperate sewer system
 without exceeding the threshold values (and without further treatment)
+}
+\details{
+Relative values in percent refer to the entire urbanised catchment area as
+well as to the planning area. If the plot is created with absolute values,
+information about the connectable area of the urbanised catchment, the
+already connected area, and the size of the planning area are integrated.
 }

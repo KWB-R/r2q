@@ -55,35 +55,127 @@ plot_hazards <- function(
          y.intersp = 2)
 }
 
-#' Plot of relative connectable area
+#' Plot of connectable area
 #' 
-#' Share of the urban area that can be connected to the seperate sewer system
+#' Urban area that can be connected to the seperate sewer system
 #' without exceeding the threshold values (and without further treatment)
 #' 
 #' @param r2q_substance Assessment output created by [assess_all_hazards()]
+#' @param site_data List of site data as loaded by [load_site_data()]
 #' @param r2q_hydrology Assessment output created by [hydrology_assessment()].
 #' Is NULL by default, so that the plot can be created for substances only
+#' @param x_type Unit of the x-axis. Default is "percent", also possible "ha" 
+#' for absolute values
+#' @param language Either "de" or "en" for German or English language.
 #' 
-#' @importFrom graphics abline barplot
+#' @details 
+#' Relative values in percent refer to the entire urbanised catchment area as 
+#' well as to the planning area. If the plot is created with absolute values,
+#' information about the connectable area of the urbanised catchment, the
+#' already connected area, and the size of the planning area are integrated. 
+#' 
+#' @importFrom graphics abline barplot mtext
 #' @importFrom utils data
 #' @export
 #' 
-plot_connectable_urban_area <- function(r2q_substance, r2q_hydrology = NULL){
-  r2q_pal <- data("r2q_pal", envir = environment())
+plot_connectable_urban_area <- function(
+    r2q_substance, site_data, r2q_hydrology = NULL, x_type = "percent", 
+    language = "de"
+){
+  # r2q_pal <- data("r2q_pal", envir = environment())
   
-  v_i <- unlist(r2q_substance$general$area_pot_rel)
-  v_h <- r2q_hydrology$discharge_parameters$Value[6]
-  v <- round(c(v_i, "Hydrology" = v_h), 0)
+  if(x_type == "percent"){
+    v_i <- unlist(r2q_substance$general$area_pot_rel)
+    v_h <- r2q_hydrology$discharge_parameters$Value[6]
+    v <- round(c(v_i, "Hydrology" = v_h), 0)
+    xlab <- ifelse(
+      language == "de",   
+      yes = "Anschließbare Fläche / Vorhandene Fläche [%]",
+      no = "Connectable area / Available area [%]")
+    xlim <- c(0,200)
+  } else if(x_type == "ha"){
+    v_i <- unlist(r2q_substance$general$areaUrban_pot_ha)
+    v_h <- r2q_hydrology$discharge_parameters$Value[5]
+    v <- round(c(v_i, "Hydrology" = v_h), 0)
+    xlab <- ifelse(
+      language == "de",   
+      yes = "Anschließbare Fläche [ha]",
+      no = "Connectable area [ha]")
+    xlim <- c(0, site_data$area_urban_connectable$Value + 
+                site_data$area_urban_connectable$Value * 0.1) * 100
+  }  
   r <- order(v)
   
-  par(mar = c(4.1, 10.1, 1.1, 4.1))
+  subIDs <- r2q::get_subID()
+  yNames <- sapply(names(v), function(x){
+    if(x == "Hydrology"){
+      ifelse(
+        test = language == "de", 
+        yes =  "Hydrologische\nBewertung", 
+        no = "Hydrological assessment")
+    } else {
+      subIDs[[paste0("name_", language)]][subIDs$substance == x]
+    }
+  })
+
+  par(mar = c(4.1, 10.1, 4.1, 4.1))
   yAt <- barplot(
     height = v[r], 
-    horiz = T, las = 1,
-    names.arg = names(v)[r], xlab = "Connectable area in %", 
-    xlim = c(0,200), xpd = F, col = r2q_pal$blue[4], space = 0.1, border = NA)
-  abline(v = c(0, 200))
-  abline(v = c(100), lty = "dotted")
+    horiz = TRUE, 
+    las = 1, 
+    names.arg = yNames[r], 
+    xlab = xlab, 
+    xlim = xlim, 
+    xpd = FALSE, 
+    col = r2q::r2q_pal$blue[3], 
+    space = 0.2, 
+    border = NA
+  )
+  
+ 
+  if(x_type == "percent"){
+    abline(
+      v = c(0, 50, 100,150, 200), 
+      lty = c("solid", "dotted", "dotted", "dotted", "solid"))
+    pa <- site_data$area_plan$Value / 
+      site_data$area_urban_connectable$Value * 100
+    abline(v = site_data$area_plan$Value / 
+             site_data$area_urban_connectable$Value * 100, lwd = 3, 
+           col = r2q::r2q_pal$green[2])
+    mtext(
+      side = 3, 
+      text = ifelse(
+        test = language == "de", 
+        yes = paste0("Anteil des Planungsgebiets: ", round(pa, 0), "%"),
+        no = paste0("Planning Area: ", round(pa, 0), "%")),
+        at = pa)
+  } else if(x_type == "ha"){
+    abline(v = 0)
+    
+    vLines <- c(
+      "Planning area" = site_data$area_plan$Value,
+      "Connectable urban area" = site_data$area_urban_connectable$Value - 
+        site_data$area_urban_connected$Value) * 100
+    vCol <- c(r2q::r2q_pal$orange[3],  r2q::r2q_pal$green[2])
+    
+    abline(
+      v = vLines, 
+      lty = "solid", 
+      col = vCol, 
+      lwd = 4)
+    
+    legend(
+      x = mean(par("usr")[1:2]), 
+      y = par("usr")[4], 
+      horiz = TRUE, 
+      xjust = 0.5, 
+      yjust = -0.5,
+      legend = paste0(names(vLines), " (", signif(vLines, digits = 2), " ha)"), 
+      col = vCol,
+      lwd = 2,
+      xpd = TRUE, 
+      bty = "n")
+  }
   axis(side = 4, at = yAt, labels = v[r], las = 1, tick = FALSE)
 }
 
