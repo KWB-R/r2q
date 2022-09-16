@@ -2,9 +2,7 @@
 % Please edit documentation in R/get_package_data.R
 \name{get_stormwaterRunoff}
 \alias{get_stormwaterRunoff}
-\title{This function loads the landuse specific pollutant runoff concentration
-obtained by the OgRe Dataset and multiplies it with the proportion of the
-correspoding area type in the catchment.}
+\title{Load landuse specific pollutant runoff concentration}
 \usage{
 get_stormwaterRunoff(
   runoff_effective_mix = list(c(40, 40, 20, 0), c(20, 40, 20, 20)),
@@ -24,7 +22,6 @@ quantile concentrations of all four landuse types and for the defined landuse
 combinations
 }
 \description{
-This function loads the landuse specific pollutant runoff concentration
 obtained by the OgRe Dataset and multiplies it with the proportion of the
 correspoding area type in the catchment.
 }

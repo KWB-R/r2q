@@ -18,3 +18,12 @@ hydolic assessment.
 \description{
 Maximal connectable impervious area based on hydrologic conditions
 }
+\details{
+If the planning area is identical with the urban area lines 3, 4 and 7 are
+not valid. Line 8 is the required throttel for both, the urban area and the
+planning area.
+The reason for this is: for the planning area "no_runoff" landuse considered
+for discharge calculation (-> possible runoff areas in the future), while
+this is not the case for the urban area (-> Status quo assessment). If the
+planning area is no "real" planning area, that would not make any sense.
+}

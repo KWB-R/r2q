@@ -1,12 +1,16 @@
+path <- 
+  # "Y:/SUW_Department/Projects/R2Q/Communication/Docs/Aqua und Gas Artikel/daten"
+  "inst/extdata/Data_entry"
+
 
 # load external data -----------------------------------------------------------
 siteData <- r2q::load_site_data(
-  data.dir = "inst/extdata/Data_entry", 
+  data.dir = path, 
   filename = "Baukau_final.xlsx"
 )
 
 c_river <- r2q::load_background_data(
-  data.dir = "inst/extdata/Data_entry",
+  data.dir = path,
   filename = "Baukau_final.xlsx", 
   default_for_na = TRUE
 )
@@ -69,10 +73,21 @@ r2q_out <- r2q::assess_all_hazards(
 
 r2q::plot_connectable_urban_area(
   r2q_substance = r2q_out, 
-  r2q_hydrology = r2q_h
+  r2q_hydrology = r2q_h, 
+  site_data = siteData, 
+  x_type = "percent", 
+  language = "de"
+)
+
+r2q::plot_connectable_urban_area(
+  r2q_substance = r2q_out, 
+  r2q_hydrology = r2q_h, 
+  site_data = siteData, 
+  x_type = "ha", 
+  language = "de"
 )
 ###  save results
-siteFolder <- "baukau"
+siteFolder <- "pantringshof"
 {
   write.table(
     x = r2q_h$discharge_parameters, 
