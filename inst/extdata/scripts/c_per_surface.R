@@ -65,8 +65,13 @@ OgRe_single <- read.table(file = system.file("extdata/OgRe_data/OgRe_drain.csv",
                                              package = "r2q"), 
                           sep = ";", dec = ".", header = TRUE, as.is = TRUE)
 
-dfc <- merge(x = c_threshold, y = OgRe_conc, 
-             by.x = "Substance", by.y = "VariableName")
+
+OgRe_conc$substance <- OgRe_conc$VariableName
+OgRe_single$substance <- OgRe_single$VariableName
+OgRe_conc <- r2q::sub_OgRe_to_name(OgRe_conc)
+OgRe_single <- r2q::sub_OgRe_to_name(OgRe_single)
+
+dfc <- merge(x = c_threshold, y = OgRe_conc, by.x = "substance")
 
 
 
@@ -217,7 +222,7 @@ if(FALSE){
   }
   
   i <- 1
-  for(substance in dfc$Substance[-1]){
+  for(substance in dfc$substance[-1]){
     i <- i + 1
     print(substance)
     png(filename = paste0(
@@ -769,7 +774,8 @@ plot_street_depency <- function(
   assume_zero_background = FALSE,
   flow_share_street = NULL
 ){
-  sub_df <- OgRe_drain %>% filter(VariableName %in% substance) 
+  sub_df <- OgRe_drain[OgRe_drain$substance %in% substance,]
+ 
   
   plot_single <- sub_df %>% 
     mutate(DataValue = ifelse(CensorCode == "lt", 
@@ -786,14 +792,16 @@ plot_street_depency <- function(
   }
   
   plot_mean <- colMeans(plot_single[,2:6], na.rm = T)
-  th <- c_threshold$threshold[c_threshold$Substance == substance]
+  th <- c_threshold$threshold[c_threshold$substance == substance]
   
   xmax <- max(v_x)
   ymax <- max(c(unlist(plot_single[,2:6]), th), na.rm = TRUE)
   plot(x = unlist(v_x), y = plot_mean, ylim = c(0,ymax), type = "n", 
        xlim = c(0,xmax + 0.1 *xmax  ),
-       xlab = "KFZ-Rate pro Gesamtabfluss", 
-       ylab = paste0(substance, " - Konzentration"), xaxs = "i")
+       xlab = "ln(KFZ/15 min)", 
+       ylab = paste0(substance, " - Konzentration"), 
+       #ylab = paste0( "Benzo(k)fluoranthen in µg/L"), 
+       xaxs = "i")
   
   if(add_regression){
     # linear regression
@@ -871,7 +879,7 @@ plot_street_depency <- function(
          y = plot_single$STR, col = "orange", lwd = 2)
   
   if(plotMean){
-    points(x = v_x, y = plot_mean, cex = 1, pch = 23, 
+    points(x = v_x, y = plot_mean, cex = 1.3, pch = 23, 
            bg = c("brown", "steelblue", "green3", "gray20", "orange"), 
            col = "black", lwd = 1.5)
   }
@@ -879,8 +887,11 @@ plot_street_depency <- function(
   
   legend(x = 0, y = par("usr")[4] + 2*par("cxy")[2] , 
          xpd = TRUE, horiz = T, bty = "n",
-         pch = 1, col = c("brown", "steelblue", "green3", "gray20"), lwd = 2, 
+         pch = 1, col = c("brown", "steelblue", "green3", "gray20", "orange"), 
+         lwd = 2, 
          legend = names(v_x), lty = 0, cex = 0.8)
+  abline(h = par("usr")[3:4])
+  abline(v = par("usr")[1:2])
   
   c("slope" = signif(reg$coefficients[2], 2),
     "interc" = signif(reg$coefficients[1], 2))
