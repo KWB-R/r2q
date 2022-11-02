@@ -4,12 +4,14 @@
 \alias{load_planning_details}
 \title{Loads Excel sheet "planning_area_details"}
 \usage{
-load_planning_details(data.dir, filename)
+load_planning_details(data.dir, filename, scenario_name)
 }
 \arguments{
 \item{data.dir}{The path of the entry data table.}
 
 \item{filename}{Name of the R2Q-Excel File including ".xlsx".}
+
+\item{scenario_name}{Name of the excel sheet descbribing the planning scenario}
 }
 \value{
 The Excel sheet as data frame

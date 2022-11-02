@@ -287,6 +287,7 @@ load_background_data <- function(
 #'
 #' @param data.dir The path of the entry data table.
 #' @param filename Name of the R2Q-Excel File including ".xlsx".
+#' @param scenario_name Name of the excel sheet descbribing the planning scenario
 #' 
 #' @return 
 #' The Excel sheet as data frame
@@ -296,12 +297,15 @@ load_background_data <- function(
 #' 
 load_planning_details <- function(
   data.dir,
-  filename
+  filename,
+  scenario_name
 ){
-  df_out <- readxl::read_excel(
-    path = file.path(data.dir, filename),
-    sheet = "planning_area_details", 
-    skip = 1)
+  df_out <- openxlsx::read.xlsx(
+    xlsxFile = file.path(data.dir, filename), 
+    sheet = scenario_name, 
+    startRow = 2, 
+    sep.names = "_"
+  )
   
   missing_values <- which(is.na(df_out$area_m2))
   if(length(missing_values) > 0L){
