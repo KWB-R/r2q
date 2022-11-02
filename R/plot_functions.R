@@ -23,6 +23,7 @@ plot_hazards <- function(
   ll <- length(hazards[[1]])
   
   dev.new(noRStudioGD = T, width = 8, height = 4)
+ 
   par(mar = c(10.1, 12.1, 2.1, 0.1))
   plot(x = 0, y = 0, xlim = c(0.5, hl + 0.5), 
        ylim = c(0.5, ll + 0.5), main = title,
@@ -82,7 +83,7 @@ plot_connectable_urban_area <- function(
     r2q_substance, site_data, r2q_hydrology = NULL, x_type = "percent", 
     language = "de"
 ){
-  # r2q_pal <- data("r2q_pal", envir = environment())
+  data("r2q_pal", package = "r2q", envir = environment())
   
   if(x_type == "percent"){
     v_i <- unlist(r2q_substance$general$area_pot_rel)
@@ -90,7 +91,7 @@ plot_connectable_urban_area <- function(
     v <- round(c(v_i, "Hydrology" = v_h), 0)
     xlab <- ifelse(
       language == "de",   
-      yes = "Anschließbare Fläche / Vorhandene Fläche [%]",
+      yes = "Anschlie\u00dfbare Fl\u00e4che / Vorhandene Fl\u00e4che [%]",
       no = "Connectable area / Available area [%]")
     xlim <- c(0,200)
   } else if(x_type == "ha"){
@@ -99,7 +100,7 @@ plot_connectable_urban_area <- function(
     v <- round(c(v_i, "Hydrology" = v_h), 0)
     xlab <- ifelse(
       language == "de",   
-      yes = "Anschließbare Fläche [ha]",
+      yes = "Anschlie\u00dfbare Fl\u00e4che [ha]",
       no = "Connectable area [ha]")
     xlim <- c(0, site_data$area_urban_connectable$Value + 
                 site_data$area_urban_connectable$Value * 0.1) * 100
@@ -127,7 +128,7 @@ plot_connectable_urban_area <- function(
     xlab = xlab, 
     xlim = xlim, 
     xpd = FALSE, 
-    col = r2q::r2q_pal$blue[3], 
+    col = r2q_pal$blue[3], 
     space = 0.2, 
     border = NA
   )
@@ -141,7 +142,7 @@ plot_connectable_urban_area <- function(
       site_data$area_urban_connectable$Value * 100
     abline(v = site_data$area_plan$Value / 
              site_data$area_urban_connectable$Value * 100, lwd = 3, 
-           col = r2q::r2q_pal$green[2])
+           col = r2q_pal$green[2])
     mtext(
       side = 3, 
       text = ifelse(
@@ -156,7 +157,7 @@ plot_connectable_urban_area <- function(
       "Planning area" = site_data$area_plan$Value,
       "Connectable urban area" = site_data$area_urban_connectable$Value - 
         site_data$area_urban_connected$Value) * 100
-    vCol <- c(r2q::r2q_pal$orange[3],  r2q::r2q_pal$green[2])
+    vCol <- c(r2q_pal$orange[3],  r2q_pal$green[2])
     
     abline(
       v = vLines, 
