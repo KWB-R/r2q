@@ -41,7 +41,9 @@ planning_area_discharge <- function(
              q_rain = q_rain, 
              t_rain = t_rain, 
              y_rain = y_rain, 
-             thresholdTable = thresholdTable)), 4)
+             thresholdTable = thresholdTable
+      )
+    ), 4)
   })
   colnames(df_out) <- conc$substance
   rownames(df_out) <- paste(afID$f_id, afID$primary_function, sep = "_")
@@ -82,11 +84,16 @@ get_planningLoad <- function(
       c_table = r2q::get_spec_runoff(), 
       all_substances = FALSE)
   }
-
+  
   subID <- get_subID()
   s_group <- subID$group_en[subID$s_id == sID]
   subName <- subID$substance[subID$s_id == sID]
   tType <- thresholdTable$threshold_type[thresholdTable$substance == subName]
+  if(!(tolower(s_group) %in% colnames(planning_data))){
+    print(colnames(planning_data))
+    stop(paste0("The substance group ", s_group, " is not defined in the ",
+                "senario input table"))
+  }
   treated <- planning_data[which(planning_data$f_id == fID), tolower(s_group)]
   fD <- planning_data$fD[planning_data$f_id == fID]
   
