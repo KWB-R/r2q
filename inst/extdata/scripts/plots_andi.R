@@ -34,16 +34,20 @@ OgRe_data <- read.table(file = system.file("extdata/OgRe_data/OgRe_drain.csv",
                                            package = "r2q"), 
                         sep = ";", dec = ".", header = TRUE, as.is = TRUE)
 
-index <- which(OgRe_data$VariableName %in% x_thresholds$Substance)
+OgRe_data$substance <- OgRe_data$VariableName
+
+OgRe_data <- r2q::sub_OgRe_to_name(c_table = OgRe_data)
+
+index <- which(OgRe_data$substance %in% x_thresholds$substance)
 
 OgRe_data_r2q <- OgRe_data[index,]
 
 #calculate minimal mixing ratios
 OgRe_data_r2q$mixing_ratio <- NA
 counter <- 0
-for (substance in x_thresholds$Substance) {
+for (substance in x_thresholds$substance) {
     counter <- counter + 1
-    index <- which(OgRe_data_r2q$VariableName == substance)
+    index <- which(OgRe_data_r2q$substance == substance)
     
     OgRe_data_r2q$mixing_ratio[index] <- OgRe_data_r2q$DataValue[index] / x_thresholds$threshold[counter] - 1
 
@@ -55,13 +59,13 @@ png(filename= file.path("inst/extdata/plots", "min_mix_ratio.png"),
 kwb.plot::setMargins(left=5, top = 2, bottom = 10)
 
 boxplot(OgRe_data_r2q$mixing_ratio ~ OgRe_data_r2q$VariableName, 
-        las = 2, ylab = "minimal mixing ratio", xlab = "", 
+        las = 2, ylab = "Minimal mixing ratio", xlab = "", 
         cex.axis = 0.7, cex.lab = 0.8, outline = FALSE, 
         whisklty = 0, staplelty = 0, ylim=c(-3,32))
 
 sub_means <- tapply(X = OgRe_data_r2q$mixing_ratio, INDEX = OgRe_data_r2q$VariableName, FUN = mean)
 
-points(sub_means, pch = 5, cex = 0.6)
+points(sub_means, pch = 5, cex = 0.6, lwd = 1)
 
 abline(h = 0, col = "red")
 

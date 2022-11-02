@@ -207,11 +207,11 @@ if(FALSE){
     
     png(filename = paste0(
       "C:/Users/mzamzo/Documents/R2Q/output/street_influence/", 
-      substr(dfc$Substance[i], start = 1, stop = 7), ".png"), 
+      substr(dfc$substance[i], start = 1, stop = 7), ".png"), 
       width = 6, height = 6, units = "in", res = 300)
     plot(x = 0, y = 0, type = "n", ylab = dfc$Unit[i], 
          xlab = "", xaxt = "n", xlim = xlim, ylim = ylim, las = 2, 
-         xaxs = "i", yaxs = "i", main = dfc$Substance[i])
+         xaxs = "i", yaxs = "i", main = dfc$substance[i])
     axis(side = 1, at = 1:3, labels = c("Gering", "Mittel", "Hoch"), tick = F)
     mtext(text = "Verkehrsaufkommen", side = 1, line = 3)
     rect(xleft = c(0.6, 1.6, 2.6), xright = c(1.4, 2.4, 3.4), 
@@ -228,7 +228,7 @@ if(FALSE){
     png(filename = paste0(
       "C:/Users/mzamzo/Documents/R2Q/output/street_influence/kfz_flow", 
       substr(substance, start = 1, stop = 7), ".png"), 
-      width = 6, height = 6, units = "in", res = 300)
+      width = 6, height = 6, units = "in", res = 600)
     
     plot_street_depency(substance = substance, 
                         OgRe_drain = OgRe_single, 
@@ -798,8 +798,8 @@ plot_street_depency <- function(
   ymax <- max(c(unlist(plot_single[,2:6]), th), na.rm = TRUE)
   plot(x = unlist(v_x), y = plot_mean, ylim = c(0,ymax), type = "n", 
        xlim = c(0,xmax + 0.1 *xmax  ),
-       xlab = "ln(KFZ/15 min)", 
-       ylab = paste0(substance, " - Konzentration"), 
+       xlab = "ln (KFZ/15 min)", 
+       ylab = paste0(substance, " in µg/L"), 
        #ylab = paste0( "Benzo(k)fluoranthen in µg/L"), 
        xaxs = "i")
   

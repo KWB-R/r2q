@@ -71,6 +71,12 @@ r2q_out <- r2q::assess_all_hazards(
   q_rain = rain[2], t_rain = rain[1] * 60, 
   c_type = c_type)
 
+png(
+  filename = "inst/extdata/plots/connectable_area.png", 
+  width = 9.48, 
+  height = 5.63, 
+  units = "in", 
+  res = 600)
 r2q::plot_connectable_urban_area(
   r2q_substance = r2q_out, 
   r2q_hydrology = r2q_h, 
@@ -78,6 +84,7 @@ r2q::plot_connectable_urban_area(
   x_type = "percent", 
   language = "de"
 )
+dev.off()
 
 r2q::plot_connectable_urban_area(
   r2q_substance = r2q_out, 
