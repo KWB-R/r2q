@@ -1,0 +1,317 @@
+#' Loading site specific information
+#' 
+#' this functions loads the data from the sheet "site_data" within the data
+#' entry excel file and returns the specified parameters in a list
+#'
+#' @param data.dir The directory of the entry data table.
+#' @param filename Name of the R2Q-Excel File including ".xlsx".
+#' 
+#' @return 
+#' A list with all parameters from the site info table as seperate list 
+#' items. Per Parameter the item is a list containing the columnn names of the 
+#' site_info table 
+#' @importFrom readxl read_excel
+#' @importFrom utils type.convert
+#' @export
+#' 
+load_site_data <- function(
+  data.dir,
+  filename
+)
+{
+  siteInfo_id <- get_siteInfoID()
+  
+  site_data <- suppressWarnings(readxl::read_excel(
+    path = file.path(data.dir, filename),
+    sheet = "site_data", 
+    col_types = c("numeric", rep("text", 4)), 
+    col_names = c("ID", "Variable", "Unit", "Value", "Description")
+  ))
+  
+  site_data <- site_data[!is.na(site_data$ID),]
+  
+  siteData <- lapply(
+    site_data$ID, 
+    function(i){
+      obligatory <- siteInfo_id$obligatory[siteInfo_id$i_id == i] == "x"
+      x <- as.list(site_data[i,1:5])
+      if(is.na(x["Value"]) & obligatory) {
+        stop("No value for obligatory variable ", x$Variable)
+      }
+      x$Value <- utils::type.convert(x = x$Value, as.is = TRUE)
+      x
+    })
+  
+  names(siteData) <- site_data[["Variable"]]
+  
+  if(all(is.na(c(siteData[["slope_catch"]]$Value,
+                 siteData[["Hq1pnat_catch"]]$Value)))){
+    stop("Hydrolic calculation not possible as information of slope and", 
+         " Hq1pnat are missing. At least one parameter must be provided.")
+  }
+  
+  del <- which(sapply(siteData, function(x){is.na(x["Value"])}))
+  if(length(del)) {
+    siteData <- siteData[-del]
+  }
+
+  if(!("Hq1pnat_catch" %in% names(siteData))){
+    siteData[["Hq1pnat_catch"]] <- list(
+      "Unit" = "L/(s*km2)",
+      "Value" = get_Hq1_pnat(
+        slope = siteData$slope_catch$Value, 
+        area_catch = siteData$area_catch$Value),
+      "Description" = "Natural run-off of the catchment for a yearly rain event"
+    ) 
+  }
+  
+  siteData[["Q_event"]] <- list(
+    "Unit" = "m3/s",
+    "Value" = siteData$Hq1pnat_catch$Value * siteData$area_catch$Value / 1000,
+    "Description" = "Yearly river flow"
+  ) 
+  
+  siteData[["cross_section_event"]] <- list(
+    "Unit" = "m2",
+    "Value" = 
+      siteData$river_cross_section$Value * 
+      (1 + (siteData$Q_event$Value - siteData$Q_mean$Value) /  
+         siteData$Q_mean$Value / 4),
+    "Description" = "Yearly river cross section"
+  ) 
+  
+  siteData[["t_waterParcel"]] <- list(
+    "Unit" = "min",
+    "Value" =  get_HQ_time_interval(
+      area_catch = siteData$area_catch$Value,
+      river_cross_section = siteData$river_cross_section$Value, 
+      river_length = siteData$river_length$Value, 
+      river_mean_flow = siteData$Q_mean$Value, 
+      Hq_pnat1_catch = siteData$Hq1pnat_catch$Value) - 60,
+    "Description" = 
+      "Time it takes for the water parcel along the urban river stretch"
+  ) 
+  
+  siteData[["landuse"]] <- 
+    load_landuse(data.dir = data.dir, filename = filename)
+  
+  siteData[["area_urban_connectable"]] <- list(
+    "Unit" = "km2", 
+    "Value" =  
+      siteData[["area_urban"]]$Value - 
+      siteData[["area_urban"]]$Value * 
+      siteData$landuse["no_runoff", "proportion"],
+    "Description" = 
+      paste0("Connectable area of the urban area ",  
+             "(area_urban exclusive 'no_runoff')"))
+  
+  siteData[["area_urban_connected"]] <- list(
+    "Unit" = "km2", 
+    "Value" = 
+      siteData[["area_urban"]]$Value * 
+      sum(siteData$landuse[["proportion"]] * 
+            siteData$landuse[["separate_sewer"]]),
+    "Description" = "Urban area currently connected to separate sewer system")
+  
+  siteData[["f_D_pot"]] <- list(
+    "Unit" = "-", 
+    "Value" = 
+      sum(siteData$landuse[["fD"]] * 
+            siteData$landuse[["proportion"]]) / 
+      (1 - siteData$landuse["no_runoff", "proportion"]),
+    "Description" = 
+      paste0("Area proportional average fD value of the connetable urban ", 
+      "catchment area (no_runoff areas excluded)"))
+  
+  siteData[["f_D_is"]] <- list(
+    "Unit" = "-", 
+    "Value" = sum(
+      siteData$landuse[["fD"]] * 
+        siteData$landuse[["effective"]]),
+    "Description" = 
+      paste0("Area proportional average fD value of the conneted urban ",
+      "catchment area (no_runoff areas excluded)"))
+  
+  siteData
+}
+
+#' Loading all details about catchment area types
+#' 
+#' this functions loads the data from the sheet "surface_areaType" within the data
+#' entry excel file 
+#'
+#' @param data.dir The directory of the entry data table.
+#' @param filename Name of the R2Q-Excel File including ".xlsx".
+#' @param residential_suburban,residential_city,commercial,main_road,no_runoff 
+#' vectors of 3 containing 1) fD value of the landuse type, 2) the proportion of 
+#' the landuse type within the catchment area in percent and 3) a value of if 1 
+#' if the landuse tyoe should be considered as connected to the separate sewer
+#' system or 0 if not.
+#' 
+
+#' @return 
+#' A vector of length 5. Entries 1 to 4 describe the proportion of the area 
+#' types "residential_suburban", "residential_city", "industry" and (high-
+#' traffic) "street". The proportion is referred only to the connected area.
+#' The 5th value is the overall proportion of connected area.
+#'
+#' @importFrom readxl read_excel
+#' @export
+#' 
+#' 
+load_landuse <- function(
+  data.dir = NULL, filename = NULL, residential_city = c(0.75, 0.3, 1),  
+  residential_suburban = c(0.75, 0.3, 1), commercial = c(0.75, 0.3, 1), 
+  main_road = c(0.9, 0.1, 1), no_runoff = c(0, 0, 0)
+)
+{
+  df_in <- if(!is.null(data.dir)) {
+    df <- data.frame(
+      readxl::read_excel(
+        path = file.path(data.dir, filename),
+        sheet = paste0("urban_catchment_landuse") 
+      )
+    )
+    rownames(df) <- df$landuse
+    df[,-1]
+  } else {
+    data.frame(
+      "fD" = c(
+        residential_city[1], residential_suburban[1], commercial[1], 
+        main_road[1], no_runoff[1]),
+      "proportion" = c(
+        residential_city[2], residential_suburban[2], commercial[2], 
+        main_road[2], no_runoff[2]),
+      "separate_sewer" = c(
+        residential_city[3], residential_suburban[3], commercial[3],
+        main_road[3], no_runoff[3]), 
+      row.names = c(
+        "residential_city", "residential_suburban", "commercial", 
+        "main_road", "no_runoff"))
+  }
+  
+  df_in$separate_sewer[rownames(df_in) == "no_runoff"] <- 0
+  
+  if(round(sum(df_in$proportion), 0) != 1L)
+    stop("The specified area types do not sum up to 100 %")
+  
+  # connecetd area in average
+  connectable <- sum(df_in$proportion, na.rm = T)
+  connected <- sum(df_in$proportion * df_in$separate_sewer, na.rm = T)
+  if(connected > 0L){
+    # area types weighted by the proportion of seperate sewers 
+    df_in[["effective"]] <- 
+      df_in$proportion * 
+      df_in$separate_sewer /
+      connected 
+    df_in[["Mix_flow_connected"]] <- 
+      (df_in$fD * df_in$effective) / 
+      sum(df_in$fD * df_in$effective, na.rm = T)
+  } else {
+    df_in[["effective"]] <- df_in[["Mix_flow_connected"]] <- 0
+  }
+  ef <- df_in$proportion / connectable
+  df_in[["Mix_flow_connectable"]] <- 
+    (df_in$fD * ef) / sum(df_in$fD * ef, na.rm = T)
+  
+  df_in
+}
+
+
+
+#' Loading local background concentration
+#' 
+#' This functions loads the data from the sheet "pollution_data" within the 
+#' R2Q-Excel file for data entry
+#'
+#' @param data.dir The directory of the entry data table.
+#' @param filename Name of the R2Q-Excel File including ".xlsx".
+#' @param default_for_na If TRUE, default values are used for substances that
+#' were not measured
+#' @param SUW_type Only used if default_for_na is TRUE. "lake" or "river", 
+#' "river" is used as default
+#' 
+#' @return 
+#' A data frame background concentration as defined in the Excel sheet. If
+#' default values are used this is documented in the "comment" column.
+#' 
+#' @importFrom readxl read_excel
+#' @export
+#' 
+load_background_data <- function(
+  data.dir,
+  filename,
+  default_for_na = TRUE,
+  SUW_type = "river" 
+){
+  df_in <- readxl::read_excel(
+    path = file.path(data.dir, filename),
+    sheet = "pollution_data", 
+    col_types = c("text", "text", "numeric", "text"), na = "NA")
+  
+  id <- get_subID()
+  df_in$Substance <- sapply(df_in$Substance, function(x){
+    id$substance[which(x == id$name_OgRe)]
+  })
+ 
+  colnames(df_in)[colnames(df_in) == "Background Concentration"] <- "river"
+  df_in$Comment <- "entered"
+  
+  if(default_for_na){
+    suppressWarnings(
+      default_index <- which(is.na(as.numeric(df_in$river)))
+    )
+    if(length(default_index) > 0L){
+      substances_needed <- df_in[["Substance"]][default_index]
+      
+      print(paste0("Using default values for substances ", 
+                   paste0(substances_needed, collapse = ", ")))
+      defaults <- get_default_background(SUW_type = SUW_type)
+      defaults_row <- 
+        lapply(substances_needed, function(x){which(defaults[["substance"]] == x)})
+      
+      for(i in 1:length(default_index)){
+        df_in$river[default_index[i]] <- defaults[defaults_row[[i]], "Default"]
+        df_in$Comment[default_index[i]] <- "default"
+      }
+    }
+  }
+  df_in
+}
+
+
+#' Loads Excel sheet "planning_area_details"
+#' 
+#' This functions loads the data from the sheet "pollution_data" within the 
+#' R2Q-Excel file for data entry
+#'
+#' @param data.dir The path of the entry data table.
+#' @param filename Name of the R2Q-Excel File including ".xlsx".
+#' @param scenario_name Name of the excel sheet descbribing the planning scenario
+#' 
+#' @return 
+#' The Excel sheet as data frame
+#' 
+#' @importFrom readxl read_excel
+#' @export
+#' 
+load_planning_details <- function(
+  data.dir,
+  filename,
+  scenario_name
+){
+  df_out <- openxlsx::read.xlsx(
+    xlsxFile = file.path(data.dir, filename), 
+    sheet = scenario_name, 
+    startRow = 2, 
+    sep.names = "_"
+  )
+  
+  missing_values <- which(is.na(df_out$area_m2))
+  if(length(missing_values) > 0L){
+    df_out$area_m2[missing_values] <- 0
+    warning("Missing values for function ID ", df_out$f_id[missing_values], 
+            ". Values set to 0.")
+  }
+  df_out
+}

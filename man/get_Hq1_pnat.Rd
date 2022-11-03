@@ -4,20 +4,19 @@
 \alias{get_Hq1_pnat}
 \title{Calculate natural runoff based on slope of landscape}
 \usage{
-get_Hq1_pnat(slope = 0.1)
+get_Hq1_pnat(slope, area_catch)
 }
 \arguments{
 \item{slope}{slope of the planning area (unit \%)}
+
+\item{area_catch}{catchment area  (in km2)}
 }
 \value{
-potential annual natural discharge flow (unit l*s^-1 km²^-1)
+Once-in-a-year natural discharge flow of the catchment in L/(s*km2)
 }
 \description{
 Calculate natural runoff based on slope of landscape
 }
 \examples{
-get_Hq1_pnat(slope= 0.1)
-get_Hq1_pnat(slope= 0.5)
-get_Hq1_pnat(slope = 2)
-get_Hq1_pnat(slope = 50)
+get_Hq1_pnat(slope = 0.1, area_catch = 5.62)
 }

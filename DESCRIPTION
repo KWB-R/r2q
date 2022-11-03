@@ -1,52 +1,47 @@
 Package: r2q
-Title: R Package with Functions and Exchange for Project R2Q
-Version: 0.0.0.9000
-Authors@R: 
-    c(person(given = "Wolfgang",
-             family = "Seis",
-             role = c("aut", "cre"),
-             email = "wolfgang.seis@kompetenz-wasser.de",
-             comment = c(ORCID = "0000-0002-7436-8575")),
-      person(given = "Andreas",
-             family = "Matzinger",
-             role = "aut",
-             email = "andreas.matzinger@kompetenz-wasser.de",
-             comment = c(ORCID = "0000-0001-5483-4594")),
-      person(given = "Michael",
-             family = "Rustler",
-             role = c("ctb", "rev"),
-             email = "michael.rustler@kompetenz-wasser.de",
-             comment = c(ORCID = "0000-0003-0647-7726")),
-      person(given = "R2Q",
-             role = "fnd"),
-      person(given = "Kompetenzzentrum Wasser Berlin gGmbH (KWB)",
-             role = "cph"))
-Description: R Package with Functions and Exchange for Project
-    R2Q.
+Title: R Package for immission based assessment of separated sewer connection to small rivers
+Version: 0.1.0
+Authors@R: c(
+    person("Zamzow", "Malte", , "malte.zamzow@kompetenz-wasser.de", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-8748-038X")),
+    person("Wolfgang", "Seis", , "wolfgang.seis@kompetenz-wasser.de", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-7436-8575")),
+    person("Andreas", "Matzinger", , "andreas.matzinger@kompetenz-wasser.de", role = "aut",
+           comment = c(ORCID = "0000-0001-5483-4594")),
+    person("Hauke", "Sonnenberg", , "hauke.sonnenberg@kompetenz-wasser.de", role = "ctb",
+           comment = c(ORCID = "0000-0001-9134-2871")),
+    person("Michael", "Rustler", , "michael.rustler@kompetenz-wasser.de", role = c("ctb", "rev"),
+           comment = c(ORCID = "0000-0003-0647-7726")),
+    person("R2Q", role = "fnd"),
+    person("Kompetenzzentrum Wasser Berlin gGmbH (KWB)", role = "cph")
+  )
+Description: R Package with Functions and Exchange for Project R2Q.
 License: MIT + file LICENSE
 URL: https://github.com/KWB-R/r2q
 BugReports: https://github.com/KWB-R/r2q/issues
+Depends:
+    R (>= 3.5.0)
 Imports: 
     dplyr,
     ggplot2,
     magrittr,
+    readxl,
+    openxlsx,
     rlang,
     sf,
-    stringr,
-    tidyr,
-    readr
+    tidyr
 Suggests: 
     covr,
     flexdashboard,
     knitr,
     plotly,
-    shiny,
     rmarkdown,
+    shiny,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
-Config/testthat/edition: 3
+RoxygenNote: 7.2.0

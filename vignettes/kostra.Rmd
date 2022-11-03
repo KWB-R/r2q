@@ -22,7 +22,10 @@ link_to_coord_help <- "https://epsg.io/transform#s_srs=4326&t_srs=3034"
 
  
 # Example default values Herne
-herne <- r2q::get_KOSTRA()
+herne <- r2q::get_KOSTRA(
+  coord_vector = c(3813634.44, 2753912.5), 
+  duration_string = 10, 
+  location_name = "Herne")
 
 plotly::ggplotly(herne$plot)
 knitr::kable(herne$data)

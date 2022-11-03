@@ -2,20 +2,20 @@
 % Please edit documentation in R/hydrology.R
 \name{get_allowed_area}
 \alias{get_allowed_area}
-\title{Get average permeability}
+\title{Get allowed impervious area}
 \usage{
-get_allowed_area(f_DA = 0.7, q_zul, R_Spende = 150)
+get_allowed_area(f_D, Q_tol, q_rain)
 }
 \arguments{
-\item{f_DA}{f_DA}
+\item{f_D}{Run-off coefficient of impervious area}
 
-\item{q_zul}{q_zul}
+\item{Q_tol}{Tolearble discharge into the surface water in L/s}
 
-\item{R_Spende}{R_Spende}
+\item{q_rain}{presipitaion rate in L/(s * ha)}
 }
 \value{
-????
+allowed impervious area in ha
 }
 \description{
-Get average permeability
+Get allowed impervious area
 }

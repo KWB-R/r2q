@@ -1,0 +1,33 @@
+f_id;primary_function;char1;char2;char3
+1;Wohngebäude;In Verkehrsreichem Gebiet;Mit Zinkdach;
+2;Wohngebäude;In Verkehrsreichem Gebiet;Mit Gründach;Mit Biozidverwendung / unbekannt
+3;Wohngebäude;In Verkehrsreichem Gebiet;Mit Gründach;Ohne Biozidverwendung
+4;Wohngebäude;In Verkehrsreichem Gebiet;Mit Bitumendach;Mit Biozidverwendung / unbekannt
+5;Wohngebäude;In Verkehrsreichem Gebiet;Mit Bitumendach;Ohne Biozidverwendung
+6;Wohngebäude;In Verkehrsreichem Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
+7;Wohngebäude;In Verkehrsarmen Gebiet;Mit Zinkdach;
+8;Wohngebäude;In Verkehrsarmen Gebiet;Mit Gründach;Mit Biozidverwendung / unbekannt
+9;Wohngebäude;In Verkehrsarmen Gebiet;Mit Gründach;Ohne Biozidverwendung
+10;Wohngebäude;In Verkehrsarmen Gebiet;Mit Bitumendach;Mit Biozidverwendung / unbekannt
+11;Wohngebäude;In Verkehrsarmen Gebiet;Mit Bitumendach;Ohne Biozidverwendung
+12;Wohngebäude;In Verkehrsarmen Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
+13;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Zinkdach;
+14;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Gründach;Mit Biozidverwendung
+15;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Gründach;Ohne Biozidverwendung
+16;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Bitumendach;Mit Biozidverwendung
+17;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Bitumendach;Ohne Biozidverwendung
+18;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
+19;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Zinkdach;
+20;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Gründach;Mit Biozidverwendung
+21;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Gründach;Ohne Biozidverwendung
+22;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Bitumendach;Mit Biozidverwendung
+23;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Bitumendach;Ohne Biozidverwendung
+24;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
+25;Hoffläche ;In Verkehrsreichem Gebiet;Fugenlos;
+26;Hoffläche ;In Verkehrsreichem Gebiet;offene Fugen;
+27;Hoffläche ;In Verkehrsarmen Gebiet;Fugenlos;
+28;Hoffläche ;In Verkehrsarmen Gebiet;offene Fugen;
+29;Straße / Parkplatz(?);Viel befahren;;
+30;Straße / Parkplatz(?);Mittel befahren;;
+31;Straße / Parkplatz(?);gering befahren;;
+32;Straße / Parkplatz(?);kaum befahren;;

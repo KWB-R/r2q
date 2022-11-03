@@ -1,363 +1,161 @@
 #' Calculate natural runoff based on slope of landscape
 #'
 #' @param slope  slope of the planning area (unit %)
+#' @param area_catch catchment area  (in km2)
 #'
-#' @return potential annual natural discharge flow (unit l*s^-1 km²^-1)
+#' @return Once-in-a-year natural discharge flow of the catchment in L/(s*km2)
 #' @export
 #'
 #' @examples
-#' get_Hq1_pnat(slope= 0.1)
-#' get_Hq1_pnat(slope= 0.5)
-#' get_Hq1_pnat(slope = 2)
-#' get_Hq1_pnat(slope = 50)
-get_Hq1_pnat <- function(slope = 0.1)
+#' get_Hq1_pnat(slope = 0.1, area_catch = 5.62)
+get_Hq1_pnat <- function(slope , area_catch)
 {
   if(slope <= 0.2){
-    75
+    if(area_catch >= 60){
+      50
+    } else {
+      -4/3 * area_catch + 130
+    }
   }
-  else if (slope>0.2 & slope <1){
-    130
+  else if (slope > 0.2 & slope <= 1){
+    if(area_catch >= 100){
+      100
+    } else {
+      -1 * area_catch + 200
+    }
   }
   else{
-    300
+    if(area_catch >= 400){
+      150
+    } else {
+      -0.5 * area_catch + 350
+    }
   }
-
 }
-  
 
 #' Calculate acceptable additional runoff factor x
 #'
-#' @param Hq1_pnat potential annual natural discharge flow (unit l*s^-1 km²^-1)
-#' @param Hq2_pnat potential biennial natural discharge flow (unit l*s^-1 km²^-1)
+#' @param Hq1_pnat potential annual natural discharge flow in L/(s*km2)
+#' @param Hq2_pnat potential biennial natural discharge flow in L/(s*km2)
 #'
-#' @return dimensionless factor regulating tolerable additional anthropogenic discharge
+#' @return 
+#' dimensionless factor regulating tolerable additional anthropogenic discharge
 #' @export
 #'
-get_x <- function(Hq1_pnat=NA, Hq2_pnat = NA) {
+get_x <- function(Hq1_pnat, Hq2_pnat) {
   
-  if(is.na(Hq2_pnat)){
-    0.1
+  if(is.null(Hq2_pnat)){
+    0.1 
   }
     
   else{  
-    Hq2_pnat / Hq1_pnat-1
+    Hq2_pnat / Hq1_pnat - 1
   }
 }
-
 
 #' Calculates tolerable hydraulic burden based on natural runoff estimation
 #'
-#' @param Hq1_pnat default: r2q::get_Hq1_pnat()
-#' @param x default: r2q::get_x()
-#' @param A_ba connected area of planning area (km²)
-#' @param A_E0 catchment area until point of discharge (km²)
+#' @param Hq1pnat_catch natural discharge of cathcment area (area_catch) 
+#' in L/(s*km²)
+#' @param x dimensionless factor regulating tolerable additional anthropogenic 
+#' discharge. default is 0.1
+#' @param area_urban connected area of planning area in km2
+#' @param area_catch complete catchment area in km2 upstream of point of discharge 
 #'
-#' @return tolerable discharged cumulative flow of planning area in m³/s
+#' @return tolerable discharged flow of connected area in L/s
 #' @export
-
-get_q_zulaessig <- function(Hq1_pnat = get_Hq1_pnat(), 
-                            x = get_x(), 
-                            A_ba, 
-                            A_E0){
+get_q_max <- function(
+  Hq1pnat_catch, x = 0.1, area_urban, area_catch){
   
-  # units for Aba and AE= should be in km²
-  
-  Hq1_pnat*A_ba + x*Hq1_pnat*A_E0
-
+  Hq1pnat_catch * area_urban + x * Hq1pnat_catch * area_catch
 }
 
 
-#' Calculate relevant discharge to surface water (rainwater only)
+#' Get allowed impervious area
 #'
-#' @param A_ba A_ba 
-#' @param f_DA f_DA
-#' @param R_spende R_spende
+#' @param f_D Run-off coefficient of impervious area
+#' @param Q_tol Tolearble discharge into the surface water in L/s
+#' @param q_rain presipitaion rate in L/(s * ha)
 #'
-#' @return ???
+#' @return allowed impervious area in ha
 #' @export
-
-get_q_area_partial <- function(A_ba, f_DA, R_spende=1){
-  A_ba*f_DA*R_spende
+#'
+get_allowed_area <- function(f_D , Q_tol, q_rain){
+  unname((Q_tol) / (q_rain * f_D)) 
 }
 
 
-#' Calculate relevant discharge of table of areas
+#' Calculate tolerable discharge
+#' 
+#' Uses the site data to calculate a natural stormwater run-off for a yearly
+#' rain event 
 #'
-#' @param dataframe dataframe
-#' @param R_Spende R_Spende
-#'
-#' @return ???
+#' @param area_catch catchment area in km2
+#' @param area_urban urban area around the planning area in km2
+#' @param area_plan planning area in km2 (default is 0 -> no planning area)
+#' @param area_urban_upstream urbanised area further upstream of the planning 
+#' area in km2 (Default is 1/4 of the catchment area)
+#' @param slope_catch average slope of the catchment area in % (Defalut is 0.1)
+#' @param Hq1pnat_catch natural average catchment discharge for a yearly rain
+#' event in L/(s*km²) (Defautl is NULL)
+#' @param Hq2pnat_catch natural average catchment discharge for a bienneal 
+#' rain event in L/(s*km²) (Defautl is NULL)
+#' @param verbose if TRUE returns results as informative messages, 
+#' If FALSE only return numeric value for planning area.
+#' 
+#' @return 
+#' Table with tolerable discharge for the whole Catchment and 
+#' planning area in L/s. Furthermore, x is given which is a factor for allowed
+#' discharge increase compared to the natural status and is included in the 
+#' calculation for the tolerable discharges. The definition of x can be found
+#' in guideline DWA-A 102-3
 #' @export
 #'
-get_q_area_total <- function(dataframe, R_Spende=1){
+calculate_tolerable_discharge <- function(
+  area_catch = 10, area_urban = 1, area_plan = 0, area_urban_upstream = area_catch/4,
+  slope_catch = 0.1, Hq1pnat_catch = NULL, Hq2pnat_catch = NULL, verbose = TRUE
+){
   
-  mean(dataframe$f_DA)*sum(dataframe$A_ba)*R_Spende
-  
-}
-
-#' Get average runoff coefficient
-#'
-#' @param A_ba A_ba 
-#' @param q_zul q_zul
-#' @param R_Spende R_Spende 
-#'
-#' @return ???
-#' @export
-
-get_average_runoff_coef <- function(A_ba, q_zul, R_Spende){
-  q_zul/(R_Spende*A_ba)
-}
-
-
-#' Get average permeability
-#'
-#' @param f_DA f_DA 
-#' @param q_zul q_zul 
-#' @param R_Spende R_Spende 
-#'
-#' @return ????
-#' @export
-#'
-get_allowed_area <- function(f_DA = 0.7, q_zul, R_Spende = 150){
-  q_zul/(R_Spende*f_DA)
-}
-
-
-
-
-#' Checks whether hydrologic criteria are fullfilled
-#'
-#' @param Q_zulaessig Q_zulaessig 
-#' @param Q_ist Q_ist 
-#'
-#' @return ????
-#' @export
-#'
-criteria_test <- function(Q_zulaessig, Q_ist) {
-  
-  Q_zulaessig <= Q_ist
-  
-}
-
-
-#' Import hydrology data
-#'
-#' @param csv_file path to csv file (default: system.file("inst/extdata/hydrology.csv", 
-#' package = "r2q"))
-#' @return hydrology data
-#' @export
-#' @importFrom readr read_csv
-#' @examples
-#' import_hydrology_data() 
-import_hydrology_data <- function(csv_file = system.file("extdata/hydrology.csv",
-                                                        package = "r2q")
-                                 ) {
-
-readr::read_csv(file = csv_file)                                   
-
-}
-
-
- 
-                                  
-
-#' Calculate Tolerable Discharge
-#'
-#' @param hydrology hydrology (tibble as retrieved by \code{\link{import_hydrology_data}})
-#' @param verbose if TRUE returns results as informative messages, If FALSE only return numeric value for planning area.
-#' @return returns tolerable discharge for the planning area based on the data in hydrology table
-#' @export
-#'
-#' @examples
-#' calculate_tolerable_discharge(verbose = FALSE)
-#' calculate_tolerable_discharge(verbose = TRUE)
-calculate_tolerable_discharge <- function(hydrology = import_hydrology_data(), 
-                                          verbose = TRUE){
-  messages <- list()
-  
-  # reshape for easier handling
-  hydrology <- hydrology %>% 
-    dplyr::select(Abkuerzung.A102, Wert) %>% # select relevant columns
-    tidyr::spread(Abkuerzung.A102, Wert) # spread dataframe for "$" referencing
-  
-  # basic checks
-  if (is.na(hydrology$A_ba) | is.na(hydrology$A_E0)){
-    m <- "Calculation not possible as information about catchment and planning area missing"
-    print(m)
-    messages[[1]] <- m
-  } 
-  
-  if(is.na(hydrology$Hq1_pnat)){
-    if(is.na(hydrology$gefaelle)){
-      m <- "Calculation not possible as information 'Gefaelle' and 'Hq1_pnat' missing"
-      print(m)
-      messages[[2]] <- m
-    }
-    else{
-      hydrology$Hq1_pnat <- r2q::get_Hq1_pnat(slope = hydrology$gefaelle)
-    }
-    
+  if(is.null(Hq1pnat_catch)){
+    Hq1pnat_catch <- get_Hq1_pnat(slope = slope_catch, area_catch = area_catch)
   }
   
+  df_out <- data.frame("Hq1pnat" = Hq1pnat_catch,
+                       "x" = NA, 
+                       "tol_discharge" = NA, 
+                       "urban_upstream" = NA,
+                       "urban" = NA,
+                       "planning_scaled" = NA,
+                       "unit" = "L/s")
   # Calculate x
-  hydrology$x <- get_x(Hq1_pnat = hydrology$Hq1_pnat, 
-                            Hq2_pnat = hydrology$Hq2_pnat)
+  df_out$x <- get_x(Hq1_pnat = Hq1pnat_catch, Hq2_pnat = Hq2pnat_catch)
   
-  # Calculate tolerable annual discharge flow in l/s
-  Q_E1_tolerable <- get_q_zulaessig(Hq1_pnat = hydrology$Hq1_pnat,
-                                         x = hydrology$x,
-                                         A_ba = hydrology$A_ba,
-                                         A_E0 = hydrology$A_E0
-  )
+  # Calculate the tolerable once-per-year runoff from the complete urban area 
+  # within in l/s from 
+  df_out$tol_discharge <- 
+    get_q_max(Hq1pnat_catch = Hq1pnat_catch,
+              x = df_out$x,
+              area_urban = area_urban + area_urban_upstream,
+              area_catch = area_catch)
   
-  Q_tolerable_planning <- Q_E1_tolerable*hydrology$A_plan/hydrology$A_ba
+  # breaking it down to the urban area around the planning area
+  df_out$urban_upstream <- df_out$tol_discharge * area_urban_upstream /
+    (area_urban + area_urban_upstream)
   
-  if(is.na(Q_E1_tolerable))
-  {
-    print("Calculation were not possible due to the following reasons:")
-    lapply(messages, print)
-  } else{
-    if(verbose){
+  df_out$urban <- df_out$tol_discharge * area_urban /
+    (area_urban + area_urban_upstream)
+  
+  # 
+  df_out$planning_scaled <- df_out$tol_discharge * area_plan / 
+    (area_urban + area_urban_upstream)
+  
+  if(verbose){
     print(paste("Based on provided input data a tolerable annual discharge flow of",
-                as.character(Q_E1_tolerable), "L/s was calculated for Aba.",
-                as.character("For the planning area this corresponds to"), 
-                as.character(round(Q_tolerable_planning, 2)), "L/s"))
-    } else{
-      Q_tolerable_planning
-    }
+                as.character(df_out$tol_discharge),"L/s was calculated for all", 
+                "connectable areas the catchment. For the planning area this",
+                "corresponds to",as.character(round(df_out$planning, 2)),"L/s"))
+    df_out
+  } else{
+    df_out
   }
 }
-
-
-
-
-
-
-
-#' KOSTRA_string_from_numeric
-#'
-#' @param time_numeric numeric value inline with KOSTRA duration
-#'
-#' @return returns string suitable for input in get KOSTRA function
-#' @export
-#'
-#' @examples KOSTRA_string_from_numeric(10)
-#' KOSTRA_string_from_numeric(360)
-#' 
-KOSTRA_string_from_numeric <- function(time_numeric=hydrology$tf){
-  
-  # constructing number of zeros for duration string
-  length <- stringr::str_count(time_numeric)
-  zeros <- paste(replicate(4 - length , "0"), collapse = "")
-  paste0(zeros, time_numeric)
-}
-
-
-#' calculate_relevant_discharge 
-#'
-#' @param data hydrology (tibble as retrieved by \code{\link{import_hydrology_data}})
-#' @param area_classification if TRUE perfomes area specific evaluation based on table
-#' @param path_to_area path the csv file containin garea information
-#'
-#' @return returns relevant discharge from planning area
-#' @export
-#'
-#' @examples
-#' 
-calculate_relevant_discharge <- function(data =r2q::import_hydrology_data(), 
-                                         area_classification = T,
-                                         path_to_area="./inst/extdata/areas_hydrology.csv"){
-  
-  # loading area data
-  #planning_area <- readr::read_csv(path_to_area)#paste0(data.dir,"areas_hydrology.csv"))
-  
-  # reshape for easier handling
-  hydrology <- data %>% 
-    dplyr::select(Abkuerzung.A102, Wert) %>% # select relevant columns
-    tidyr::spread(Abkuerzung.A102, Wert) # spread dataframe for "$" referencing
-  
-  
-  duration_string <- KOSTRA_string_from_numeric(hydrology$tf)
-  # get KOSTRA rainfall based on coordinates and 
-  rainfall <- r2q::get_KOSTRA(duration_string = duration_string,  plot = T)
-  
-  if(area_classification){
-    # loading area data
-    planning_area <- readr::read_csv(path_to_area)#paste0(data.dir,"areas_hydrology.csv"))
-    
-    
-    # check for consistencies
-    if(!planning_area %>% dplyr::filter(Einheit =="ha") %>% 
-       dplyr::summarise(sum = sum(Wert)/100) == hydrology$A_plan){
-      
-      stop("Error: Impervious areas of planning area has to be smaller than totalimpervious area")
-    }
-  }
-  
-  #rainfall <- r2q::get_KOSTRA(duration_string = "0010", plot = T)
-  result <- list()
-  
-  for(i in unique(planning_area$Type)){
-    
-    var <- planning_area %>% dplyr::filter(Type == i)
-    var$area <- var$Wert[var$Einheit == "ha"]
-    
-    var <- var %>% 
-      dplyr::filter(Einheit != "ha") %>% 
-      dplyr::mutate(rain = rainfall$data$Wert[rainfall$data$Jaehrlichkeit == "1 a" &
-                                                rainfall$data$Kategorie == "Regenspende [ l/(s*ha) ]"])
-    
-    # checking that area add to 1
-    if(!var %>% dplyr::summarise(sum(Wert) ==1)){
-      
-      stop(paste("Error: Area ratios of", i, "have to sum to 1"))
-    }
-    
-    
-    var$qe_partial <- var$area*var$Wert*var$fD*var$rain
-    result[[i]] <- var
-  }
-  
-  result <- dplyr::bind_rows(result)
-  
-  
-  QE1_total <- sum(result$qe_partial)
-  QE1_total
-}
-
-
-#' assess_discharges
-#'
-#' @return ratio between tolerable and relevant discharge
-#' @export
-#'
-#' @examples
-#' assess_discharges()
-#' 
-assess_discharges <- function(){    
-  
-  QE1_total <- calculate_relevant_discharge()
-  Q_tolerable_planning <- r2q::calculate_tolerable_discharge(hydrology = r2q::import_hydrology_data(),
-                                                             verbose = F)
-  
-  ratio_QE <- QE1_total / Q_tolerable_planning
-  
-  if(QE1_total > Q_tolerable_planning){
-    print(paste("Discharges exceed tolerable levels by", 
-                round((ratio_QE-1)*100), "%"))
-    print("Consider reducing impervious areas or aquivalent measures ")
-  }
-  
-  if(QE1_total <= Q_tolerable_planning){
-    print(paste("Discharges are below tolerable levels by", 
-                round((ratio_QE-1)*100), "%"))
-  }
-  
-}
-
-
-
-
-
-
-
