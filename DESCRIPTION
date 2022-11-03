@@ -1,7 +1,9 @@
 Package: r2q
-Title: R Package with Functions and Exchange for Project R2Q
-Version: 0.0.0.9000
+Title: R Package for immission based assessment of separated sewer connection to small rivers
+Version: 0.1.0
 Authors@R: c(
+    person("Zamzow", "Malte", , "malte.zamzow@kompetenz-wasser.de", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-8748-038X")),
     person("Wolfgang", "Seis", , "wolfgang.seis@kompetenz-wasser.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7436-8575")),
     person("Andreas", "Matzinger", , "andreas.matzinger@kompetenz-wasser.de", role = "aut",
