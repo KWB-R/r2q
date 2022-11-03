@@ -1,3 +1,13 @@
+---
+title: "Natural Discharge"
+author: "Malte Zamzow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Natural Discharge}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
 library(r2q)
 area_catch <- seq(1,150,1)
 
@@ -9,11 +19,11 @@ Hqpnat3 <- sapply(area_catch, get_Hq1_pnat, slope = 2)
 HQpnat3 <- Hqpnat3 * area_catch / 1000
 
 plot(x = area_catch, y = Hqpnat3, type = "l", xlab = "Catchment Area [km²]",
-     ylab = "Natural Discharge [m³/(s*km²]", ylim = c(0,350), lwd = 2)
+     ylab = "Natural Discharge [L/(s*km²)]", ylim = c(0,350), lwd = 2)
 lines(x = area_catch, y = Hqpnat2, col = "orange", lwd = 2)
 lines(x = area_catch, y = Hqpnat1, col = "steelblue", lwd = 2)
 legend("bottomleft", legend = c("< 0.2 %", "0.2 - 1 %", "> 1%"), 
-       col = c("black", "orange", "steelblue"), lwd = 2, title = "Slope", 
+       col = c("steelblue", "orange", "black"), lwd = 2, title = "Slope", 
        cex = 0.8)
 
 plot(x = area_catch, y = HQpnat3, type = "l", xlab = "Catchment Area [km²]",
@@ -21,6 +31,7 @@ plot(x = area_catch, y = HQpnat3, type = "l", xlab = "Catchment Area [km²]",
 lines(x = area_catch, y = HQpnat2, col = "orange", lwd = 2)
 lines(x = area_catch, y = HQpnat1, col = "steelblue", lwd = 2)
 legend("topleft", legend = c("< 0.2 %", "0.2 - 1 %", "> 1%"), 
-       col = c("black", "orange", "steelblue"), lwd = 2, title = "Slope", 
+       col = c("steelblue", "orange", "black"), lwd = 2, title = "Slope", 
        cex = 0.8)
+
 

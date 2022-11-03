@@ -1,0 +1,17 @@
+i_id;variable_name;obligatory;unit
+1;SUW_name;;
+2;LAWA_type;;
+3;Q_mean;x;m3/s
+4;river_cross_section;x;m2
+5;river_length;x;m
+6;rain_year;x;mm/yr
+7;City_name;;
+8;x_coordinate;x;ETRS 89
+9;y_coordinate;x;ETRS 89
+10;area_catch;x;km2
+11;area_urban;x;km2
+12;area_plan;x;km2
+13;area_urban_upstream;;km2
+14;Hq1pnat_catch;;l/(s*km2)
+15;Hq2pnat_catch;;l/(s*km2)
+16;slope_catch;;%

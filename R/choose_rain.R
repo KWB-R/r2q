@@ -8,6 +8,7 @@
 #' @param river_cross_section The average river cross section in the catchment
 #' in m2
 #' @param river_length The length of the affected urban river stretch in m
+#' @param river_mean_flow The Average river flow in m3/s
 #' @param Hq_pnat1_catch the natural catchment discharge for a yearly rain event
 #' in L/(s*km2). If NULL it will be estimated by slope and area of the catchment
 #' @param slope Average slope of the catchment in % (Default is 0.1)
@@ -25,29 +26,30 @@
 #' toxicological relevance.
 #' 
 #' @return 
-#' Travel time of discharged water within the natural catchment in minutes
+#' Travel time of naturally discharged water within the catchment in minutes
 #' 
 #' @export
-#' @examples 
-#' get_HQ_time_interval(
-#' area_catch = 5.62,
-#' river_cross_section = 0.54, 
-#' river_length = 5000)
 #' 
 get_HQ_time_interval <- function(
-  area_catch,
-  river_cross_section, 
-  river_length, 
-  Hq_pnat1_catch = NULL,
-  slope = 0.1){
+    area_catch,
+    river_cross_section,
+    river_length, 
+    river_mean_flow,
+    Hq_pnat1_catch = NULL,
+    slope = 0.1
+){
+  
   if(is.null(Hq_pnat1_catch)){
-    Hq_pnat1 <- get_Hq1_pnat(slope = slope, area_catch = area_catch)
+    Hq_pnat1 <- get_Hq1_pnat(slope = slope, area_catch = area_catch) # L/(s*km2)
   } else {
     Hq_pnat1 <- Hq_pnat1_catch
   }
   HQ_pnat1 <- Hq_pnat1 * area_catch / 1000 # m3/s
   
-  (river_length * river_cross_section) / HQ_pnat1 / 60  + # from s to min
+  discharge_factor <- (HQ_pnat1 - river_mean_flow) / river_mean_flow
+  river_cross_event <- river_cross_section * (1 + discharge_factor / 4)
+  
+  (river_length * river_cross_event) / HQ_pnat1 / 60  + # from s to min
     60 # 60 additional minutes for flow time in the sewer system
 }
 
@@ -78,7 +80,7 @@ lin_interpolation <- function(x1, x2, y1, y2, x_is){
 #' 
 #' The rate of the yearly rain event depends on the prescribed duration. In this
 #' function the duration is either calculated using the natural catchment 
-#' discharge, using the average river flow or entered manualle.
+#' discharge, using the average river flow or entered manually.
 #' 
 #' @param area_catch The catchment area in km2
 #' @param river_cross_section The average river cross section in the catchment
@@ -93,8 +95,8 @@ lin_interpolation <- function(x1, x2, y1, y2, x_is){
 #' (see get_Hq1_pnat) is used to define the precipitation duration. If FALSE
 #' the average river flow is used. Exception: If mins is defined, this value is 
 #' used.
-#' @param river_flow The average river flow in m³/s (only needed if use_p1nat 
-#' = FALSE and min = NULL)
+#' @param river_mean_flow The average river flow in m³/s (only needed if 
+#' use_p1nat = FALSE and min = NULL)
 #' @param mins The Default is NULL. In this case either natural catchment 
 #' discharge or average river flow is used for precipitation duration. If not 
 #' Null, mins is used and overwrites the parameter "use_p1nat".
@@ -108,36 +110,34 @@ lin_interpolation <- function(x1, x2, y1, y2, x_is){
 #' 
 #' 
 #' @return 
-#' A Vector with the calculated duration of precipitation in minutes and the 
-#' rain event based on KOSTRA in L/(s*ha)
+#' A vector with the duration of precipitation in minutes and the intensity of
+#' the rain event in L/(s*ha) based on KOSTRA
 #' 
 #' @export
 #' 
 get_rain <- function(
-  area_catch, river_cross_section, river_length, x_coordinate, y_coordinate, 
-  Hq_pnat1_catch = NULL, 
-  slope = 0.1, use_p1nat = TRUE, river_flow = NULL, mins = NULL
+    area_catch, river_cross_section, river_length, x_coordinate, y_coordinate, 
+    Hq_pnat1_catch = NULL, slope = 0.1, use_p1nat = TRUE,river_mean_flow = NULL, 
+    mins = NULL
 ){
   possible_T <- c(5, 10, 15, 20, 30, 45, 60, 90, 120, 180, 240, 360, 
                   540, 720, 1080,1440, 2880, 4320)
   
   if(is.null(mins)){
     if(use_p1nat){
+      if(is.null(river_mean_flow)){
+        stop("Parameter river_flow must be defined if mins = NULL")
+      }
+      
       mins <- get_HQ_time_interval(
         area_catch = area_catch, 
         river_cross_section = river_cross_section, 
         river_length = river_length, 
+        river_mean_flow = river_mean_flow,  
         Hq_pnat1_catch = Hq_pnat1_catch,
-        slope =  slope)
-    } else {
-      if(is.null(river_flow)){
-        stop("Parameter river_flow must be defined if use_p1nat = FALSE and mins = NULL")
-      }
-      mins <- (river_length * river_cross_section) / river_flow / 60
+        slope = slope)
     }
   }
- 
- 
   
   sorted_mins <- sort(c(possible_T, mins))
   order_mins <- which(sorted_mins == mins)
@@ -145,7 +145,7 @@ get_rain <- function(
   x <- sorted_mins[c(order_mins- 1 , order_mins + 1)]
   
   y <- sapply(x, function(xi){
-    local_rain <- r2q::get_KOSTRA(
+    local_rain <- get_KOSTRA(
       coord_vector = c(x_coordinate, y_coordinate), 
       duration_string = xi, location_name = "Herne", plot = F)
     

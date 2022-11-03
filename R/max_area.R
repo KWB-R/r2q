@@ -1,130 +1,61 @@
-#' old function, use max_area_steady_state or max_area_dynamic instead
+#' Calculate connectable area in a river catchment based on a yearly regulated
+#' Substance
 #'
-#' based on concentration thresholds 
-#' based on DWA A102 approach
-#' can be used for annual and acute impacts
-#' if steady state concentration can be assumed or if inlets are 
-#' at one inlet point on the river stretch
-#'
-#' @param Q_river River flow in m3/time (time must represent impact duration)
-#' @param C_river background concentration in mg/L
-#' @param C_threshold concentration threshold in mg/L
-#' @param C_storm concentration in stormwater in mg/L
-#' @param coeff_runoff runoff coefficient of connected impervious area 
-#' @param rain rain amount in mm/time (time must represent impact duration)
-#' 
-#' @return maximal connected impervious area in km2
-#' @export
-#' 
-max_area <- function (
-  Q_river,
-  C_river,
-  C_threshold,
-  C_storm,
-  coeff_runoff,
-  rain
-)
-{
-  
-  ##check numbers
-  if (C_river > C_threshold) {
-    
-    print("Background river concentration exceeds threshold.")
-    
-    NA
-    
-  }
-  
-  else if (C_storm <= C_threshold) {
-    
-    print("Stormwater concentration is <= threshold. This parameter does not limit connected, impervious area")
-    
-    NA
-    
-    
-  }
-  
-  else {
-    
-    ##maximal connected impervious area
-    
-    #maximal allowable Q_rain [m3/time]
-    
-    Q_rain_max <- Q_river*(C_river - C_threshold) / (C_threshold - C_storm)
-    
-    #maximal connected area in entire catchment [km2]
-    
-    area_con_max <- Q_rain_max / coeff_runoff / rain *
-      1000 / #L -> m3
-      1e6 #m2 -> km2 
-  }
-  
-}
-
-
-#' calculate maximal allowable connected area in a river catchment at steady state
-#'
-#' based on concentration thresholds 
-#' based on DWA A102 approach
-#' can be used for annual and acute impacts
-#' if steady state concentration can be assumed or if inlets are 
-#' at one inlet point on the river stretch
-#'
-#' @param Q_river Annual river flow in m³/a
-#' @param Ci_river Background concentration for substance i. Concentration unit 
-#' must fit to Ci_threshold and Ci_storm.
+#' @param load_max Annual maximal input of substance i. Mass unit corresponds 
+#' to concentration mass unit (two classes higher. i.e. concentration in mg/L
+#' -> load in kg/a.
 #' @param Ci_threshold Threshold value for substance i. Concentration unit 
 #' must fit to Ci_river and Ci_storm.
 #' @param Ci_storm Concentration in stormwater run-off for substance i. Concentration unit 
 #' must fit to Ci_threshold and Ci_river.
 #' @param coeff_runoff Run-off coefficient of connected impervious area 
 #' @param Q_rain Annual amount of rain amount in mm/a
-#' @param substance_i the substance name is only used for messages, 
-#' not for calculation
 #' 
-#' @return maximal connected impervious area in km2
+#' @return maximal connectable area in ha
 #' @export
 #' 
-max_area_steady_state <- function(
-  Q_river, 
-  Ci_river, 
+maxArea_year <- function(
+  load_max,
   Ci_threshold, 
   Ci_storm, 
   coeff_runoff, 
-  Q_rain,
-  substance_i = NULL
+  Q_rain
 ){
-  to_high <- Ci_river > Ci_threshold
-  no_hazard <- Ci_storm <= Ci_threshold
-  
-  if (to_high) {
-    print(paste0(substance_i, ": Background river concentration exceeds threshold."))
-    max_sealed_area<- -Inf
-  }
-  
-  if (no_hazard) {
-    print(paste0(substance_i, ": Stormwater concentration is lower as threshold.", 
-                 "This parameter does not limit connected, impervious area"))
-    max_sealed_area <- Inf
-  } 
-  
-  if (!(any(to_high, no_hazard))) {
-    pot_input <- Q_river * (Ci_threshold - Ci_river) # potential input in µg/a
-    Q_runoff_max <- pot_input / (Ci_storm - Ci_threshold) # maximum runoff in m³/a
-    Q_runoff_year <- (Q_rain * coeff_runoff / 1000 * 1e+06) # yearly runoff in m³/(km²*a)
-    # proportion from allowed to the yearly rain reaching the water body
-    max_sealed_area <- Q_runoff_max / Q_runoff_year # km²
-  }
-  max_sealed_area
+  yearly_storm_max <- load_max / (Ci_storm / 1000 / 1000) / 1000# maximum runoff in m3/a
+  Q_rain <- Q_rain * 10 # from L/(m2*a) to m3/(ha*a)
+  yearly_storm_max / (Q_rain * coeff_runoff) 
 }
 
 
-#' calculate maximal allowable connected area in a river catchment for a river section
+#' Calculate maximal yearly pollutant input
 #'
-#' based on concentration thresholds 
-#' based on DWA A102 approach (as far as applicable)
-#' suggested for acute impacts if steady state concentration can not be assumed
-#' , i.e. if inlets are distributed along the river stretch
+#' @param Q_river Annual river flow in m³/s
+#' @param Ci_river Background concentration for substance i. Concentration unit 
+#' must fit to Ci_threshold.
+#' @param Ci_storm Concentration in stormwater run-off for substance i. Concentration unit 
+#' must fit to Ci_threshold and Ci_river.
+#' @param Ci_threshold Threshold value for substance i. Concentration unit 
+#' must fit to Ci_river.
+#' 
+#' @return Maximum tolerable pollutant input in mass per year. The mass unit 
+#' depends on the concentrations mass unit. It is transformed by 2 units. 
+#' i.e. concentration in ug/L -> load in g/a or concentration in mg/L -> 
+#' load in kg/a
+#' @export
+#' 
+maxInput_year <- function(
+    Q_river, 
+    Ci_river, 
+    Ci_storm,
+    Ci_threshold
+){
+  V_river <- Q_river * 3600 * 24 * 365 * 1000 # from m3/s to L/a
+  V_storm_max <- V_river * (Ci_threshold - Ci_river) / (Ci_storm - Ci_threshold)
+  V_storm_max * Ci_storm / 1000 / 1000 # mass unit / a
+}
+
+#' Calculate connectable area to a river based on pollutant input within a 
+#' heavy rain event
 #'
 #' @param Q_river Average River flow in m3/s
 #' @param Ci_river Background concentration for substance i. Concentration unit 
@@ -134,15 +65,20 @@ max_area_steady_state <- function(
 #' @param Ci_storm Concentration in stormwater run-off for substance i. Concentration unit 
 #' must fit to Ci_threshold and Ci_river.
 #' @param coeff_runoff runoff coefficient of connected impervious area 
-#' @param q_rain rain amount in mm/(m2*s)
+#' @param q_rain rain amount in mm/(ha*s)
 #' @param t_rain duration of rain in s 
 #' @param river_length length of impacted urban river stretch in m
 #' @param river_cross_section average cross section of river in m2
+#' @param catchment_area Catchment area in ha.
 #' 
-#' @return maximal connected impervious area in km2
+#' @details 
+#' The catchment_area is used as initial value for the optimisation algorithm. 
+#' The default 100 ha should be sufficient for most problems. In that case
+#' the optimal solution between 0 and 1 000 km²
+#' @return maximal connectable area in ha
 #' @export
 #' @importFrom stats optimize
-max_area_dynamic <- function(
+maxArea_event <- function(
   Q_river, 
   Ci_river, 
   Ci_threshold, 
@@ -151,35 +87,20 @@ max_area_dynamic <- function(
   q_rain, 
   t_rain, 
   river_length, 
-  river_cross_section
+  river_cross_section,
+  catchment_area = 100
 ){
-  to_high <- Ci_river > Ci_threshold
-  no_hazard <- Ci_storm <= Ci_threshold
   
-  if (to_high) {
-    print("Background river concentration exceeds threshold.")
-    max_sealed_area <- 0
-  }
+  V_river <- river_length * river_cross_section # m³ 
   
-  if (no_hazard) {
-    print("Stormwater concentration is <= threshold. This parameter does not limit connected, impervious area")
-    max_sealed_area <- Inf
-  } 
+  Amax_ini <- catchment_area
   
-  if (!(any(to_high, no_hazard))) {
-    V_river <- river_length * river_cross_section # river water volume in m³
-    # this is only to get a starting point in m² for the optimization algorithm
-    Amax_ini <- max_area_steady_state(Q_river = Q_river, # max_sealed_area in m²/km²
-                                      Ci_river = Ci_river, 
-                                      Ci_threshold = Ci_threshold, 
-                                      Ci_storm = Ci_storm, 
-                                      coeff_runoff = coeff_runoff, 
-                                      Q_rain = q_rain) * 1e+06 
+  opt_result <- sapply(Ci_storm, function(ci){
     own_fn <- function(a) {
       abs(mixed_reactor_C(Area = a, 
                           Q_river = Q_river, 
                           Ci_river = Ci_river,
-                          Ci_storm = Ci_storm, 
+                          Ci_storm = ci, 
                           coeff_runoff = coeff_runoff, 
                           q_rain = q_rain, 
                           t_rain = t_rain, 
@@ -187,13 +108,40 @@ max_area_dynamic <- function(
             Ci_threshold)
     }
     
-    opt_result <- stats::optimize(f = own_fn, interval = c(Amax_ini, 
-                                                           Amax_ini * 1e+06))
-    max_sealed_area <- as.numeric(opt_result[1])/1e+06
+    stats::optimize(f = own_fn, interval = c(0, Amax_ini * 10000))
   }
-  max_sealed_area
+  )
+  
+  # first value is the Area where the concentration difference (second value) is
+  # minimal
+  unname(unlist((opt_result[1,])))
 }
 
+#' Calculate pollutant input from runoff area area within a rain event
+#' 
+#' @param area_runoff Connected runoff area in ha.
+#' @param Ci_storm Concentration in stormwater run-off for substance i. 
+#' @param coeff_runoff runoff coefficient of runoff area.
+#' @param q_rain rain amount in L/(ha*s)
+#' @param t_rain duration of rain in s 
+#' 
+#' @return maximal pollutant input in mass per rain event. The mass unit depends
+#' on the runoff concentration mass unit (one unit larger: factor 1000, i.e. if
+#' concentration is in ug/L, the pollutant load is in mg/event)
+#' 
+#' @export
+#' 
+Input_event <- function(
+    area_runoff,
+    Ci_storm, 
+    coeff_runoff, 
+    q_rain, 
+    t_rain
+)
+{
+  V_runoff <- area_runoff * coeff_runoff * t_rain * q_rain # in L
+  unname(Ci_storm * V_runoff) / 1000
+}
 
 #' Calculate the dynamic concentration in a river stretch
 #'
@@ -205,12 +153,13 @@ max_area_dynamic <- function(
 #' @param Ci_storm Concentration in stormwater run-off for substance i. Concentration unit 
 #' must fit to Ci_threshold and Ci_river.
 #' @param coeff_runoff runoff coefficient of connected impervious area 
-#' @param q_rain Amount of rain amount in L/(s*m²)
+#' @param q_rain Amount of rain amount in L/(s*ha)
 #' @param t_rain duration of the rain in seconds
-#' @param Area impervious, connected area in m2
+#' @param Area impervious, connected area in ha
 #' @param V_river volume of the river in m³
 #' 
-#' @return dynamic concentration after time delta_t in mg/L
+#' @return dynamic concentration after time t in the unit of the input 
+#' concentrations
 #' @export
 #' 
 mixed_reactor_C <- function (
@@ -234,7 +183,31 @@ mixed_reactor_C <- function (
   Ci_steady <- (Q_river * Ci_river + Q_runoff * Ci_storm) / Q_total
   
   # concentration at time t (t is the duration of the rain)
-  c_t <- Ci_steady + (Ci_river - Ci_steady) * exp(- Q_total / V_river * t_rain) 
+  Ci_steady + (Ci_river - Ci_steady) * exp(- Q_total / V_river * t_rain) 
   
-  c_t
+}
+
+#' Calculate pollutant input from runoff area area within a rain event
+#' 
+#' @param load_runoff Pollutant load from urban area. Mass unit is one unit 
+#' larger (factor 1000) as in concentration. For example: if Ci_storm is in
+#' ug/L, load must be in mg.
+#' @param Ci_storm Concentration in stormwater run-off for substance i. 
+#' @param coeff_runoff runoff coefficient of runoff area.
+#' @param q_rain rain amount in mm/(ha*s)
+#' @param t_rain duration of rain in s 
+#' 
+#' @return Numeric value of the according connectable area in ha
+#' 
+#' @export
+#' 
+area_from_load <- function(
+    load_runoff,
+    Ci_storm, 
+    coeff_runoff, 
+    q_rain, 
+    t_rain
+)
+{
+  (load_runoff * 1000)/ (Ci_storm * coeff_runoff * t_rain * q_rain)
 }

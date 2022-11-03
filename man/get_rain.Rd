@@ -13,7 +13,7 @@ get_rain(
   Hq_pnat1_catch = NULL,
   slope = 0.1,
   use_p1nat = TRUE,
-  river_flow = NULL,
+  river_mean_flow = NULL,
   mins = NULL
 )
 }
@@ -38,21 +38,21 @@ in L/(s*km2). If NULL it will be estimated by slope and area of the catchment}
 the average river flow is used. Exception: If mins is defined, this value is
 used.}
 
-\item{river_flow}{The average river flow in m³/s (only needed if use_p1nat
-= FALSE and min = NULL)}
+\item{river_mean_flow}{The average river flow in m³/s (only needed if
+use_p1nat = FALSE and min = NULL)}
 
 \item{mins}{The Default is NULL. In this case either natural catchment
 discharge or average river flow is used for precipitation duration. If not
 Null, mins is used and overwrites the parameter "use_p1nat".}
 }
 \value{
-A Vector with the calculated duration of precipitation in minutes and the
-rain event based on KOSTRA in L/(s*ha)
+A vector with the duration of precipitation in minutes and the intensity of
+the rain event in L/(s*ha) based on KOSTRA
 }
 \description{
 The rate of the yearly rain event depends on the prescribed duration. In this
 function the duration is either calculated using the natural catchment
-discharge, using the average river flow or entered manualle.
+discharge, using the average river flow or entered manually.
 }
 \details{
 The KOSTRA Data is available for a grid of x x x km. The location

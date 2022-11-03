@@ -12,7 +12,7 @@ get_Hq1_pnat(slope, area_catch)
 \item{area_catch}{catchment area  (in km2)}
 }
 \value{
-potential annual natural discharge flow (unit L/(s*km2))
+Once-in-a-year natural discharge flow of the catchment in L/(s*km2)
 }
 \description{
 Calculate natural runoff based on slope of landscape

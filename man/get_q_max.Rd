@@ -4,7 +4,7 @@
 \alias{get_q_max}
 \title{Calculates tolerable hydraulic burden based on natural runoff estimation}
 \usage{
-get_q_max(Hq1pnat_catch, x = 0.1, area_con_catch, area_catch)
+get_q_max(Hq1pnat_catch, x = 0.1, area_urban, area_catch)
 }
 \arguments{
 \item{Hq1pnat_catch}{natural discharge of cathcment area (area_catch)
@@ -13,12 +13,12 @@ in L/(s*km²)}
 \item{x}{dimensionless factor regulating tolerable additional anthropogenic
 discharge. default is 0.1}
 
-\item{area_con_catch}{connected area of planning area in km2}
+\item{area_urban}{connected area of planning area in km2}
 
 \item{area_catch}{complete catchment area in km2 upstream of point of discharge}
 }
 \value{
-tolerable discharged flow of planning area in L/s
+tolerable discharged flow of connected area in L/s
 }
 \description{
 Calculates tolerable hydraulic burden based on natural runoff estimation
