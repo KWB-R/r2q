@@ -83,6 +83,7 @@ plot_connectable_urban_area <- function(
     r2q_substance, site_data, r2q_hydrology = NULL, x_type = "percent", 
     language = "de"
 ){
+  r2q_pal <- NULL
   data("r2q_pal", package = "r2q", envir = environment())
   
   if(x_type == "percent"){
