@@ -1,6 +1,6 @@
 status_quo <- r2q::run_status_quo(
-  path = "inst/extdata/Data_entry", 
-  filename = "Baukau_final.xlsx", 
+  path = "inst/extdata/Example", 
+  filename = "Herne_Baukau.xlsx", 
   c_type = "average")
 
 scenario <- r2q::run_scenario(

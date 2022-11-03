@@ -1,17 +1,17 @@
 path <- 
   # "Y:/SUW_Department/Projects/R2Q/Communication/Docs/Aqua und Gas Artikel/daten"
-  "inst/extdata/Data_entry"
+  "inst/extdata/Example"
 
 
 # load external data -----------------------------------------------------------
 siteData <- r2q::load_site_data(
   data.dir = path, 
-  filename = "Baukau_final.xlsx"
+  filename = "Herne_Baukau.xlsx"
 )
 
 c_river <- r2q::load_background_data(
   data.dir = path,
-  filename = "Baukau_final.xlsx", 
+  filename = "Herne_Baukau.xlsx", 
   default_for_na = TRUE
 )
 
@@ -71,12 +71,7 @@ r2q_out <- r2q::assess_all_hazards(
   q_rain = rain[2], t_rain = rain[1] * 60, 
   c_type = c_type)
 
-png(
-  filename = "inst/extdata/plots/connectable_area.png", 
-  width = 9.48, 
-  height = 5.63, 
-  units = "in", 
-  res = 600)
+
 r2q::plot_connectable_urban_area(
   r2q_substance = r2q_out, 
   r2q_hydrology = r2q_h, 
@@ -84,72 +79,7 @@ r2q::plot_connectable_urban_area(
   x_type = "percent", 
   language = "de"
 )
-dev.off()
 
-r2q::plot_connectable_urban_area(
-  r2q_substance = r2q_out, 
-  r2q_hydrology = r2q_h, 
-  site_data = siteData, 
-  x_type = "ha", 
-  language = "de"
-)
-###  save results
-siteFolder <- "pantringshof"
-{
-  write.table(
-    x = r2q_h$discharge_parameters, 
-    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
-                     "hydologie_generell.csv"), 
-    sep = ";", 
-    dec = ".",  
-    row.names = FALSE
-  )
-  
-  write.table(
-    x = r2q_h$planning_pot_percent, 
-    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
-                     "hydologie_plan_pot.csv"), 
-    sep = ";", 
-    dec = ".",  
-    row.names = FALSE
-  )
-  
-  write.table(
-    x = r2q_h$planning_scaled_percent, 
-    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
-                     "hydologie_plan_scale.csv"), 
-    sep = ";", 
-    dec = ".",  
-    row.names = FALSE
-  )
-  
-  write.table(
-    x = as.matrix(r2q_out$general), 
-    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
-                     "stoff_generell.csv"), 
-    sep = ";", 
-    dec = ".",  
-    row.names = FALSE
-  )
-  
-  write.table(
-    x = r2q_out$plannig_pot, 
-    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
-                     "stoff_plan_pot.csv"), 
-    sep = ";", 
-    dec = ".",  
-    row.names = FALSE
-  )
-  
-  write.table(
-    x = r2q_out$planning_scaled, 
-    file = file.path("C:/Users/mzamzo/Documents/R2Q/output",siteFolder,
-                     "stoff_plan_scale.csv"), 
-    sep = ";", 
-    dec = ".",  
-    row.names = FALSE
-  )
-}
 
 ############################ detailed planning
 planningData <- r2q::load_planning_details(
