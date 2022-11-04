@@ -1,14 +1,13 @@
-pandoc: 2.7.3
-pkgdown: 2.0.3
+pandoc: 2.19.2
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   dashboard: dashboard.html
   documention: documention.html
   kostra: kostra.html
   natural_discharge: natural_discharge.html
-  p_annual: p_annual.html
   testplots: testplots.html
-last_built: 2022-06-11T06:45Z
+last_built: 2022-11-04T09:57Z
 urls:
   reference: https://kwb-r.github.io/r2q/reference
   article: https://kwb-r.github.io/r2q/articles

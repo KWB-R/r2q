@@ -8,8 +8,8 @@
 <meta name="description" content="r2q">
 <title>Bewertung Regenwassereinleitung • r2q</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Bewertung Regenwassereinleitung">
 <meta property="og:description" content="r2q">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">r2q</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,8 +44,7 @@
     <a class="dropdown-item" href="../articles/dashboard.html">Interactive Dashboard</a>
     <a class="dropdown-item" href="../articles/documention.html">Bewertung Regenwassereinleitung</a>
     <a class="dropdown-item" href="../articles/kostra.html">KOSTRA</a>
-    <a class="dropdown-item" href="../articles/natural_discharge.html">UNKNOWN TITLE</a>
-    <a class="dropdown-item" href="../articles/p_annual.html">P Annual</a>
+    <a class="dropdown-item" href="../articles/natural_discharge.html">Natural Discharge</a>
     <a class="dropdown-item" href="../articles/testplots.html">Testplots</a>
   </div>
 </li>
@@ -73,10 +72,12 @@
 
 
 
-<script src="documention_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Bewertung Regenwassereinleitung</h1>
-                        <h4 data-toc-skip class="author">Wolfgang Seis</h4>
+                        <h4 data-toc-skip class="author">Wolfgang
+Seis</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/KWB-R/r2q/blob/HEAD/vignettes/documention.Rmd" class="external-link"><code>vignettes/documention.Rmd</code></a></small>
@@ -89,7 +90,10 @@
 <h4 id="zielstellung">1. Zielstellung<a class="anchor" aria-label="anchor" href="#zielstellung"></a>
 </h4>
 <p><br></p>
-<p>Das folgende Dokument fasst den aktuellen Stand der Disukussion zur Bewertung von Regenwassereinleitungen im Projekt r2q zusammen. Für die Bewertung werden die Gewässer in verschiedene Typen eingeteilt und nach Größe klassifiziert.</p>
+<p>Das folgende Dokument fasst den aktuellen Stand der Disukussion zur
+Bewertung von Regenwassereinleitungen im Projekt r2q zusammen. Für die
+Bewertung werden die Gewässer in verschiedene Typen eingeteilt und nach
+Größe klassifiziert.</p>
 <ul>
 <li>Fließgewäser: nach Einzugsgebietsgröße</li>
 <li>stehende Gewässer: nach Oberfläche</li>
@@ -100,16 +104,28 @@
 <h4 id="bewertungsansatz-und-belastungen">2. Bewertungsansatz und Belastungen<a class="anchor" aria-label="anchor" href="#bewertungsansatz-und-belastungen"></a>
 </h4>
 <p><br></p>
-<p>Im Projekt soll zwischen hydraulischer Belastung und stofflichen Belastungen unterschieden werden. Hydraulische Belastungen werden zunächst anhand der vereinfachten Berechnungsansatzes nach DWA-A 102-3/BWK-A 3-3 bewertet. Stoffliche Belastungen folgen im ersten Schritt ebensfalls dem genannten Merkblatt, werden jedoch durch weitere Schadstoffgruppen ergänzt/erweitert.</p>
+<p>Im Projekt soll zwischen hydraulischer Belastung und stofflichen
+Belastungen unterschieden werden. Hydraulische Belastungen werden
+zunächst anhand der vereinfachten Berechnungsansatzes nach DWA-A
+102-3/BWK-A 3-3 bewertet. Stoffliche Belastungen folgen im ersten
+Schritt ebensfalls dem genannten Merkblatt, werden jedoch durch weitere
+Schadstoffgruppen ergänzt/erweitert.</p>
 <p><br></p>
 <div class="section level5">
 <h5 id="nachweisraum-und-nachweisorte">2.1 Nachweisraum und Nachweisorte<a class="anchor" aria-label="anchor" href="#nachweisraum-und-nachweisorte"></a>
 </h5>
-<p>Als Bewertungsmaßstab zählt die Summe der Wirkung der Einleitungen aus einem geschlossenem Siedlungsgebiet und nicht die Wirkung der einzelnen Einleitung. Das geschlossene Siedlungsgebiet endet mit der letzten nicht mehr überlagerten Einleitung.</p>
-<p>Als Einflussbereich wird der Gewässerabschnitt bezeichnet, der durch Regenwetterabflüsse wesentlich hydraulisch und/oder stofflich belastet wird. Eine genaue Abschätzung ist i.d.R.schwierig. Hilfestellung liefert Tabelle 8 in Kapitel 5.7.</p>
+<p>Als Bewertungsmaßstab zählt die Summe der Wirkung der Einleitungen
+aus einem geschlossenem Siedlungsgebiet und nicht die Wirkung der
+einzelnen Einleitung. Das geschlossene Siedlungsgebiet endet mit der
+letzten nicht mehr überlagerten Einleitung.</p>
+<p>Als Einflussbereich wird der Gewässerabschnitt bezeichnet, der durch
+Regenwetterabflüsse wesentlich hydraulisch und/oder stofflich belastet
+wird. Eine genaue Abschätzung ist i.d.R.schwierig. Hilfestellung liefert
+Tabelle 8 in Kapitel 5.7.</p>
 <p>Der Einflussberich endet ebenfalls wenn:</p>
 <p><br></p>
-<p><span class="math display">\[ \sum{  \frac{ A_{U} }{ A_{E0} }}&lt;0.01 \]</span></p>
+<p><span class="math display">\[ \sum{  \frac{ A_{U} }{ A_{E0}
+}}&lt;0.01 \]</span></p>
 <p><br></p>
 <p>wobei:</p>
 <p><br></p>
@@ -117,22 +133,31 @@
 A<sub>E0</sub> = oberirdisches Gewässereinzugsgebiet</p>
 <p><br></p>
 <blockquote>
-<p><strong>Anmerkung Andi</strong><br><em>Könnten wir evt anpassen, um zu begründen, dass wir unseren Ansatz für kleine Gewässer entwickelt haben. Hier könnten wir evt alternativ die Größeneinordnung der WRRL nehmen oder in Bezug setzen</em></p>
+<p><strong>Anmerkung Andi</strong><br><em>Könnten wir evt anpassen, um zu begründen, dass wir unseren Ansatz
+für kleine Gewässer entwickelt haben. Hier könnten wir evt alternativ
+die Größeneinordnung der WRRL nehmen oder in Bezug setzen</em></p>
 </blockquote>
 </div>
 <div class="section level5">
 <h5 id="stofflicher-nachweis-nach-dwa-a-102-3-vereinfacht">2.2 Stofflicher Nachweis nach DWA-A 102-3 (vereinfacht)<a class="anchor" aria-label="anchor" href="#stofflicher-nachweis-nach-dwa-a-102-3-vereinfacht"></a>
 </h5>
-<p>Für jeden Nachweis Ort müssen Grnzwerte für Ammoniak, Sauerstoff und AFS(fein) eingehalten werden. Auf eine vereinfachte rechnerische NAchweisführung kann verzichtet werden, wenn die Kriterien des Relevanznachweises erfüllt sind (siehe Kapitel 6.4.4).</p>
+<p>Für jeden Nachweis Ort müssen Grnzwerte für Ammoniak, Sauerstoff und
+AFS(fein) eingehalten werden. Auf eine vereinfachte rechnerische
+NAchweisführung kann verzichtet werden, wenn die Kriterien des
+Relevanznachweises erfüllt sind (siehe Kapitel 6.4.4).</p>
 <p><br></p>
 <p>Grenzwerte:</p>
 <ul>
-<li>Sauerstoff: 5 mg/L (darf im Nachgang von Regenwassereinleitungen nicht unterschritten werden)</li>
-<li>Ammoniak: 0.1 mg/L (darf im Nachgang von Regenwassereinleitungen nicht überschritten werden)</li>
-<li>AFS63: Grenzfracht 9600 kg/(km² x a), für empfindliche Gewässer 6400 kg/(km² x a)</li>
+<li>Sauerstoff: 5 mg/L (darf im Nachgang von Regenwassereinleitungen
+nicht unterschritten werden)</li>
+<li>Ammoniak: 0.1 mg/L (darf im Nachgang von Regenwassereinleitungen
+nicht überschritten werden)</li>
+<li>AFS63: Grenzfracht 9600 kg/(km² x a), für empfindliche Gewässer 6400
+kg/(km² x a)</li>
 </ul>
 <p><br></p>
-<p>Die Belastung wird durch Einleitabflüsse und die Gewässervorbelastung bestimmt.</p>
+<p>Die Belastung wird durch Einleitabflüsse und die Gewässervorbelastung
+bestimmt.</p>
 <p><br></p>
 <div class="section level6">
 <h6 id="einleitabflüsse">2.2.1 Einleitabflüsse<a class="anchor" aria-label="anchor" href="#einleitabfl%C3%BCsse"></a>
@@ -142,18 +167,24 @@ A<sub>E0</sub> = oberirdisches Gewässereinzugsgebiet</p>
 <ul>
 <li>C<sub>R,BSB5</sub> = 20 mg/L</li>
 <li>C<sub>R,Nges</sub> = 5 mg/L</li>
-<li>C<sub>AFS63</sub> = berechnet sich aus den Annahmen aus DWA A102-2 und berücksichtigt Flächenkategorien I-III</li>
+<li>C<sub>AFS63</sub> = berechnet sich aus den Annahmen aus DWA A102-2
+und berücksichtigt Flächenkategorien I-III</li>
 </ul>
 <p><br></p>
 <blockquote>
-<p><strong>Anmerkung</strong><br><em>Die von KWB vorschlagene Methodik erweitert das vorgeschlagene Spekturm an Zielparameter durch nach WRRL relvante Stoffe, beispielsweise Pestizide aus Bitumendächern, oder Schwermetalle wie Zink aus Metalldächern. Kommentar Andi: Wir sollten auch dieskutieren, ob wir O2 und NH3 weglassen, da die ja für MW-Überläufe stehen.</em></p>
+<p><strong>Anmerkung</strong><br><em>Die von KWB vorschlagene Methodik erweitert das vorgeschlagene
+Spekturm an Zielparameter durch nach WRRL relvante Stoffe,
+beispielsweise Pestizide aus Bitumendächern, oder Schwermetalle wie Zink
+aus Metalldächern. Kommentar Andi: Wir sollten auch dieskutieren, ob wir
+O2 und NH3 weglassen, da die ja für MW-Überläufe stehen.</em></p>
 </blockquote>
 <p><br></p>
 </div>
 <div class="section level6">
 <h6 id="gewässervorbelastung">2.2.2 Gewässervorbelastung<a class="anchor" aria-label="anchor" href="#gew%C3%A4sservorbelastung"></a>
 </h6>
-<p>Für die Gewässervorbelastung wird die Vorbelastungskonzentration bei Niedrigwasserababfluss angesetzt.</p>
+<p>Für die Gewässervorbelastung wird die Vorbelastungskonzentration bei
+Niedrigwasserababfluss angesetzt.</p>
 <p><br></p>
 <blockquote>
 <p><strong>Anmerkung Andi</strong><br><em>Hier würde ich ergänzen Konzentrationen aus dem Oberlauf…</em></p>
@@ -163,7 +194,11 @@ A<sub>E0</sub> = oberirdisches Gewässereinzugsgebiet</p>
 <div class="section level5">
 <h5 id="hydraulischer-nachweis">2.3 Hydraulischer Nachweis<a class="anchor" aria-label="anchor" href="#hydraulischer-nachweis"></a>
 </h5>
-<p>Als Zielgröße für die Bewertung hydraulische Belastungen zählt der potenziell naturnahe Hochwasserabfluss <strong>HQ<sub>n,pnat</sub></strong>. Die Bedingung, unter der ein guter ökologische Zustand erreicht werden kann, wird über den Faktor <strong>x</strong> nachgewiesen.</p>
+<p>Als Zielgröße für die Bewertung hydraulische Belastungen zählt der
+potenziell naturnahe Hochwasserabfluss
+<strong>HQ<sub>n,pnat</sub></strong>. Die Bedingung, unter der ein guter
+ökologische Zustand erreicht werden kann, wird über den Faktor
+<strong>x</strong> nachgewiesen.</p>
 <p><br></p>
 <p><span class="math display">\[
   x = \frac{Hq_{2,pnat}}{Hq_{1,pnat}} -1
@@ -172,68 +207,82 @@ A<sub>E0</sub> = oberirdisches Gewässereinzugsgebiet</p>
 <div class="section level6">
 <h6 id="berechnung-des-zulässigen-einleitabflusses">2.3.1 Berechnung des zulässigen Einleitabflusses<a class="anchor" aria-label="anchor" href="#berechnung-des-zul%C3%A4ssigen-einleitabflusses"></a>
 </h6>
-<p>Darauf basierend lässt sich der zulässige Einleitungsabfluss an einem Nachweisort wie folgt festlegen:</p>
+<p>Darauf basierend lässt sich der zulässige Einleitungsabfluss an einem
+Nachweisort wie folgt festlegen:</p>
 <p><br></p>
 <p><span class="math display">\[
-  Q_{E1, zul} = Hq_{1,pnat}\frac{A_{b,a}}{100} + x*Hq_{1,pnat}*A_{E0} \ \ \ \ in \  [L/s] 
+  Q_{E1, zul} = Hq_{1,pnat}\frac{A_{b,a}}{100} + x*Hq_{1,pnat}*A_{E0} \
+\ \ \ in \  [L/s]
 \]</span><br></p>
 <p>mit:</p>
 <p>A<sub>b,a</sub>: angeschlossene befestigte Fläche in [ha]<br>
-A<sub>E0</sub> : oberirdisches Einzugsgebiet bis zur Einleitstelle [km²]<br>
-Q<sub>E1,zul</sub>: zulässiger kritischer jährlicher Einleitabfluss [L/s]<br></p>
-<p>Der hydraulische Nachweis ist erbracht wenn die Summe der Einleitescheitel Q<sub>E1</sub> kleiner ist als Q<sub>E1,zul</sub>.</p>
+A<sub>E0</sub> : oberirdisches Einzugsgebiet bis zur Einleitstelle
+[km²]<br>
+Q<sub>E1,zul</sub>: zulässiger kritischer jährlicher Einleitabfluss
+[L/s]<br></p>
+<p>Der hydraulische Nachweis ist erbracht wenn die Summe der
+Einleitescheitel Q<sub>E1</sub> kleiner ist als Q<sub>E1,zul</sub>.</p>
 <p><br></p>
 <blockquote>
-<p><strong>Anmerkung</strong>:   Der Faktor x kann aus nach Anhang B oder durch Simulationsrechnungen bestimmt werden. Liegt beides nicht vor, ist ein Wert von 0.1 anzusetzen. Dieser Wert zählt nur für flache Gebiete (kann z.B. im Mittelgebirge bis zu x = 0.4 betragen, und ist in den Alpen manchmal noch höher)</p>
+<p><strong>Anmerkung</strong>:   Der Faktor x kann aus nach Anhang B
+oder durch Simulationsrechnungen bestimmt werden. Liegt beides nicht
+vor, ist ein Wert von 0.1 anzusetzen. Dieser Wert zählt nur für flache
+Gebiete (kann z.B. im Mittelgebirge bis zu x = 0.4 betragen, und ist in
+den Alpen manchmal noch höher)</p>
 </blockquote>
 <p><br></p>
 <blockquote>
-<p>Der Faktor Hq<sub>1pnat</sub> kan aus den Hüllkurven im Anhang des Dokuments ermitelt werden.</p>
+<p>Der Faktor Hq<sub>1pnat</sub> kan aus den Hüllkurven im Anhang des
+Dokuments ermitelt werden.</p>
 </blockquote>
 <p><br></p>
 <blockquote>
-<p><strong>Anmerkung Andi </strong><br><em>Der erste Term entspricht dem natürlichen Gebietsabfluss aus Ab,a , der zweite Term ist die zuläßige Überschreitung.</em></p>
+<p><strong>Anmerkung Andi </strong><br><em>Der erste Term entspricht dem natürlichen Gebietsabfluss aus Ab,a ,
+der zweite Term ist die zuläßige Überschreitung.</em></p>
 </blockquote>
 <p><br></p>
 <p><strong>Beispielrechnung</strong></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-
-<span class="va">A_befestigt</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">200</span> <span class="co">#ha</span>
-<span class="va">A_EZG1</span> <span class="op">&lt;-</span> <span class="fl">50</span> <span class="co"># km²</span>
-<span class="va">A_EZG2</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="co"># km²</span>
-
-<span class="co">#Gefaelle  &lt; 0.5</span>
-
-<span class="co"># Aus Hüllkurven im Anhang</span>
-
-<span class="va">Hq1_pnat</span> <span class="op">&lt;-</span> <span class="fl">25</span> <span class="co"># l/(s*km²)</span>
-
-<span class="co"># Hq2, pnat ist unbekant desweegen wird x = 0.1 gesetzt</span>
-
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0.1</span> 
-
-<span class="co"># Berechnung</span>
-<span class="va">QE1_zul</span> <span class="op">&lt;-</span> <span class="va">Hq1_pnat</span><span class="op">*</span><span class="va">A_befestigt</span><span class="op">/</span><span class="fl">100</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">*</span><span class="va">Hq1_pnat</span><span class="op">*</span><span class="va">A_EZG1</span>
-<span class="va">QE1_zul2</span> <span class="op">&lt;-</span> <span class="va">Hq1_pnat</span><span class="op">*</span><span class="op">(</span><span class="va">A_befestigt</span><span class="op">/</span><span class="fl">100</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">*</span><span class="va">A_EZG2</span><span class="op">)</span>
-
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>A_befestigt <span class="op">=</span> <span class="va">A_befestigt</span>, 
-                 EZG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">A_EZG1</span>, <span class="va">A_EZG2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">201</span><span class="op">)</span><span class="op">)</span>,
-                 QE1_zul <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">QE1_zul</span>, <span class="va">QE1_zul2</span><span class="op">)</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span> x <span class="op">=</span> <span class="va">A_befestigt</span>, y <span class="op">=</span> <span class="va">QE1_zul</span>, col <span class="op">=</span> <span class="va">EZG</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Befestigte Fläche gegen QE1, zulässig"</span>, 
-          subtitle <span class="op">=</span> <span class="st">"Wert für Hq1_pnat aus Hüllkurven mit 25 l/(s*km²) geschätzt"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"50"</span><span class="op">=</span><span class="st">"blue"</span>, <span class="st">"100"</span><span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"angeschlossene befestigte Fläche [ha]"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"zulässiger jährlicher Einleitabfluss [L/s]"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span></span>
+<span><span class="va">A_befestigt</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">200</span> <span class="co">#ha</span></span>
+<span><span class="va">A_EZG1</span> <span class="op">&lt;-</span> <span class="fl">50</span> <span class="co"># km²</span></span>
+<span><span class="va">A_EZG2</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="co"># km²</span></span>
+<span></span>
+<span><span class="co">#Gefaelle  &lt; 0.5</span></span>
+<span></span>
+<span><span class="co"># Aus Hüllkurven im Anhang</span></span>
+<span></span>
+<span><span class="va">Hq1_pnat</span> <span class="op">&lt;-</span> <span class="fl">25</span> <span class="co"># l/(s*km²)</span></span>
+<span></span>
+<span><span class="co"># Hq2, pnat ist unbekant desweegen wird x = 0.1 gesetzt</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0.1</span> </span>
+<span></span>
+<span><span class="co"># Berechnung</span></span>
+<span><span class="va">QE1_zul</span> <span class="op">&lt;-</span> <span class="va">Hq1_pnat</span><span class="op">*</span><span class="va">A_befestigt</span><span class="op">/</span><span class="fl">100</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">*</span><span class="va">Hq1_pnat</span><span class="op">*</span><span class="va">A_EZG1</span></span>
+<span><span class="va">QE1_zul2</span> <span class="op">&lt;-</span> <span class="va">Hq1_pnat</span><span class="op">*</span><span class="op">(</span><span class="va">A_befestigt</span><span class="op">/</span><span class="fl">100</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">*</span><span class="va">A_EZG2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>A_befestigt <span class="op">=</span> <span class="va">A_befestigt</span>, </span>
+<span>                 EZG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">A_EZG1</span>, <span class="va">A_EZG2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">201</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                 QE1_zul <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">QE1_zul</span>, <span class="va">QE1_zul2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span> x <span class="op">=</span> <span class="va">A_befestigt</span>, y <span class="op">=</span> <span class="va">QE1_zul</span>, col <span class="op">=</span> <span class="va">EZG</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Befestigte Fläche gegen QE1, zulässig"</span>, </span>
+<span>          subtitle <span class="op">=</span> <span class="st">"Wert für Hq1_pnat aus Hüllkurven mit 25 l/(s*km²) geschätzt"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"50"</span><span class="op">=</span><span class="st">"blue"</span>, <span class="st">"100"</span><span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"angeschlossene befestigte Fläche [ha]"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"zulässiger jährlicher Einleitabfluss [L/s]"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="documention_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <p><br></p>
 </div>
 <div class="section level6">
 <h6 id="berechnung-des-maßgeblichen-einleitabflusses">2.3.2 Berechnung des maßgeblichen Einleitabflusses<a class="anchor" aria-label="anchor" href="#berechnung-des-ma%C3%9Fgeblichen-einleitabflusses"></a>
 </h6>
-<p>Zur Berechnung des maßgeblichen Einleitabflusses wird auf Anhang A2 DWA 102-3 zurückgegriffen. Für Einleitungen aus dem Trenngebiet sind für die hydrologischen Nachweis die Summe der Regenwassereinleitungen maßgeblich. Diese bechnen sich durch:</p>
+<p>Zur Berechnung des maßgeblichen Einleitabflusses wird auf Anhang A2
+DWA 102-3 zurückgegriffen. Für Einleitungen aus dem Trenngebiet sind für
+die hydrologischen Nachweis die Summe der Regenwassereinleitungen
+maßgeblich. Diese bechnen sich durch:</p>
 <p><br></p>
 <p><span class="math display">\[
 Q_{E1}=\sum{(A_{b,a}*f_{D}*r_{tf,1})}
@@ -242,14 +291,18 @@ Q_{E1}=\sum{(A_{b,a}*f_{D}*r_{tf,1})}
 <p>mit</p>
 <p>A<sub>b,a</sub>: angeschlossene befestigte Fläche<br>
 f<sub>D</sub>: Abminderungswert “durchlässig befestigte Fläche”<br>
-r<sub>tf,1</sub>: Regenspende eines einjährlichen Regenereignisses dessen Dauerstufe tf entspricht.</p>
+r<sub>tf,1</sub>: Regenspende eines einjährlichen Regenereignisses
+dessen Dauerstufe tf entspricht.</p>
 <p><br></p>
-<p>Die Dauerstufe tf wird aus der Fließzeit im Kanalnetz und der Fließzeit des resultierenden Gewässerabflusses im Einleitungsfall berechnet mit:</p>
+<p>Die Dauerstufe tf wird aus der Fließzeit im Kanalnetz und der
+Fließzeit des resultierenden Gewässerabflusses im Einleitungsfall
+berechnet mit:</p>
 <p><br></p>
 <p><span class="math display">\[
 t_{f} = t_{f_{k}} + t_{f_{G}}
 \]</span><br></p>
-<p>Die Fließzeit t<sub>fG</sub> wird aus dem resultierenden Durchfluss berechnet.</p>
+<p>Die Fließzeit t<sub>fG</sub> wird aus dem resultierenden Durchfluss
+berechnet.</p>
 <p><br></p>
 <p><span class="math display">\[
 Q_{G} = HQ_{1,pnat} + Q_{E1} \ \ \ in \  [L/s]
@@ -264,7 +317,13 @@ t_{f_{G}} =  \frac{s_{G}*A_{teil}}{Q_{G}}
 <p><br></p>
 <blockquote>
 <p><strong>Frage</strong><br>
-Ziel der Berechnung ist die Berechnung von Q<sub>E1</sub> für den hydraulischen Nachweis. Ich berechne t<sub>fG</sub> um zusammen mit t<sub>fK</sub> die Dauerstufe t<sub>f</sub> für r<sub>tf,1</sub> zu berechnen. Letztere benötige ich um Q<sub>E1</sub> zu berechnen.&gt; Gleichzeitig wird aber für die Berechnung von t<sub>fG</sub> die Nutzung von Q<sub>G</sub> vorgeschlagen, was die Summe aus HQ<sub>1,pnat</sub> und <strong>Q<sub>E1</sub> (!!!)</strong> ist.</p>
+Ziel der Berechnung ist die Berechnung von Q<sub>E1</sub> für den
+hydraulischen Nachweis. Ich berechne t<sub>fG</sub> um zusammen mit
+t<sub>fK</sub> die Dauerstufe t<sub>f</sub> für r<sub>tf,1</sub> zu
+berechnen. Letztere benötige ich um Q<sub>E1</sub> zu berechnen.&gt;
+Gleichzeitig wird aber für die Berechnung von t<sub>fG</sub> die Nutzung
+von Q<sub>G</sub> vorgeschlagen, was die Summe aus HQ<sub>1,pnat</sub>
+und <strong>Q<sub>E1</sub> (!!!)</strong> ist.</p>
 </blockquote>
 <p><br></p>
 </div>
@@ -273,37 +332,50 @@ Ziel der Berechnung ist die Berechnung von Q<sub>E1</sub> für den hydraulischen
 <div class="section level2">
 <h2 id="diskussion-kwb">3. Diskussion KWB<a class="anchor" aria-label="anchor" href="#diskussion-kwb"></a>
 </h2>
-<p>Bewertet wird sowohl der IST-Zustand des Gewässers als auch die durch Regenwassereinleitungen zusätzlich eingetragene Belastung im Gewässer.</p>
+<p>Bewertet wird sowohl der IST-Zustand des Gewässers als auch die durch
+Regenwassereinleitungen zusätzlich eingetragene Belastung im
+Gewässer.</p>
 <p><br></p>
 <div class="section level4">
 <h4 id="jahresfracht">3.1 Jahresfracht<a class="anchor" aria-label="anchor" href="#jahresfracht"></a>
 </h4>
 <p><br></p>
 <p><span class="math display">\[
-C_{fiktiv} = \frac{(MQ*C_{gemessen}+Q_{Regen, EZG}*C_{Regen, EZG})}{MQ+Q_{Regen, EZG}}
+C_{fiktiv} = \frac{(MQ*C_{gemessen}+Q_{Regen, EZG}*C_{Regen,
+EZG})}{MQ+Q_{Regen, EZG}}
 \]</span></p>
 <p><br></p>
-<p>C<sub>Regen,EZB</sub>: Annahme eines typischen Einzugsgebiets oder strukturspezifisch</p>
+<p>C<sub>Regen,EZB</sub>: Annahme eines typischen Einzugsgebiets oder
+strukturspezifisch</p>
 <p><br></p>
 </div>
 <div class="section level4">
 <h4 id="ereignisbelastung-akute-toxizität">3.2 Ereignisbelastung (akute Toxizität)<a class="anchor" aria-label="anchor" href="#ereignisbelastung-akute-toxizit%C3%A4t"></a>
 </h4>
-<p>Für die Ereignisbelastung wird eine fiktive Ereigniskonzentraiton berechnet. Analog zum hydraulischen Nachweis nach DWA 102-3 wäre noch die Dauerstufe des 1-jährlichen Ereignises abzuklären.</p>
+<p>Für die Ereignisbelastung wird eine fiktive Ereigniskonzentraiton
+berechnet. Analog zum hydraulischen Nachweis nach DWA 102-3 wäre noch
+die Dauerstufe des 1-jährlichen Ereignises abzuklären.</p>
 <p><br></p>
 <p><span class="math display">\[
-C_{fiktiv} = \frac{(HQ1_{gemessen?} * C_{gemessen}+Q_{Ereignis, Plan, 1a}*C_{Regen})}{HQ1_{gemessen?}+Q_{Ereignis, Plan, 1a}}
+C_{fiktiv} = \frac{(HQ1_{gemessen?} * C_{gemessen}+Q_{Ereignis, Plan,
+1a}*C_{Regen})}{HQ1_{gemessen?}+Q_{Ereignis, Plan, 1a}}
 \]</span><br></p>
-<p>wobei HQ1<sub>gemessen</sub> aus Hüllkurven für H<sub>q1,nat</sub> und der Einzugsgebietsfläche A<sub>E0</sub> abgeschätzt werden kann.</p>
+<p>wobei HQ1<sub>gemessen</sub> aus Hüllkurven für H<sub>q1,nat</sub>
+und der Einzugsgebietsfläche A<sub>E0</sub> abgeschätzt werden kann.</p>
 <blockquote>
-<p><strong>Frage</strong> Warum nehmen wir hier HQ1? Erscheint sinnvoll für kleinere Einzugsgebiete und Gewässer, bei denen lokaler Regen Q beeinflusst. Bei größeren Einzugsgebieten hat lokaler Regen eventuell kaum Einfluss auf Q?</p>
+<p><strong>Frage</strong> Warum nehmen wir hier HQ1? Erscheint sinnvoll
+für kleinere Einzugsgebiete und Gewässer, bei denen lokaler Regen Q
+beeinflusst. Bei größeren Einzugsgebieten hat lokaler Regen eventuell
+kaum Einfluss auf Q?</p>
 </blockquote>
 <p><br></p>
 </div>
 <div class="section level4">
 <h4 id="flächenbezug-und-relevante-parameter">3.3 Flächenbezug und relevante Parameter<a class="anchor" aria-label="anchor" href="#fl%C3%A4chenbezug-und-relevante-parameter"></a>
 </h4>
-<p>Zu klären wäre welche PArameter ergänzt werden und ob die Flächenkategorien aus DWA 102-2 für diese neuen Stoffgruppen angepasst werden.</p>
+<p>Zu klären wäre welche PArameter ergänzt werden und ob die
+Flächenkategorien aus DWA 102-2 für diese neuen Stoffgruppen angepasst
+werden.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -314,12 +386,12 @@ C_{fiktiv} = \frac{(HQ1_{gemessen?} * C_{gemessen}+Q_{Ereignis, Plan, 1a}*C_{Reg
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Wolfgang Seis, <a href="https://www.kompetenz-wasser.de/en/ueber-uns/team/andreas-matzinger" class="external-link">Andreas Matzinger</a>, <a href="https://www.kompetenz-wasser.de/en/project/r2q/" class="external-link"><img src="https://ressourceneffiziente-stadtquartiere.de/wp-content/uploads/2020/07/R2Q_Logo_web.png" alt="Project R2Q" width="72"></a>.</p>
+<p>Developed by Malte Zamzow, Wolfgang Seis, <a href="https://www.kompetenz-wasser.de/en/ueber-uns/team/andreas-matzinger" class="external-link">Andreas Matzinger</a>, <a href="https://www.kompetenz-wasser.de/en/project/r2q/" class="external-link"><img src="https://ressourceneffiziente-stadtquartiere.de/wp-content/uploads/2020/07/R2Q_Logo_web.png" alt="Project R2Q" width="72"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>

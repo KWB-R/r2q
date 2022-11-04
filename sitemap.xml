@@ -25,9 +25,6 @@
     <loc>https://kwb-r.github.io/r2q/articles/natural_discharge.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/articles/p_annual.html</loc>
-  </url>
-  <url>
     <loc>https://kwb-r.github.io/r2q/articles/testplots.html</loc>
   </url>
   <url>
@@ -40,19 +37,22 @@
     <loc>https://kwb-r.github.io/r2q/news/index.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/add_critical_loads.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/Input_event.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/add_hydrology.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/area_from_load.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/add_max_areas.html</loc>
-  </url>
-  <url>
-    <loc>https://kwb-r.github.io/r2q/reference/calculate_surface_discharge.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/assess_all_hazards.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/r2q/reference/calculate_tolerable_discharge.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/check_all_substances.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/check_pollutant_impact.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/r2q/reference/combine_concentration_tables.html</loc>
@@ -70,10 +70,16 @@
     <loc>https://kwb-r.github.io/r2q/reference/get_allowed_area.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/get_areaType_runoff.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/get_default_background.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/get_default_background.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/get_functionsID.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/get_landuse_runoff.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/get_planningLoad.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/r2q/reference/get_q_max.html</loc>
@@ -82,7 +88,16 @@
     <loc>https://kwb-r.github.io/r2q/reference/get_rain.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/get_stormwater_concentrations.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/get_siteInfoID.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/get_spec_runoff.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/get_stormwaterRunoff.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/get_subID.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/r2q/reference/get_thresholds.html</loc>
@@ -91,28 +106,40 @@
     <loc>https://kwb-r.github.io/r2q/reference/get_x.html</loc>
   </url>
   <url>
+    <loc>https://kwb-r.github.io/r2q/reference/hydrology_assessment.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/immission_assessment.html</loc>
+  </url>
+  <url>
     <loc>https://kwb-r.github.io/r2q/reference/index.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/r2q/reference/lin_interpolation.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/load_areaTypes.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/load_background_data.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/load_background_data.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/load_landuse.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/load_planning_details.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/r2q/reference/load_site_data.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/max_area.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/massUnit_tranformation.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/max_area_dynamic.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/maxArea_event.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/max_area_steady_state.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/maxArea_year.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/maxInput_year.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/r2q/reference/merge_by_pollutant.html</loc>
@@ -124,6 +151,30 @@
     <loc>https://kwb-r.github.io/r2q/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/r2q/reference/traffic_adaption.html</loc>
+    <loc>https://kwb-r.github.io/r2q/reference/planning_area_discharge.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/plot_connectable_urban_area.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/plot_hazards.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/r2q_pal.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/run_scenario.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/run_status_quo.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/sub_OgRe_to_name.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/sub_id_to_name.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/r2q/reference/substr_reverse.html</loc>
   </url>
 </urlset>
