@@ -5,8 +5,11 @@
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/r2q)]()
 [![R-Universe_Status_Badge](https://kwb-r.r-universe.dev/badges/r2q)](https://kwb-r.r-universe.dev/)
 
-R Package with Functions and Exchange for Project
-R2Q.
+The R package is used to define a tolerable pollutant input into small
+surface waters via rainwater runoff. It assigns a maximal connectable urban
+area to the surface water. For planning areas, different scenarios regarding
+the connection of surfaces to the separate sewer system and runoff water
+treatment can be calculated.
 
 ## Installation
 
