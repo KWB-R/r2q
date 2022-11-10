@@ -7,8 +7,11 @@
 
 # r2q
 
-R Package with Functions and Exchange for Project
-R2Q.
+The R package is used to define a tolerable pollutant input into small
+surface waters via rainwater runoff. It assigns a maximal connectable urban
+area to the surface water. For planning areas, different scenarios regarding
+the connection of surfaces to the separate sewer system and runoff water
+treatment can be calculated.
 
 ## Installation
 
