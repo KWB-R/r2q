@@ -84,7 +84,6 @@ c_type <- "average" # --> median or "worstcase" -> 95th Quantile
 checked <- r2q::check_all_substances(
   c_table = c_table, 
   c_type = c_type)
-r2q::plot_hazards(hazards = checked)
 
 # Assessment of one substance
   r2q::immission_assessment(
@@ -94,7 +93,7 @@ r2q::plot_hazards(hazards = checked)
     t_rain = rain[1] * 60, substance = "Zink_geloest", 
     hazard_list = checked)
 
-# Assessment of all substances
+# Assessment of all substances of potentially high risk
 r2q_out <- r2q::assess_all_hazards(
   hazard_list = checked, 
   site_data = siteData, 
@@ -103,6 +102,8 @@ r2q_out <- r2q::assess_all_hazards(
   c_type = c_type)
 
 # plot the results
+r2q::plot_hazards(hazards = checked) # substances that might pose a high risk
+
 r2q::plot_connectable_urban_area(
   r2q_substance = r2q_out, 
   r2q_hydrology = r2q_h, 
@@ -114,7 +115,8 @@ r2q::plot_connectable_urban_area(
 # detailed planning (excel sheet: "planning_area_details") ------------------
 planningData <- r2q::load_planning_details(
   data.dir = path, 
-  filename = "Herne_Baukau.xlsx"
+  filename = "Herne_Baukau.xlsx",
+  scenario_name = "planning_area_details" # excel sheet name of planning details
 )
 
 pl_out <- r2q::planning_area_discharge(
