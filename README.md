@@ -33,113 +33,116 @@ if (! require("remotes")) {
 remotes::install_github("KWB-R/r2q")
 ```
 
-## Example for using the Excel input mask
-```r
-path <- file.path(system.file(package = "r2q"), "extdata", "Example")
-fileName <- "Herne_Baukau.xlsx"
+<details>
+  <summary>Example for using the Excel input mask</summary>
+  
+  ```r
+  path <- file.path(system.file(package = "r2q"), "extdata", "Example")
+  fileName <- "Herne_Baukau.xlsx"
 
-# checkout the example excel file (only works on windows with excel installed)
-shell.exec(file.path(path, fileName))
+  # checkout the example excel file (only works on windows with excel installed)
+  shell.exec(file.path(path, fileName))
 
-# load Example -----------------------------------------------------------
-siteData <- r2q::load_site_data(
-  data.dir = path, 
-  filename = fileName
-)
+  # load Example -----------------------------------------------------------
+  siteData <- r2q::load_site_data(
+    data.dir = path, 
+    filename = fileName
+  )
 
-c_river <- r2q::load_background_data(
-  data.dir = path,
-  filename = fileName, 
-  default_for_na = TRUE
-)
+  c_river <- r2q::load_background_data(
+    data.dir = path,
+    filename = fileName, 
+    default_for_na = TRUE
+  )
 
-# load package data ---------------------------------------------------------
-c_storm <- r2q::get_stormwaterRunoff(
-  runoff_effective_mix = list(
-    siteData$landuse$Mix_flow_connected[c(2,1,3,4)], 
-    siteData$landuse$Mix_flow_connectable[c(2,1,3,4)]),
-  mix_names = c("is", "pot"))
+  # load package data ---------------------------------------------------------
+  c_storm <- r2q::get_stormwaterRunoff(
+    runoff_effective_mix = list(
+      siteData$landuse$Mix_flow_connected[c(2,1,3,4)], 
+      siteData$landuse$Mix_flow_connectable[c(2,1,3,4)]),
+    mix_names = c("is", "pot"))
 
-c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
+  c_threshold <- r2q::get_thresholds(LAWA_type = siteData$LAWA_type$Value)
 
-# yearly rain event
-rain <- r2q::get_rain(
-  area_catch = siteData$area_catch$Value, 
-  river_cross_section = siteData$river_cross_section$Value,
-  river_length = siteData$river_length$Value, 
-  river_mean_flow = siteData$Q_mean$Value,
-  x_coordinate = siteData$x_coordinate$Value,
-  y_coordinate = siteData$y_coordinate$Value
-)
+  # yearly rain event
+  rain <- r2q::get_rain(
+    area_catch = siteData$area_catch$Value, 
+    river_cross_section = siteData$river_cross_section$Value,
+    river_length = siteData$river_length$Value, 
+    river_mean_flow = siteData$Q_mean$Value,
+    x_coordinate = siteData$x_coordinate$Value,
+    y_coordinate = siteData$y_coordinate$Value
+  )
 
-# combine data ---------------------------------------------------------
-c_table <- r2q::combine_concentration_tables(
-  threshold_table = c_threshold, 
-  storm_table = c_storm, 
-  background_table = c_river
-)
+  # combine data ---------------------------------------------------------
+  c_table <- r2q::combine_concentration_tables(
+    threshold_table = c_threshold, 
+    storm_table = c_storm, 
+    background_table = c_river
+  )
 
-# process -----------------------------------------------------------------
-r2q_h <- r2q::hydrology_assessment(site_data = siteData, q_rain = rain[2])
-c_type <- "average" # --> median or "worstcase" -> 95th Quantile
+  # process -----------------------------------------------------------------
+  r2q_h <- r2q::hydrology_assessment(site_data = siteData, q_rain = rain[2])
+  c_type <- "average" # --> median or "worstcase" -> 95th Quantile
 
-# which substance poses a high risk?
-checked <- r2q::check_all_substances(
-  c_table = c_table, 
-  c_type = c_type)
+  # which substance poses a high risk?
+  checked <- r2q::check_all_substances(
+    c_table = c_table, 
+    c_type = c_type)
 
-# Assessment of one substance
-  r2q::immission_assessment(
+  # Assessment of one substance
+    r2q::immission_assessment(
+      site_data = siteData, 
+      c_table = c_table, 
+      q_rain = rain[2], 
+      t_rain = rain[1] * 60, substance = "Zink_geloest", 
+      hazard_list = checked)
+
+  # Assessment of all substances of potentially high risk
+  r2q_out <- r2q::assess_all_hazards(
+    hazard_list = checked, 
     site_data = siteData, 
     c_table = c_table, 
+    q_rain = rain[2], t_rain = rain[1] * 60, 
+    c_type = c_type)
+
+  # plot the results
+  r2q::plot_hazards(hazards = checked) # substances that might pose a high risk
+
+  r2q::plot_connectable_urban_area(
+    r2q_substance = r2q_out, 
+    r2q_hydrology = r2q_h, 
+    site_data = siteData, 
+    x_type = "percent", 
+    language = "de"
+  )
+
+  # detailed planning (excel sheet: "planning_area_details") ------------------
+  planningData <- r2q::load_planning_details(
+    data.dir = path, 
+    filename = fileName,
+    scenario_name = "planning_area_details" # excel sheet name of planning details
+  )
+
+  pl_out <- r2q::planning_area_discharge(
+    planning_data = planningData, 
     q_rain = rain[2], 
-    t_rain = rain[1] * 60, substance = "Zink_geloest", 
-    hazard_list = checked)
+    t_rain = rain[1] * 60, 
+    y_rain = siteData$rain_year$Value, 
+    thresholdTable = c_threshold)
 
-# Assessment of all substances of potentially high risk
-r2q_out <- r2q::assess_all_hazards(
-  hazard_list = checked, 
-  site_data = siteData, 
-  c_table = c_table, 
-  q_rain = rain[2], t_rain = rain[1] * 60, 
-  c_type = c_type)
-
-# plot the results
-r2q::plot_hazards(hazards = checked) # substances that might pose a high risk
-
-r2q::plot_connectable_urban_area(
-  r2q_substance = r2q_out, 
-  r2q_hydrology = r2q_h, 
-  site_data = siteData, 
-  x_type = "percent", 
-  language = "de"
-)
-
-# detailed planning (excel sheet: "planning_area_details") ------------------
-planningData <- r2q::load_planning_details(
-  data.dir = path, 
-  filename = fileName,
-  scenario_name = "planning_area_details" # excel sheet name of planning details
-)
-
-pl_out <- r2q::planning_area_discharge(
-  planning_data = planningData, 
-  q_rain = rain[2], 
-  t_rain = rain[1] * 60, 
-  y_rain = siteData$rain_year$Value, 
-  thresholdTable = c_threshold)
-
-# comparison with tolerable discharge
-isPlan <- data.frame(
-  "loadPlan_is" = pl_out$sum)
-isPlan$substance <- rownames(isPlan)
-df_compare <- merge(
-  x = isPlan, 
-  y = as.data.frame(lapply(r2q_out$general, unlist)), 
-  by = "substance", 
-  all.y = TRUE)
-df_compare
-```
+  # comparison with tolerable discharge
+  isPlan <- data.frame(
+    "loadPlan_is" = pl_out$sum)
+  isPlan$substance <- rownames(isPlan)
+  df_compare <- merge(
+    x = isPlan, 
+    y = as.data.frame(lapply(r2q_out$general, unlist)), 
+    by = "substance", 
+    all.y = TRUE)
+  df_compare
+  ```
+</details>
 
 ## Documentation
 
