@@ -36,17 +36,20 @@ remotes::install_github("KWB-R/r2q")
 ## Example for using the Excel input mask
 ```r
 path <- file.path(system.file(package = "r2q"), "extdata", "Example")
- 
+fileName <- "Herne_Baukau.xlsx"
+
+# checkout the example excel file (only works on windows with excel installed)
+shell.exec(file.path(path, fileName))
 
 # load Example -----------------------------------------------------------
 siteData <- r2q::load_site_data(
   data.dir = path, 
-  filename = "Herne_Baukau.xlsx"
+  filename = fileName
 )
 
 c_river <- r2q::load_background_data(
   data.dir = path,
-  filename = "Herne_Baukau.xlsx", 
+  filename = fileName, 
   default_for_na = TRUE
 )
 
@@ -115,7 +118,7 @@ r2q::plot_connectable_urban_area(
 # detailed planning (excel sheet: "planning_area_details") ------------------
 planningData <- r2q::load_planning_details(
   data.dir = path, 
-  filename = "Herne_Baukau.xlsx",
+  filename = fileName,
   scenario_name = "planning_area_details" # excel sheet name of planning details
 )
 
