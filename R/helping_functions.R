@@ -215,11 +215,9 @@ sub_OgRe_to_name <- function(
 #' @export
 #' 
 get_subID <- function(){
-  read.table(
+  read_csv_utf8(
     file = system.file("extdata/IDs/substance_id.csv",  package = "r2q"),
-    sep = ";",
-    as.is = TRUE, 
-    header = TRUE
+    as.is = TRUE
   )
 }
 
@@ -228,12 +226,11 @@ get_subID <- function(){
 #' @return data.frame with function IDs and additional 1 to 3 characterizations
 #' @export
 #' 
-get_functionsID <- function(){
-  read.table(
+get_functionsID <- function()
+{
+  read_csv_utf8(
     file = system.file("extdata/IDs/functions_id.csv", package = "r2q"),
-    sep = ";",
-    as.is = TRUE, 
-    header = TRUE
+    as.is = TRUE
   )
 }
 
@@ -297,3 +294,15 @@ massUnit_tranformation <- function(original_unit, change){
   df[init_row, 3 + change]
 }
 
+# read_csv_utf8 ----------------------------------------------------------------
+read_csv_utf8 <- function(file, sep = ";", dec = ".", ...)
+{
+  read.table(
+    file = file,
+    sep = sep,
+    dec = dec,
+    header = TRUE, 
+    fileEncoding = "UTF-8",
+    ...
+  )
+}
