@@ -7,10 +7,8 @@
 
 test_that("get_KOSTRA() works", {
 
-  expect_error(
-    r2q:::get_KOSTRA()
-    # argument "duration_string" is missing, with no default
-  )
+  f <- r2q:::get_KOSTRA
+  
+  expect_error(f())
 
 })
-

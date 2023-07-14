@@ -7,10 +7,8 @@
 
 test_that("combine_concentration_tables() works", {
 
-  expect_error(
-    r2q:::combine_concentration_tables()
-    # argument "threshold_table" is missing, with no default
-  )
+  f <- r2q:::combine_concentration_tables
+  
+  expect_error(f())
 
 })
-

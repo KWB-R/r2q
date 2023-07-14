@@ -9,9 +9,6 @@ test_that("check_pollutant_impact() works", {
 
   f <- r2q:::check_pollutant_impact
 
-  expect_error(
-    r2q:::check_pollutant_impact()
-    # argument "Ci_river" is missing, with no default
-  )
+  expect_error(f())
 
 })

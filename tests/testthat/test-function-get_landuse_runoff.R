@@ -9,6 +9,7 @@ test_that("get_landuse_runoff() works", {
 
   f <- r2q:::get_landuse_runoff
 
-  r2q:::get_landuse_runoff()
+  result <- f()
 
+  expect_s3_class(result, "data.frame")
 })

@@ -9,9 +9,6 @@ test_that("check_all_substances() works", {
 
   f <- r2q:::check_all_substances
 
-  expect_error(
-    r2q:::check_all_substances()
-    # argument "c_table" is missing, with no default
-  )
+  expect_error(f())
 
 })

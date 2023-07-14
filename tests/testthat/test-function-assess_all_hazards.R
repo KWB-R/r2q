@@ -9,9 +9,6 @@ test_that("assess_all_hazards() works", {
 
   f <- r2q:::assess_all_hazards
 
-  expect_error(
-    r2q:::assess_all_hazards()
-    # argument "hazard_list" is missing, with no default
-  )
+  expect_error(f())
 
 })

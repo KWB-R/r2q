@@ -7,7 +7,10 @@
 
 test_that("get_Hq1_pnat() works", {
 
-  r2q:::get_Hq1_pnat(slope = 0.1, area_catch = 1)
+  f <- r2q:::get_Hq1_pnat
+  
+  result <- f(slope = 0.1, area_catch = 1)
 
+  expect_true(is.numeric(result))
+  expect_length(result, 1L)
 })
-
