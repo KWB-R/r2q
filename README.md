@@ -32,7 +32,7 @@ if (! require("remotes")) {
 # Install KWB package 'r2q' from GitHub
 remotes::install_github("KWB-R/r2q")
 ```
-
+## Example 
 <details>
   <summary>Example for using the Excel input mask</summary>
   
