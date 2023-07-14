@@ -129,11 +129,8 @@ get_stormwaterRunoff <- function(
 #' @export
 #' @importFrom utils read.table
 get_spec_runoff <- function(){   
-  read.table(
-    file = system.file("extdata/Runoff_conc/spec_conc.csv", package = "r2q"), 
-    sep = ";", 
-    dec = ".", 
-    header = T
+  read_csv_utf8(
+    file = system.file("extdata/Runoff_conc/spec_conc.csv", package = "r2q")
   )
 }
 
@@ -149,11 +146,8 @@ get_spec_runoff <- function(){
 #' @importFrom utils read.table
 #' 
 get_landuse_runoff <- function(){   
-  read.table(
-    file = system.file("extdata/Runoff_conc/catch_conc.csv", package = "r2q"), 
-    sep = ";", 
-    dec = ".", 
-    header = T
+  read_csv_utf8(
+    file = system.file("extdata/Runoff_conc/catch_conc.csv", package = "r2q")
   )
 }
 

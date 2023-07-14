@@ -1,33 +1,33 @@
 f_id;primary_function;char1;char2;char3
-1;Wohngebäude;In Verkehrsreichem Gebiet;Mit Zinkdach;
-2;Wohngebäude;In Verkehrsreichem Gebiet;Mit Gründach;Mit Biozidverwendung / unbekannt
-3;Wohngebäude;In Verkehrsreichem Gebiet;Mit Gründach;Ohne Biozidverwendung
-4;Wohngebäude;In Verkehrsreichem Gebiet;Mit Bitumendach;Mit Biozidverwendung / unbekannt
-5;Wohngebäude;In Verkehrsreichem Gebiet;Mit Bitumendach;Ohne Biozidverwendung
-6;Wohngebäude;In Verkehrsreichem Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
-7;Wohngebäude;In Verkehrsarmen Gebiet;Mit Zinkdach;
-8;Wohngebäude;In Verkehrsarmen Gebiet;Mit Gründach;Mit Biozidverwendung / unbekannt
-9;Wohngebäude;In Verkehrsarmen Gebiet;Mit Gründach;Ohne Biozidverwendung
-10;Wohngebäude;In Verkehrsarmen Gebiet;Mit Bitumendach;Mit Biozidverwendung / unbekannt
-11;Wohngebäude;In Verkehrsarmen Gebiet;Mit Bitumendach;Ohne Biozidverwendung
-12;Wohngebäude;In Verkehrsarmen Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
-13;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Zinkdach;
-14;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Gründach;Mit Biozidverwendung
-15;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Gründach;Ohne Biozidverwendung
-16;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Bitumendach;Mit Biozidverwendung
-17;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Bitumendach;Ohne Biozidverwendung
-18;Gewerbe/ Industriegebäude ;In Verkehrsreichem Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
-19;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Zinkdach;
-20;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Gründach;Mit Biozidverwendung
-21;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Gründach;Ohne Biozidverwendung
-22;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Bitumendach;Mit Biozidverwendung
-23;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Bitumendach;Ohne Biozidverwendung
-24;Gewerbe/ Industriegebäude ;In Verkehrsarmen Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
-25;Hoffläche ;In Verkehrsreichem Gebiet;Fugenlos;
-26;Hoffläche ;In Verkehrsreichem Gebiet;offene Fugen;
-27;Hoffläche ;In Verkehrsarmen Gebiet;Fugenlos;
-28;Hoffläche ;In Verkehrsarmen Gebiet;offene Fugen;
-29;Straße / Parkplatz(?);Viel befahren;;
-30;Straße / Parkplatz(?);Mittel befahren;;
-31;Straße / Parkplatz(?);gering befahren;;
-32;Straße / Parkplatz(?);kaum befahren;;
+1;WohngebÃ¤ude;In Verkehrsreichem Gebiet;Mit Zinkdach;
+2;WohngebÃ¤ude;In Verkehrsreichem Gebiet;Mit GrÃ¼ndach;Mit Biozidverwendung / unbekannt
+3;WohngebÃ¤ude;In Verkehrsreichem Gebiet;Mit GrÃ¼ndach;Ohne Biozidverwendung
+4;WohngebÃ¤ude;In Verkehrsreichem Gebiet;Mit Bitumendach;Mit Biozidverwendung / unbekannt
+5;WohngebÃ¤ude;In Verkehrsreichem Gebiet;Mit Bitumendach;Ohne Biozidverwendung
+6;WohngebÃ¤ude;In Verkehrsreichem Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
+7;WohngebÃ¤ude;In Verkehrsarmen Gebiet;Mit Zinkdach;
+8;WohngebÃ¤ude;In Verkehrsarmen Gebiet;Mit GrÃ¼ndach;Mit Biozidverwendung / unbekannt
+9;WohngebÃ¤ude;In Verkehrsarmen Gebiet;Mit GrÃ¼ndach;Ohne Biozidverwendung
+10;WohngebÃ¤ude;In Verkehrsarmen Gebiet;Mit Bitumendach;Mit Biozidverwendung / unbekannt
+11;WohngebÃ¤ude;In Verkehrsarmen Gebiet;Mit Bitumendach;Ohne Biozidverwendung
+12;WohngebÃ¤ude;In Verkehrsarmen Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
+13;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsreichem Gebiet;Mit Zinkdach;
+14;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsreichem Gebiet;Mit GrÃ¼ndach;Mit Biozidverwendung
+15;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsreichem Gebiet;Mit GrÃ¼ndach;Ohne Biozidverwendung
+16;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsreichem Gebiet;Mit Bitumendach;Mit Biozidverwendung
+17;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsreichem Gebiet;Mit Bitumendach;Ohne Biozidverwendung
+18;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsreichem Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
+19;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsarmen Gebiet;Mit Zinkdach;
+20;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsarmen Gebiet;Mit GrÃ¼ndach;Mit Biozidverwendung
+21;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsarmen Gebiet;Mit GrÃ¼ndach;Ohne Biozidverwendung
+22;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsarmen Gebiet;Mit Bitumendach;Mit Biozidverwendung
+23;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsarmen Gebiet;Mit Bitumendach;Ohne Biozidverwendung
+24;Gewerbe/ IndustriegebÃ¤ude ;In Verkehrsarmen Gebiet;Mit Ziegel-, Glas- und sonstiges Metalldach, etc.;
+25;HofflÃ¤che ;In Verkehrsreichem Gebiet;Fugenlos;
+26;HofflÃ¤che ;In Verkehrsreichem Gebiet;offene Fugen;
+27;HofflÃ¤che ;In Verkehrsarmen Gebiet;Fugenlos;
+28;HofflÃ¤che ;In Verkehrsarmen Gebiet;offene Fugen;
+29;StraÃŸe / Parkplatz(?);Viel befahren;;
+30;StraÃŸe / Parkplatz(?);Mittel befahren;;
+31;StraÃŸe / Parkplatz(?);gering befahren;;
+32;StraÃŸe / Parkplatz(?);kaum befahren;;
