@@ -66,6 +66,7 @@ jobs:
           sudo -s eval "$sysreqs"
       - name: Install dependencies
         run: |
+          install.packages("sf")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
