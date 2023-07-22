@@ -1,7 +1,9 @@
 #library(testthat)
 test_that("get_thresholds() works", {
 
-  result  <- r2q:::get_thresholds()
+  f <- r2q::get_thresholds
+  
+  result <- f()
 
   expect_s3_class(result, "data.frame")
   
@@ -13,4 +15,6 @@ test_that("get_thresholds() works", {
     "threshold_type", 
     "Source"
   ))
+  
+  expect_error(f(SUW_type = "other"))
 })
