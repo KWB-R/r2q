@@ -13,4 +13,8 @@ test_that("sub_id_to_name() works", {
   result <- f(c_table, all_substances = FALSE)
   expect_s3_class(result, "data.frame")
   expect_true(nrow(result) == 1L)
+  
+  expect_message(f(data.frame(s_id = 1, value = NA)))
+  expect_message(f(data.frame(s_id = NA)))
+  
 })
