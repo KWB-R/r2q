@@ -9,9 +9,6 @@ test_that("get_HQ_time_interval() works", {
 
   f <- r2q:::get_HQ_time_interval
 
-  expect_error(
-    r2q:::get_HQ_time_interval()
-    # argument "area_catch" is missing, with no default
-  )
+  expect_error(f())
 
 })

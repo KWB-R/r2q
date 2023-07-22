@@ -7,10 +7,8 @@
 
 test_that("get_allowed_area() works", {
 
-  expect_error(
-    r2q:::get_allowed_area()
-    # argument "q_zul" is missing, with no default
-  )
+  f <- r2q:::get_allowed_area
+  
+  expect_error(f())
 
 })
-

@@ -9,6 +9,12 @@ test_that("get_functionsID() works", {
 
   f <- r2q:::get_functionsID
 
-  r2q:::get_functionsID()
+  result <- r2q:::get_functionsID()
 
+  expect_s3_class(result, "data.frame")
+  
+  expect_identical(
+    names(result), 
+    c("f_id", "primary_function", "char1", "char2", "char3")
+  )
 })

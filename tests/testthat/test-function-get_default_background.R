@@ -7,7 +7,8 @@
 
 test_that("get_default_background() works", {
 
-  r2q:::get_default_background()
+  result <- r2q:::get_default_background()
 
+  expect_s3_class(result, "data.frame")
+  expect_identical(names(result), c("s_id", "substance", "Unit", "Default"))
 })
-
