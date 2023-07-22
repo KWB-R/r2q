@@ -33,5 +33,5 @@ test_that("run_scenario() works", {
   
   openxlsx::write.xlsx(list(a = data), file, )
 
-  f(status_quo_list, scenario_name = "a")
+  expect_error(f(status_quo_list, scenario_name = "a"))
 })
