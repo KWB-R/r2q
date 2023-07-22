@@ -12,7 +12,7 @@ test_that("load_planning_details() works", {
   file <- tempfile("test-", fileext = ".xlsx")
   
   write_xls <- function(data) {
-    writexl::write_xlsx(list(a = data), file)
+    openxlsx::write.xlsx(list(a = data), file)
   }
   
   data <- data.frame(
